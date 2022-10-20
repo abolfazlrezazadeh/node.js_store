@@ -1,58 +1,52 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const path = require("path");
-module.exports = class application {
-  #app = express();
-  #DB_URI;
-  #PORT;
-  constructor(PORT, DB_URI) {
-      this.#PORT = PORT;
-    this.#DB_URI = DB_URI;
-    this.configApplocatiomn();
-    this.connectToMongodb();
-    this.createServer();
-    // this.createRoutes();
+module.exports = class Application {
+  #express = require("express");
+  #app = this.#express();
+  constructor(PORT, DB_URL) {
+    this.configDatabase(DB_URL);
+    this.configApplication();
+    this.createServer(PORT);
+    this.createRoutse();
     this.errorHandler();
   }
-  configApplocatiomn() {
-    this.#app.use(express.json);
-    //can sent inputes in data form
-    this.#app.use(express.urlencoded({ extended: true }));
-    this.#app.use(express.static(path.join(__dirname, "..", "public")));
+  configApplication() {
+    const path = require("path");
+    this.#app.use(this.#express.json());
+    this.#app.use(this.#express.urlencoded({ extended: true }));
+    this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
   }
-  createServer() {
+  createServer(PORT) {
     const http = require("http");
-    http.createServer(this.#app).listen(this.#PORT, () => {
-      console.log("run > http://localhost:" + this.#PORT);
+    const server = http.createServer(this.#app);
+    server.listen(PORT, () => {
+      console.log(`connected on port ${PORT}`);
     });
   }
-  connectToMongodb() {
-    mongoose.connect(this.#DB_URI, (error) => {
-      if (!error) return console.log("connected to MONGODB");
-      return console.log("failed to connect to MONGODB");
+  configDatabase(DB_URL) {
+    const mongoose = require("mongoose");
+    //Set up default mongoose connection
+    mongoose.connect(DB_URL, (error) => {
+      if (error) throw error;
+      console.log(`connected to db successfully ....`);
     });
   }
-  createRoutes() {
+  createRoutse() {
     this.#app.get("/", (req, res, next) => {
-      return res.end({ message: "this is the main page " });
+      return res.json({ message: " this is main page " });
     });
+    // this.#app.use(allRouters);
   }
   errorHandler() {
     this.#app.use((req, res, next) => {
       return res.status(404).json({
         status: 404,
-        message: "the page does not found",
+        success: false,
+        message: "the page not found",
       });
     });
     this.#app.use((error, req, res, next) => {
       const status = error?.status || 500;
-      const message = error?.message || "InternalServerError";
-      return res.status(status).json({
-        status,
-        message,
-      });
+      const message = error?.message || "InternalServerMessage";
+      return res.status(status).json({ status, message, success: false });
     });
   }
 };
-
-// module.exports = new application();
