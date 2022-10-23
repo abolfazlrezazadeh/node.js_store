@@ -1,3 +1,4 @@
+const {allRoutes} = require("./router/router");
 module.exports = class Application {
   #express = require("express");
   #app = this.#express();
@@ -30,10 +31,10 @@ module.exports = class Application {
     });
   }
   createRoutse() {
-    this.#app.get("/", (req, res, next) => {
-      return res.json({ message: " this is main page " });
-    });
-    // this.#app.use(allRouters);
+    // this.#app.get("/", (req, res, next) => {
+    //   return res.json({ message: " this is main page " });
+    // });
+    this.#app.use(allRoutes);
   }
   errorHandler() {
     this.#app.use((req, res, next) => {
