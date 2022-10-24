@@ -10,7 +10,11 @@ module.exports = class Application {
     this.errorHandler();
   }
   configApplication() {
+    const morgan = require("morgan");
     const path = require("path");
+    //morgan is logging every requests
+    //dev == in developing status
+    this.#app.use(morgan("dev"));
     this.#app.use(this.#express.json());
     this.#app.use(this.#express.urlencoded({ extended: true }));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
@@ -29,11 +33,22 @@ module.exports = class Application {
       if (error) throw error;
       console.log(`connected to db successfully ....`);
     });
+    //for connecting to db
+    mongoose.connection.on("connected" , ()=>{
+      console.log("connected");
+    });
+    //for disconnecting from mongoDB
+    mongoose.connection.on("disconnect" , () =>{
+      console.log("mongoose connection is disconnected");
+    });
+    //for disconnecting securely
+    process.on("SIGINT" , async ()=>{
+      await mongoose.connection.close();
+      console.log("disconnected");
+      process.exit(0);
+    })
   }
   createRoutse() {
-    // this.#app.get("/", (req, res, next) => {
-    //   return res.json({ message: " this is main page " });
-    // });
     this.#app.use(allRoutes);
   }
   errorHandler() {
