@@ -1,4 +1,4 @@
-const {allRoutes} = require("./router/router");
+const { allRoutes } = require("./router/router");
 module.exports = class Application {
   #express = require("express");
   #app = this.#express();
@@ -34,35 +34,38 @@ module.exports = class Application {
       console.log(`connected to db successfully ....`);
     });
     //for connecting to db
-    mongoose.connection.on("connected" , ()=>{
+    mongoose.connection.on("connected", () => {
       console.log("connected");
     });
     //for disconnecting from mongoDB
-    mongoose.connection.on("disconnect" , () =>{
+    mongoose.connection.on("disconnect", () => {
       console.log("mongoose connection is disconnected");
     });
     //for disconnecting securely
-    process.on("SIGINT" , async ()=>{
+    process.on("SIGINT", async () => {
       await mongoose.connection.close();
       console.log("disconnected");
       process.exit(0);
-    })
+    });
   }
   createRoutse() {
     this.#app.use(allRoutes);
   }
   errorHandler() {
+    const createErrors = require("http-errors");
     this.#app.use((req, res, next) => {
-      return res.status(404).json({
-        status: 404,
-        success: false,
-        message: "the page not found",
-      });
+      next(createErrors.NotFound("the page not found"));
     });
     this.#app.use((error, req, res, next) => {
-      const status = error?.status || 500;
-      const message = error?.message || "InternalServerMessage";
-      return res.status(status).json({ status, message, success: false });
+      const errorHandler = createErrors.InternalServerError();
+      const status = error?.status || errorHandler.status;
+      const message = error?.message || errorHandler.message;
+      return res.status(status).json({
+        errors: {
+          status,
+          message,
+        },
+      });
     });
   }
 };
