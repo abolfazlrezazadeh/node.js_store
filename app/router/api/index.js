@@ -2,7 +2,7 @@ const homeController = require("../../http/controller/api/home.controller");
 const router = require("express").Router();
 
 
-router.post("/" , homeController.idexPage);
+router.get("/" , homeController.idexPage);
 
 
 module.exports = {

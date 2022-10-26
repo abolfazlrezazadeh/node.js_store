@@ -1,7 +1,6 @@
-POST http://localhost:3050
+POST http://localhost:3050/user/auth/sign-in
 Content-Type: application/json
 
 {
-    "email" : "abolfazl@gmail.com" ,
-    "password" : "123456"
+    "phone" : "09392327493"
 }

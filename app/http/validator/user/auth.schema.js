@@ -1,7 +1,6 @@
 const joi = require("@hapi/joi");
 const authSchema = joi.object({
-    email : joi.string().trim().email().lowercase().required(),
-    password : joi.string().trim().min(6).max(16).required()
+    phone : joi.string().length(11).pattern(/^09[0-9]{9}$/).error(new Error("the phone number must be beetwen 6 to 16 characters"))
 });
 
 module.exports = {
