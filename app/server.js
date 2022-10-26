@@ -1,3 +1,4 @@
+const { url } = require("inspector");
 const { allRoutes } = require("./router/router");
 module.exports = class Application {
   #express = require("express");
@@ -11,6 +12,8 @@ module.exports = class Application {
   }
   configApplication() {
     const morgan = require("morgan");
+    const swaggerUI = require("swagger-ui-express");
+    const swaggerJsDoc = require("swagger-jsdoc");
     const path = require("path");
     //morgan is logging every requests
     //dev == in developing status
@@ -18,12 +21,42 @@ module.exports = class Application {
     this.#app.use(this.#express.json());
     this.#app.use(this.#express.urlencoded({ extended: true }));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
+    this.#app.use(
+      "/api-doc",
+      swaggerUI.serve,
+      swaggerUI.setup(
+        swaggerJsDoc({
+          swaggerDefinition: {
+            info: {
+              //name of the project
+              title: "tomorrow shop",
+              version: "1.0.0",
+              description:
+                "tomaorrow shop is the best store that provides physical and virtual products",
+              contact: {
+                name: "abolfazl rezazadeh",
+                email: "raminrezazadeh687@gmail.com",
+              },
+            },
+            servers: [
+              {
+                url: "http:localhost:3050",
+              },
+            ],
+          },
+          //apis in necessory
+          // (**) => means everything for folder
+          // (*) => means everything for file
+          apis: ["./app/router/**/*.js"],
+        })
+      )
+    );
   }
   createServer(PORT) {
     const http = require("http");
     const server = http.createServer(this.#app);
     server.listen(PORT, () => {
-      console.log(`connected on port ${PORT}`);
+      console.log(`http://localhost:${PORT}`);
     });
   }
   configDatabase(DB_URL) {
