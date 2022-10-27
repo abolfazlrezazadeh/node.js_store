@@ -45,8 +45,8 @@ module.exports = class Application {
             ],
           },
           //apis in necessory
-          // (**) => means everything for folder
-          // (*) => means everything for file
+          // (**) => means all of the folders
+          // (*) => means all of the files
           apis: ["./app/router/**/*.js"],
         })
       )

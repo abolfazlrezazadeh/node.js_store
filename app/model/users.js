@@ -4,12 +4,12 @@ const schema = new mongoose.Schema({
    first_name : {type : String},
    last_name : {type : String},
    username : {type : String, lowercase : true, unique : true},
-   phone : {type : Number},
+   phone : {type : Number, required : true},
    email : {type : String, lowercase :true, unique : true},
    password : {type : String},
    otp : {type : Object , default : {
       code : 0 ,
-      expires : 0 ,
+      expiresIn : 0 ,
    }},
    //invoices فاکتور
    bills : {type : [] , default : ""} ,
