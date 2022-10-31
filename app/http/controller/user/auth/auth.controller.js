@@ -1,14 +1,20 @@
-const { authSchema } = require("../../../validator/user/auth.schema");
+const {
+  getOtpSchema,
+  checkOtpSchema,
+} = require("../../../validator/user/auth.schema");
 const createErrors = require("http-errors");
-const { randomNumberGenerator } = require("../../../../utils/function");
+const {
+  randomNumberGenerator,
+  signAccessToken,
+} = require("../../../../utils/function");
 const { userModel } = require("../../../../model/users");
 const { expiresIn, roles } = require("../../../../utils/constants");
 const controller = require("../../controller");
 
 class userAuthController extends controller {
-  async signIn(req, res, next) {
+  async getOtp(req, res, next) {
     try {
-      await authSchema.validateAsync(req.body);
+      await getOtpSchema.validateAsync(req.body);
       const { phone } = req.body;
       const code = randomNumberGenerator();
       const result = await this.saveUser(phone, code);
@@ -23,6 +29,29 @@ class userAuthController extends controller {
       });
     } catch (error) {
       next(createErrors.BadRequest(error.message));
+    }
+  }
+
+  async checkOtp(req, res, next) {
+    try {
+      await checkOtpSchema.validateAsync(req.body);
+      const { phone, code } = req.body;
+      const user = await userModel.findOne({ phone });
+      if (!user) throw createErrors.NotFound("user was not found");
+      if (user.otp.code != code)
+        throw createErrors.Unauthorized("The entered code has incorrect");
+      const now = Date.now();
+      //changing data type to number with (+)
+      if (+user.otp.expiresIn < now)
+        throw createErrors.Unauthorized("The entered code has expired");
+      const accessToken = await signAccessToken(user._id);
+      return res.json({
+        data: {
+          accessToken,
+        },
+      });
+    } catch (error) {
+      next(error);
     }
   }
 
