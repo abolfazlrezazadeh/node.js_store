@@ -1,0 +1,9 @@
+const crypto = require("crypto");
+const key = crypto.randomBytes(32).toString("hex").toUpperCase();
+console.log(key);
+//access token secret key
+//44FB968305ED8F092092CBBD255F8BA232634E1637A1188BF020684C948AFAA1
+//refresh token
+//7B41D3EB60756DBAD9DCC21CF0660AF2485D54CA6B70EBF0524EFA03E3276178
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywidXNlcklkIjoiNjM1YTU4YTRhZjc1ODc5YWE5ODU3ZmU1IiwiaWF0IjoxNjY3MzgwMDkzLCJleHAiOjE2NjczODM2OTN9.nDfM6roUpl4mnfq7aNRfh3vxe7gnSyjXJTpU8s33y4M

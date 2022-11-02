@@ -15,9 +15,11 @@ module.exports = class Application {
     const swaggerUI = require("swagger-ui-express");
     const swaggerJsDoc = require("swagger-jsdoc");
     const path = require("path");
+    const cors = require("cors");
     //morgan is logging every requests
     //dev == in developing status
     this.#app.use(morgan("dev"));
+    this.#app.use(cors())
     this.#app.use(this.#express.json());
     this.#app.use(this.#express.urlencoded({ extended: true }));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
