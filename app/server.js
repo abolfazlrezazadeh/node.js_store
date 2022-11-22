@@ -5,6 +5,7 @@ module.exports = class Application {
   #app = this.#express();
   constructor(PORT, DB_URL) {
     this.configDatabase(DB_URL);
+    this.redis_init();
     this.configApplication();
     this.createServer(PORT);
     this.createRoutse();
@@ -61,6 +62,9 @@ module.exports = class Application {
       console.log(`http://localhost:${PORT}`);
     });
   }
+  redis_init(){
+    require("./utils/redis_init")
+  }
   configDatabase(DB_URL) {
     const mongoose = require("mongoose");
     //Set up default mongoose connection
@@ -70,7 +74,7 @@ module.exports = class Application {
     });
     //for connecting to db
     mongoose.connection.on("connected", () => {
-      console.log("connected");
+      // console.log("connected");
     });
     //for disconnecting from mongoDB
     mongoose.connection.on("disconnect", () => {
