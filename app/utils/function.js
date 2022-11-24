@@ -5,6 +5,7 @@ const {
   ACCESS_TOKEN_SECRET_KEY,
   REFRESH_TOKEN_SECRET_KEY,
 } = require("./constants");
+const redisClient = require("./redis_init");
 function randomNumberGenerator() {
   return Math.floor(Math.random() * 90000);
 }
@@ -35,8 +36,9 @@ function signRefreshToken(userId) {
       // 1 YEAR
       expiresIn: "1y",
     };
-    jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, (err, token) => {
+    jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, async (err, token) => {
       if (err) reject(createError.InternalServerError("server error"));
+      await redisClient.SETEX(userId, 365 * 24 * 60 * 60, token);
       resolve(token);
     });
   });
@@ -51,7 +53,9 @@ async function verfiyRefreshToken(token) {
         { password: 0, otp: 0, bills: 0 }
       );
       if (!user) reject(createError.Unauthorized("User account not found"));
-      resolve(phone);
+      const refreshToken = await redisClient.get(user._id);
+      if (token === refreshToken) return resolve(phone);
+      reject(createError.Unauthorized("logging-in is failed"));
     });
   });
 }
@@ -60,5 +64,5 @@ module.exports = {
   randomNumberGenerator,
   signAccessToken,
   signRefreshToken,
-  verfiyRefreshToken
+  verfiyRefreshToken,
 };

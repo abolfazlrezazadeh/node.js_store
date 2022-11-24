@@ -20,7 +20,8 @@ module.exports = class Application {
     //morgan is logging every requests
     //dev == in developing status
     this.#app.use(morgan("dev"));
-    this.#app.use(cors())
+    this.#app.use(cors({origin : true , credentials : true}));
+    // console.log(sors);
     this.#app.use(this.#express.json());
     this.#app.use(this.#express.urlencoded({ extended: true }));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));

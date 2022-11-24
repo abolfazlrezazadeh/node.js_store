@@ -84,7 +84,7 @@ class userAuthController extends controller {
       code,
       // 120.000 miliSeconds == 2 minuts
       //in utils
-      expiresIn: expiresIn,
+      expiresIn: (new Date().getTime() + 120000),
     };
     const result = await this.checkExistUser(phone);
     if (result) {
