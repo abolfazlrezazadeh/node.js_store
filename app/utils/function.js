@@ -10,7 +10,7 @@ function randomNumberGenerator() {
   return Math.floor(Math.random() * 90000);
 }
 
-function signAccessToken(userId) {
+async function signAccessToken(userId) {
   return new Promise(async (resolve, reject) => {
     const user = await userModel.findById(userId);
     const payload = {
@@ -26,7 +26,7 @@ function signAccessToken(userId) {
     });
   });
 }
-function signRefreshToken(userId) {
+async function signRefreshToken(userId) {
   return new Promise(async (resolve, reject) => {
     const user = await userModel.findById(userId);
     const payload = {
@@ -38,7 +38,7 @@ function signRefreshToken(userId) {
     };
     jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, async (err, token) => {
       if (err) reject(createError.InternalServerError("server error"));
-      await redisClient.SETEX(userId, 365 * 24 * 60 * 60, token);
+      await redisClient.SETEX(userId, (365 * 24 * 60 * 60), token);
       resolve(token);
     });
   });
