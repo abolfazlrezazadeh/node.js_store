@@ -83,7 +83,6 @@ class userAuthController extends controller {
     let otp = {
       code,
       // 120.000 miliSeconds == 2 minuts
-      //in utils
       expiresIn: (new Date().getTime() + 120000),
     };
     const result = await this.checkExistUser(phone);

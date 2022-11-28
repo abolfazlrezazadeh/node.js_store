@@ -8,7 +8,7 @@ const { userAuthRouter } = require("./user/auth");
   await redisClient.get("key", (err, data) => {
     console.log(data);
   });
-  //  console.log(value);
+  // await  console.log(redisClient.ping);
 })();
 const router = require("express").Router();
 router.use("/user", userAuthRouter);
