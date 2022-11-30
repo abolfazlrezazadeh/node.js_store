@@ -38,7 +38,7 @@ async function signRefreshToken(userId) {
     };
     jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, async (err, token) => {
       if (err) reject(createError.InternalServerError("server error"));
-      await redisClient.SETEX(userId, (365 * 24 * 60 * 60), token);
+      await redisClient.SETEX(userId, 365 * 24 * 60 * 60, token);
       resolve(token);
     });
   });
@@ -53,9 +53,19 @@ async function verfiyRefreshToken(token) {
         { password: 0, otp: 0, bills: 0 }
       );
       if (!user) reject(createError.Unauthorized("User account not found"));
-      const refreshToken = await redisClient.get(user._id);
-      if (token === refreshToken) return resolve(phone);
-      reject(createError.Unauthorized("logging-in is failed"));
+      let refreshToken2 ;
+      const refreshToken = await redisClient.get(user._id, (err, value) => {
+        if (err) {
+          console.error("error: "+ err);
+        } else {
+          refreshToken2 = value
+          // console.log(refreshToken2);
+          if (token === refreshToken2) return resolve(phone);
+          reject(createError.Unauthorized("logging-in is failed"));
+          console.log("Worked: " + value);
+        }
+      });
+      // console.log("refreshToken is : "+ refreshToken2);
     });
   });
 }

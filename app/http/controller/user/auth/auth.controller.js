@@ -30,6 +30,7 @@ class userAuthController extends controller {
         },
       });
     } catch (error) {
+      console.log(error);
       next(createErrors.BadRequest(error.message));
     }
   }
