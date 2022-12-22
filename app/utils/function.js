@@ -53,12 +53,12 @@ async function verfiyRefreshToken(token) {
         { password: 0, otp: 0, bills: 0 }
       );
       if (!user) reject(createError.Unauthorized("User account not found"));
-      let refreshToken2 ;
-      const refreshToken = await redisClient.get(user._id, (err, value) => {
+      let refreshToken2;
+      await redisClient.get(user._id, (err, value) => {
         if (err) {
-          console.error("error: "+ err);
+          console.error("error: " + err);
         } else {
-          refreshToken2 = value
+          refreshToken2 = value;
           // console.log(refreshToken2);
           if (token === refreshToken2) return resolve(phone);
           reject(createError.Unauthorized("logging-in is failed"));
