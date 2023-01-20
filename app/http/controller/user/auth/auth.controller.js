@@ -10,7 +10,7 @@ const {
   signRefreshToken,
 } = require("../../../../utils/function");
 const { userModel } = require("../../../../model/users");
-const { expiresIn, roles } = require("../../../../utils/constants");
+const {  roles } = require("../../../../utils/constants");
 const controller = require("../../controller");
 
 class userAuthController extends controller {
@@ -96,7 +96,7 @@ class userAuthController extends controller {
       phone,
       otp,
       //in utils
-      roles: roles,
+      roles: [roles.user],
     }));
   }
 
