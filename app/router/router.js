@@ -1,4 +1,5 @@
 const redisClient = require("../utils/redis_init");
+const {adminRoutes} = require("./admin/admin.routes");
 const { homeRoutes } = require("./api");
 const { developerRoute } = require("./developer.routes");
 const { userAuthRouter } = require("./user/auth");
@@ -13,6 +14,7 @@ const { userAuthRouter } = require("./user/auth");
 })();
 const router = require("express").Router();
 router.use("/user", userAuthRouter);
+router.use("/admin", adminRoutes);
 router.use("/developer", developerRoute);
 router.use("/", homeRoutes);
 
