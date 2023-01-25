@@ -1,6 +1,7 @@
 const { categoryModel } = require("../../../model/cetegory");
 const createErrors = require("http-errors");
 const controller = require("../controller");
+const mongoose = require("mongoose");
 const { addCategorySchema } = require("../../validator/admin/category.schema");
 
 class categoryController extends controller {
@@ -27,14 +28,26 @@ class categoryController extends controller {
   }
   async getAllCategory(req, res, next) {
     try {
+      // const category = await categoryModel.aggregate([
+      //   {
+      //     $lookup: {
+      //       from: "categories",
+      //       localField: "_id",
+      //       foreignField: "parent",
+      //       //parent is same with id
+      //       as: "children",
+      //     },
+      //   },
       const category = await categoryModel.aggregate([
         {
-          $lookup: {
+          $graphLookup: {
             from: "categories",
-            localField: "_id",
-            foreignField: "parent",
-            //parent is same with id
+            startWith: "$_id",
+            connectFromField: "_id",
+            connectToField: "parent",
             as: "children",
+            maxDepth: 5,
+            depthField: "depth",
           },
         },
         {
@@ -42,6 +55,11 @@ class categoryController extends controller {
             __v: 0,
             "children.__v": 0,
             "children.parent": 0,
+          },
+        },
+        {
+          $match: {
+            parent: undefined,
           },
         },
       ]);
@@ -59,7 +77,10 @@ class categoryController extends controller {
     try {
       const { id } = req.params;
       const category = await this.checkExistCategory(id);
-      const deleteCategory = await categoryModel.deleteOne({ _id: category._id});
+      const deleteCategory = await categoryModel.deleteMany({
+        $or: [{ id: category._id }, { parent: category._id }],
+      });
+      //delete category with parent
       if (deleteCategory.deletedCount == 0)
         throw createErrors.InternalServerError("This product was not removed");
       return res.status(200).json({
@@ -107,10 +128,45 @@ class categoryController extends controller {
     const category = await categoryModel.findById(id);
     console.log(category);
     if (!category) throw createErrors.NotFound("the category does not exist");
-    return category
+    return category;
   }
   editCategory(req, res, next) {}
-  getCategoryByID(req, res, next) {}
+  async getCategoryByID(req, res, next) {
+    try {
+      const { id } = req.params;
+      const category = await categoryModel.aggregate([
+        {
+          $match: {
+            _id: mongoose.Types.ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "_id",
+            foreignField: "parent",
+            //parent is same with id
+            as: "children",
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+            "children.__v": 0,
+            "children.parent": 0,
+          },
+        },
+      ]);
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          category,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = {
