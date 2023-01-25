@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const {categoryController} = require("../../http/controller/admin/category.controller");
-
-
+const {
+  categoryController,
+} = require("../../http/controller/admin/category.controller");
 
 /**
  * @swagger
@@ -25,7 +25,7 @@ const {categoryController} = require("../../http/controller/admin/category.contr
  *                  description : not successfully
  */
 
-router.post("/add" , categoryController.addCategory);
+router.post("/add", categoryController.addCategory);
 /**
  * @swagger
  *  /admin/category/parents:
@@ -38,7 +38,7 @@ router.post("/add" , categoryController.addCategory);
  *              404:
  *                 description: not successful
  */
-router.get("/parents" , categoryController.getAllParents);
+router.get("/parents", categoryController.getAllParents);
 /**
  * @swagger
  *  /admin/category/children/{parent}:
@@ -56,20 +56,34 @@ router.get("/parents" , categoryController.getAllParents);
  *              404:
  *                 description: not successful
  */
-router.get("/children/:parent" , categoryController.getChildOfParents);
+router.get("/children/:parent", categoryController.getChildOfParents);
+
 /**
  * @swagger
- *  /admin/category/all:
+ *  /admin/category/list-of-all:
  *      get:
  *         tags : [adminPanel]
- *         summary : get all categories
+ *         summary : get all categories with out populate and nested structure
  *         responses:
  *              200:
  *                 description : successful
  *              404:
  *                 description: not successful
  */
-router.get("/all" , categoryController.getAllCategory);
+router.get("/list-of-all", categoryController.getAllCategoryWithoutPopulate);
+/**
+ * @swagger
+ *  /admin/category/all:
+ *      get:
+ *         tags : [adminPanel]
+ *         summary : get all categories with nested structure
+ *         responses:
+ *              200:
+ *                 description : successful
+ *              404:
+ *                 description: not successful
+ */
+router.get("/all", categoryController.getAllCategory);
 
 /**
  * @swagger
@@ -88,7 +102,7 @@ router.get("/all" , categoryController.getAllCategory);
  *              404:
  *                 description: not successful
  */
-router.delete("/remove/:id" , categoryController.removeCategory);
+router.delete("/remove/:id", categoryController.removeCategory);
 /**
  * @swagger
  *  /admin/category/{id}:
@@ -106,7 +120,7 @@ router.delete("/remove/:id" , categoryController.removeCategory);
  *              404:
  *                 description: not successful
  */
-router.get("/:id" , categoryController.getCategoryByID);
+router.get("/:id", categoryController.getCategoryByID);
 module.exports = {
   categoryRoutes: router,
 };

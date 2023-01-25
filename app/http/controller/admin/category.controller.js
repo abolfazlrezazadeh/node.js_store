@@ -38,35 +38,40 @@ class categoryController extends controller {
       //       as: "children",
       //     },
       //   },
-      const category = await categoryModel.aggregate([
-        {
-          $graphLookup: {
-            from: "categories",
-            startWith: "$_id",
-            connectFromField: "_id",
-            connectToField: "parent",
-            as: "children",
-            maxDepth: 5,
-            depthField: "depth",
-          },
-        },
-        {
-          $project: {
-            __v: 0,
-            "children.__v": 0,
-            "children.parent": 0,
-          },
-        },
-        {
-          $match: {
-            parent: undefined,
-          },
-        },
-      ]);
+
+      // const categories = await categoryModel.aggregate([
+      //   {
+      //     $graphLookup: {
+      //       from: "categories",
+      //       startWith: "$_id",
+      //       connectFromField: "_id",
+      //       connectToField: "parent",
+      //       as: "children",
+      //       maxDepth: 5,
+      //       depthField: "depth",
+      //     },
+      //   },
+      //   {
+      //     $project: {
+      //       __v: 0,
+      //       "children.__v": 0,
+      //       "children.parent": 0,
+      //     },
+      //   },
+      //   {
+      //     $match: {
+      //       parent: undefined,
+      //     },
+      //   },
+      // ]);
+      const categories = await categoryModel.find(
+        { parent: undefined },
+        { __v: 0, "children.__v": 0 }
+      );
       return res.status(200).json({
         data: {
           statusCode: 200,
-          category,
+          categories,
         },
       });
     } catch (error) {
@@ -130,7 +135,6 @@ class categoryController extends controller {
     if (!category) throw createErrors.NotFound("the category does not exist");
     return category;
   }
-  editCategory(req, res, next) {}
   async getCategoryByID(req, res, next) {
     try {
       const { id } = req.params;
@@ -167,6 +171,22 @@ class categoryController extends controller {
       next(error);
     }
   }
+  async getAllCategoryWithoutPopulate(req, res, next) {
+    try {
+      const categories =await categoryModel.aggregate([{ $match: {} }]);
+      if (!categories) throw createErrors.NotFound("category does not exist");
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          categories,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+  editCategory(req, res, next) {}
 }
 
 module.exports = {
