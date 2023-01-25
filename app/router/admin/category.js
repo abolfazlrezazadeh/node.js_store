@@ -7,7 +7,7 @@ const {
  * @swagger
  *  /admin/category/add:
  *      post:
- *          tags : [adminPanel]
+ *          tags : [category(adminPanel)]
  *          summary : create new category title
  *          parameters:
  *              -     in: formData
@@ -30,7 +30,7 @@ router.post("/add", categoryController.addCategory);
  * @swagger
  *  /admin/category/parents:
  *      get:
- *         tags : [adminPanel]
+ *         tags : [category(adminPanel)]
  *         summary : get all parents of categories
  *         responses:
  *              200:
@@ -43,7 +43,7 @@ router.get("/parents", categoryController.getAllParents);
  * @swagger
  *  /admin/category/children/{parent}:
  *      get:
- *         tags : [adminPanel]
+ *         tags : [category(adminPanel)]
  *         summary : get all child of parents category
  *         parameters:
  *              -    in: path
@@ -62,7 +62,7 @@ router.get("/children/:parent", categoryController.getChildOfParents);
  * @swagger
  *  /admin/category/list-of-all:
  *      get:
- *         tags : [adminPanel]
+ *         tags : [category(adminPanel)]
  *         summary : get all categories with out populate and nested structure
  *         responses:
  *              200:
@@ -75,7 +75,7 @@ router.get("/list-of-all", categoryController.getAllCategoryWithoutPopulate);
  * @swagger
  *  /admin/category/all:
  *      get:
- *         tags : [adminPanel]
+ *         tags : [category(adminPanel)]
  *         summary : get all categories with nested structure
  *         responses:
  *              200:
@@ -89,7 +89,7 @@ router.get("/all", categoryController.getAllCategory);
  * @swagger
  *  /admin/category/remove/{id}:
  *      delete:
- *         tags : [adminPanel]
+ *         tags : [category(adminPanel)]
  *         summary : delete category By id
  *         parameters:
  *              -    in: path
@@ -107,7 +107,7 @@ router.delete("/remove/:id", categoryController.removeCategory);
  * @swagger
  *  /admin/category/{id}:
  *      get:
- *         tags : [adminPanel]
+ *         tags : [category(adminPanel)]
  *         summary : get category By id
  *         parameters:
  *              -    in: path
@@ -121,6 +121,29 @@ router.delete("/remove/:id", categoryController.removeCategory);
  *                 description: not successful
  */
 router.get("/:id", categoryController.getCategoryByID);
+/**
+ * @swagger
+ *  /admin/category/update/{id}:
+ *      patch:
+ *          tags : [category(adminPanel)]
+ *          summary : edit category with id
+ *          parameters:
+ *              -     in: path
+ *                    type : string
+ *                    required : true
+ *                    name : id
+ *              -     in: formData
+ *                    required : true
+ *                    type : string
+ *                    name : title
+ *          responses:
+ *               200:
+ *                  description : successfully
+ *               400:
+ *                  description : not successfully
+ */
+
+router.patch("/update/:id", categoryController.editCategoryTitle);
 module.exports = {
   categoryRoutes: router,
 };

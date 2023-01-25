@@ -2,7 +2,10 @@ const { categoryModel } = require("../../../model/cetegory");
 const createErrors = require("http-errors");
 const controller = require("../controller");
 const mongoose = require("mongoose");
-const { addCategorySchema } = require("../../validator/admin/category.schema");
+const {
+  addCategorySchema,
+  updateCategoryTitle,
+} = require("../../validator/admin/category.schema");
 
 class categoryController extends controller {
   async addCategory(req, res, next) {
@@ -173,7 +176,7 @@ class categoryController extends controller {
   }
   async getAllCategoryWithoutPopulate(req, res, next) {
     try {
-      const categories =await categoryModel.aggregate([{ $match: {} }]);
+      const categories = await categoryModel.aggregate([{ $match: {} }]);
       if (!categories) throw createErrors.NotFound("category does not exist");
       return res.status(200).json({
         data: {
@@ -186,7 +189,25 @@ class categoryController extends controller {
       next(error);
     }
   }
-  editCategory(req, res, next) {}
+  async editCategoryTitle(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { title } = req.body;
+      await this.checkExistCategory(id);
+      await updateCategoryTitle.validateAsync(req.body);
+      const updateResult = await categoryModel.updateOne({ _id: id },{title : title});
+      if (updateResult.modifiedCount == 0)
+        throw createErrors.InternalServerError("the category was not updated");
+      return res.status(200).json({
+        statusCode: 200,
+        data: {
+          message: "the category updated successfully",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = {
