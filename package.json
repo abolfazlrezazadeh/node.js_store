@@ -18,6 +18,7 @@
   "homepage": "https://github.com/abolfazlrezazadeh/node.js_store#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@prisma/client": "^4.9.0",
     "auto-bind": "^4.0.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
@@ -30,5 +31,8 @@
     "redis": "^4.0.0-rc.4",
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.5.0"
+  },
+  "devDependencies": {
+    "prisma": "^4.9.0"
   }
 }
