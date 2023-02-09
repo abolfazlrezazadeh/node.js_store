@@ -1,18 +1,23 @@
-const {default : mongoose } = require("mongoose");
-
-const schema = new mongoose.Schema({
-    author : {type : mongoose.Types.ObjectId, required : true},
-    title : {type : String , required : true},
-    text : {type : String , required :true},
-    image : {type : String },
-    tags : {type : [String] , default : []},
-    catagory : {type : mongoose.Types.ObjectId , required : true},
-    catagory : {type : mongoose.Types.ObjectId , required : true},
-    comments : {type : [] , default :[ ]},
-    like : {type : mongoose.Types.ObjectId ,default : []},
-    disLike : {type : mongoose.Types.ObjectId , default : []},
-    bookmark  : {type : mongoose.Types.ObjectId , default : []},
+const { default: mongoose } = require("mongoose");
+const commentSchema = new mongoose.Schema({
+  user: { type: mongoose.Types.ObjectId, ref: "users", required: true },
+  comment: { type: String, required: true },
+  createdAt: { type: Date, default: new Date.now() },
+  parent: { type: mongoose.Types.ObjectId },
 });
- module.exports = {
-    blogModel : mongoose.model("blog",schema)
- }
+const schema = new mongoose.Schema({
+  author: { type: mongoose.Types.ObjectId, required: true },
+  title: { type: String, required: true },
+  text: { type: String, required: true },
+  sortText: { type: String, required: true },
+  image: { type: String },
+  tags: { type: [String], default: [] },
+  catagory: { type: [mongoose.Types.ObjectId], required: true },
+  comments: { type: [commentSchema], default: [] },
+  like: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
+  disLike: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
+  bookmark: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
+});
+module.exports = {
+  blogModel: mongoose.model("blog", schema),
+};
