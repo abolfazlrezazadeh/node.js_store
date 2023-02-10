@@ -1,7 +1,10 @@
+const { createBlogSchema } = require("../../validator/admin/blog.schema");
 const controller = require("../controller");
 class blogController extends controller {
   async createBlog(req, res, next) {
     try {
+      const blogDateBody = await createBlogSchema.validateAsync(req.body);
+      return res.json(blogDateBody);
     } catch (error) {
       next(error);
     }
@@ -28,7 +31,7 @@ class blogController extends controller {
     try {
       // console.log("1");
       return res.status(200).send({
-          statusCode: 200,
+        statusCode: 200,
         data: {
           blogs: [],
         },
