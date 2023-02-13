@@ -6,9 +6,18 @@ const createBlogSchema = joi.object({
     .min(2)
     .max(40)
     .error(createError.BadRequest("the title must be at least 2 ")),
-  text: joi.string().min(10).error(createError.BadRequest("the text does not correct")),
-  shortText: joi.string().min(5).error(createError.BadRequest("the shortText does not correct")),
-  image: joi.string().error(createError.BadRequest("the image is not correct")),
+  text: joi
+    .string()
+    .min(10)
+    .error(createError.BadRequest("the text does not correct")),
+  shortText: joi
+    .string()
+    .min(5)
+    .error(createError.BadRequest("the shortText does not correct")),
+  fileName: joi
+    .string()
+    .pattern(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/)
+    .error(createError.BadRequest("the image extantion is not correct")),
   tags: joi
     .array()
     .min(0)
@@ -18,11 +27,15 @@ const createBlogSchema = joi.object({
     .string()
     .pattern(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
     .error(createError.BadRequest("the category is not correct")),
+  fileUploadPath: joi.allow(),
 });
 const updateBlogSchema = joi.object({
-  text: joi.string().min(10).error(createError.BadRequest("the text does not correct")),
+  text: joi
+    .string()
+    .min(10)
+    .error(createError.BadRequest("the text does not correct")),
 });
 
 module.exports = {
-    createBlogSchema
-}
+  createBlogSchema,
+};

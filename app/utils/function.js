@@ -1,5 +1,7 @@
+const path = require("path");
 const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
+const fs = require("fs")
 const { userModel } = require("../model/users");
 const {
   ACCESS_TOKEN_SECRET_KEY,
@@ -69,10 +71,15 @@ async function verfiyRefreshToken(token) {
     });
   });
 }
+function deleteFileInPublic(fileAddress){
+  const pathFile = path.join(__dirname,"..","..","public",fileAddress);
+  fs.unlinkSync(pathFile)
+}
 
 module.exports = {
   randomNumberGenerator,
   signAccessToken,
   signRefreshToken,
   verfiyRefreshToken,
+  deleteFileInPublic
 };

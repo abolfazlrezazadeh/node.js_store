@@ -20,9 +20,8 @@ router.get("/", adminBlogController.getListOfBlogs);
  *      post:
  *          tags : [blog(adminPanel)]
  *          summary : create blog
- *          consumer:
+ *          consumes:
  *              - multipart/form-data
- *              - 
  *          parameters:
  *              -   in: formData
  *                  name : title
