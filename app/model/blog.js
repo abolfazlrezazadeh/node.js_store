@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
   shortText: { type: String, required: true },
   image: { type: String },
   tags: { type: [String], default: [] },
-  catagory: { type: [mongoose.Types.ObjectId], required: true },
+  category: { type: [mongoose.Types.ObjectId], required: true },
   comments: { type: [commentSchema], default: [] },
   like: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
   disLike: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },

@@ -7,14 +7,31 @@ class blogController extends controller {
   async createBlog(req, res, next) {
     try {
       const blogDateBody = await createBlogSchema.validateAsync(req.body);
-      const {title,text,shortText,category,tags} = blogDateBody;
+      const { title, text, shortText, category, tags } = blogDateBody;
+      req.body.image = path.join(
+        blogDateBody.fileUploadPath,
+        blogDateBody.fileName
+      );
+      req.body.image = req.body.image.replace(/\\/g, "/");
+      const author = req.user._id;
       const image = req.body.image;
-      req.body.image = path.join(blogDateBody.fileUploadPath, blogDateBody.fileName);
-      req.body.image = req.body.image.replace(/\\/g,"/");
-      const blog = await blogModel.create({title,text,shortText,category,tags,image})
-      return res.json({ blog });
+      const blog = await blogModel.create({
+        title,
+        text,
+        shortText,
+        category,
+        tags,
+        image,
+        author,
+      });
+      return res.status(201).json({
+        data: {
+          statusCode: 201,
+          message: "the blog creat successfully",
+        },
+      });
     } catch (error) {
-      deleteFileInPublic(req.body.image)
+      deleteFileInPublic(req.body.image);
       next(error);
     }
   }
@@ -38,11 +55,42 @@ class blogController extends controller {
   }
   async getListOfBlogs(req, res, next) {
     try {
-      // console.log("1");
+      const blogs = await blogModel.aggregate([
+        { $match: {} },
+        {
+          $lookup: {
+            from: "users",
+            foreignField: "_id",
+            localField: "author",
+            as: "author",
+          },
+        },
+        { $unwind: "$author" },
+        {
+          $lookup: {
+            from: "categories",
+            foreignField: "_id",
+            localField: "category",
+            as: "category",
+          },
+        },
+        { $unwind: "$category" },
+        {
+          $project: {
+            "author.phone": 0,
+            "author.roles": 0,
+            "author.bills": 0,
+            "author.disCount": 0,
+            "author.__v": 0,
+            "category.__v": 0,
+            "author.otp": 0,
+          },
+        },
+      ]);
       return res.status(200).send({
-        statusCode: 200,
         data: {
-          blogs: [],
+          statusCode: 200,
+          blogs,
         },
       });
     } catch (error) {

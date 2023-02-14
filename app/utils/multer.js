@@ -2,6 +2,7 @@ const createError = require("http-errors");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const { deleteFileInPublic } = require("./function");
 function createRoute(req) {
   const date = new Date();
   const year = date.getFullYear().toString();
@@ -29,7 +30,6 @@ const storage = multer.diskStorage({
     cb(null, filePath);
   },
   filename: (req, file, cb) => {
-    console.log(file);
     const ext = path.extname(file.originalname);
     const fileName = String(new Date().getTime() + ext);
     req.body.fileName = fileName;
@@ -45,9 +45,9 @@ function fileFilter(req, file, cb) {
   return cb(createError.BadRequest("The picture sent is not correct"));
 }
 const uploadFile = multer({
-  limits: { fileSize: 15 * 1000 * 1000 },
-  //15mb max file size
   storage,
+  limits: { fileSize: 1 * 1000 * 1000 },
+  //15mb max file size
   fileFilter,
 });
 module.exports = {
