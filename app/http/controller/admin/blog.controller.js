@@ -16,6 +16,9 @@ class blogController extends controller {
       req.body.image = req.body.image.replace(/\\/g, "/");
       const author = req.user._id;
       const image = req.body.image;
+      const existBlog = await blogModel.findOne({ title: title });
+      if (existBlog)
+        throw createError.BadRequest("the blog titlt is Repetitive");
       const blog = await blogModel.create({
         title,
         text,
@@ -38,7 +41,37 @@ class blogController extends controller {
   }
   async updateBlog(req, res, next) {
     try {
+      console.log("1");
+      const author = req.user._id;
+      const { id } = req.params;
+      await this.findBlog({ _id: id });
+      if (req?.body?.fileUploadPath && req?.body?.fileName) {
+        req.body.image = path.join(req.body.fileUploadPath, req.body.fileName);
+        req.body.image = req.body.image.replace(/\\/g, "/");
+      }
+      const image = req.body.image;
+      const data = req.body;
+      console.log(data);
+      let nullishData = ["", " ", "  ", "0", null, undefined, 0];
+      let blackList = ["bookmark", "disLike", "like", "comment","author"];
+      Object.keys(data).forEach((key) => {
+        if (blackList.includes(key)) delete data[key];
+        if (typeof data[key] == "string") data[key] = data[key].trim();
+        if (Array.isArray(data[key]) && Array.length > 0)
+          data[key] = data[key].map((item) => item.trim());
+        if (nullishData.includes(data[key])) delete data[key];
+      });
+      const updateResult = await blogModel.updateOne({ _id: id }, { $set: data });
+      if(updateResult.modifiedCount == 0 ) throw createError.InternalServerError("update failed");
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: "the blog update successfully",
+        },
+      });
     } catch (error) {
+      deleteFileInPublic(req?.body?.image);
+      console.log(error);
       next(error);
     }
   }
@@ -126,7 +159,7 @@ class blogController extends controller {
         select: ["phone", "first_name", "last_name", "username"],
       },
     ]);
-    if(!blog) throw createError.NotFound("blog does not exist");
+    if (!blog) throw createError.NotFound("blog does not exist");
     return blog;
   }
 }

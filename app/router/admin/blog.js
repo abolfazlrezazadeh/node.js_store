@@ -15,7 +15,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required: true
  *                  type: string
- *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2NDQ0NDkyLCJleHAiOjE2NzY1MzA4OTJ9.HaVs3Q_cRJNSaTLFcfgRZCz4xxV0eCGRYgvZrtANtLM            
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk            
  * 
  *          responses:
  *              200:
@@ -35,7 +35,7 @@ router.get("/", adminBlogController.getListOfBlogs);
  *                  name: access-token
  *                  required: true
  *                  type: string
- *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2MzU3MjcwLCJleHAiOjE2NzY0NDM2NzB9.h083XbajglNGp-ohZpb9eYu5FWm3f5XmXyVri8yYDFk
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *              -   in: formData
  *                  name : title
  *                  type: string
@@ -69,6 +69,50 @@ router.get("/", adminBlogController.getListOfBlogs);
 router.post("/add",uploadFile.single("image"),StringToArray("tags"), adminBlogController.createBlog);
 /**
  * @swagger
+ *  /admin/blogs/update/{id}:
+ *      patch:
+ *          tags : [blog(adminPanel)]
+ *          summary : edit and update blog
+ *          consumes:
+ *              - multipart/form-data
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required: true
+ *                  type: string
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
+ *              -   in: path
+ *                  name : id
+ *                  required : true
+ *                  type: string
+ *              -   in: formData
+ *                  name : title
+ *                  type: string
+ *              -   in: formData
+ *                  name : text
+ *                  type: string
+ *              -   in: formData
+ *                  name : shortText
+ *                  type: string
+ *              -   in: formData
+ *                  name: tags
+ *                  example: tag#tag2#
+ *                  type: string
+ *                  required : false
+ *              -   in: formData
+ *                  name : category
+ *                  type: string
+ *              -   in: formData
+ *                  name : image
+ *                  type: file
+ * 
+ *          responses:
+ *              200:
+ *                  description : success 
+ */
+router.patch("/update/:id",uploadFile.single("image"),StringToArray("tags"), adminBlogController.updateBlog);
+/**
+ * @swagger
  *  /admin/blogs/{id}:
  *      get:
  *         tags : [blog(adminPanel)]
@@ -78,7 +122,7 @@ router.post("/add",uploadFile.single("image"),StringToArray("tags"), adminBlogCo
  *                  name: access-token
  *                  required: true
  *                  type: string
- *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2NDQ0NDkyLCJleHAiOjE2NzY1MzA4OTJ9.HaVs3Q_cRJNSaTLFcfgRZCz4xxV0eCGRYgvZrtANtLM            
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk            
  *              -    in: path
  *                   type: string
  *                   required : true
@@ -101,7 +145,7 @@ router.get("/:id",adminBlogController.getOneBlogById);
  *                  name: access-token
  *                  required: true
  *                  type: string
- *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2NDQ0NDkyLCJleHAiOjE2NzY1MzA4OTJ9.HaVs3Q_cRJNSaTLFcfgRZCz4xxV0eCGRYgvZrtANtLM            
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk            
  *              -    in: path
  *                   type: string
  *                   required : true

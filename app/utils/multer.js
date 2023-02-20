@@ -1,8 +1,8 @@
 const createError = require("http-errors");
 const multer = require("multer");
 const path = require("path");
+const name = "notFoundImage.png";
 const fs = require("fs");
-const { deleteFileInPublic } = require("./function");
 function createRoute(req) {
   const date = new Date();
   const year = date.getFullYear().toString();
@@ -26,14 +26,20 @@ function createRoute(req) {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const filePath = createRoute(req);
-    cb(null, filePath);
+    if (file?.originalname) {
+      const filePath = createRoute(req);
+      return cb(null, filePath);
+    }
+    cb(null, null);
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const fileName = String(new Date().getTime() + ext);
-    req.body.fileName = fileName;
-    cb(null, fileName);
+    if (file?.originalname) {
+      const ext = path.extname(file?.originalname);
+      const fileName = String(new Date().getTime() + ext);
+      req.body.fileName = fileName;
+      return cb(null, fileName);
+    }
+    cb(null,null);
   },
 });
 function fileFilter(req, file, cb) {
@@ -46,7 +52,7 @@ function fileFilter(req, file, cb) {
 }
 const uploadFile = multer({
   storage,
-  limits: { fileSize: 1 * 1000 * 1000 },
+  limits: { fileSize: 15 * 1000 * 1000 },
   //15mb max file size
   fileFilter,
 });
