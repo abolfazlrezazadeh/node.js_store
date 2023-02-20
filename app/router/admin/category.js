@@ -10,6 +10,11 @@ const {
  *          tags : [category(adminPanel)]
  *          summary : create new category title
  *          parameters:
+ *              -     in: header
+ *                    name: access-token
+ *                    required: true
+ *                    type: string
+ *                    value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *              -     in: formData
  *                    type : string
  *                    required : true
@@ -32,6 +37,12 @@ router.post("/add", categoryController.addCategory);
  *      get:
  *         tags : [category(adminPanel)]
  *         summary : get all parents of categories
+ *         parameters:
+ *              -     in: header
+ *                    name: access-token
+ *                    required: true
+ *                    type: string
+ *                    value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *         responses:
  *              200:
  *                 description : successful
@@ -46,6 +57,11 @@ router.get("/parents", categoryController.getAllParents);
  *         tags : [category(adminPanel)]
  *         summary : get all child of parents category
  *         parameters:
+ *              -    in: header
+ *                   name: access-token
+ *                   required: true
+ *                   type: string
+ *                   value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *              -    in: path
  *                   type: string
  *                   required : true
@@ -57,13 +73,18 @@ router.get("/parents", categoryController.getAllParents);
  *                 description: not successful
  */
 router.get("/children/:parent", categoryController.getChildOfParents);
-
 /**
  * @swagger
  *  /admin/category/list-of-all:
  *      get:
  *         tags : [category(adminPanel)]
  *         summary : get all categories with out populate and nested structure
+ *         parameters:
+ *              -    in: header
+ *                   name: access-token
+ *                   required: true
+ *                   type: string
+ *                   value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *         responses:
  *              200:
  *                 description : successful
@@ -77,6 +98,12 @@ router.get("/list-of-all", categoryController.getAllCategoryWithoutPopulate);
  *      get:
  *         tags : [category(adminPanel)]
  *         summary : get all categories with nested structure
+ *         parameters:
+ *              -     in: header
+ *                    name: access-token
+ *                    required: true
+ *                    type: string
+ *                    value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *         responses:
  *              200:
  *                 description : successful
@@ -84,7 +111,6 @@ router.get("/list-of-all", categoryController.getAllCategoryWithoutPopulate);
  *                 description: not successful
  */
 router.get("/all", categoryController.getAllCategory);
-
 /**
  * @swagger
  *  /admin/category/remove/{id}:
@@ -92,6 +118,11 @@ router.get("/all", categoryController.getAllCategory);
  *         tags : [category(adminPanel)]
  *         summary : delete category By id
  *         parameters:
+ *              -     in: header
+ *                    name: access-token
+ *                    required: true
+ *                    type: string
+ *                    value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *              -    in: path
  *                   type: string
  *                   required : true
@@ -110,6 +141,11 @@ router.delete("/remove/:id", categoryController.removeCategory);
  *         tags : [category(adminPanel)]
  *         summary : get category By id
  *         parameters:
+ *              -     in: header
+ *                    name: access-token
+ *                    required: true
+ *                    type: string
+ *                    value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *              -    in: path
  *                   type: string
  *                   required : true
@@ -128,6 +164,11 @@ router.get("/:id", categoryController.getCategoryByID);
  *          tags : [category(adminPanel)]
  *          summary : edit category with id
  *          parameters:
+ *              -     in: header
+ *                    name: access-token
+ *                    required: true
+ *                    type: string
+ *                    value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc2ODgwNjAzLCJleHAiOjE2NzY5NjcwMDN9.j2sKPsfeRy-CIKTSPEgCXkQWVq-ZHQO-8SIjGOrRvkk
  *              -     in: path
  *                    type : string
  *                    required : true
