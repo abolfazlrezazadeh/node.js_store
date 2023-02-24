@@ -20,8 +20,7 @@ module.exports = class Application {
     //morgan is logging every requests
     //dev == in developing status
     this.#app.use(morgan("dev"));
-    this.#app.use(cors({origin : true , credentials : true}));
-    // console.log(sors);
+    this.#app.use(cors({ origin: true, credentials: true }));
     this.#app.use(this.#express.json());
     this.#app.use(this.#express.urlencoded({ extended: true }));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
@@ -31,6 +30,7 @@ module.exports = class Application {
       swaggerUI.setup(
         swaggerJsDoc({
           swaggerDefinition: {
+            // openapi: "3.0.0",
             info: {
               //name of the project
               title: "tomorrow shop",
@@ -47,12 +47,23 @@ module.exports = class Application {
                 url: "http:localhost:3050",
               },
             ],
+            // components: {
+            //   securitySchemes: {
+            //     BearerAuth: {
+            //       type: "http",
+            //       scheme: "bearer",
+            //       bearerFormat: "JWT",
+            //     },
+            //   },
+            // },
+            security: [{ BearerAuth: [] }],
           },
           //apis in necessory
           // (**) => means all of the folders
           // (*) => means all of the files
           apis: ["./app/router/**/*.js"],
-        })
+        }),
+        // { explorer: true }
       )
     );
   }
@@ -63,8 +74,8 @@ module.exports = class Application {
       console.log(`http://localhost:${PORT}`);
     });
   }
-  redis_init(){
-    require("./utils/redis_init")
+  redis_init() {
+    require("./utils/redis_init");
   }
   configDatabase(DB_URL) {
     const mongoose = require("mongoose");

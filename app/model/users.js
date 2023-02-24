@@ -8,6 +8,7 @@ const schema = new mongoose.Schema(
     phone: { type: Number, required: true },
     email: { type: String, lowercase: true, unique: true },
     password: { type: String },
+    courses: { type: [mongoose.Types.ObjectId], default: [], ref: "course" },
     otp: {
       type: Object,
       default: {

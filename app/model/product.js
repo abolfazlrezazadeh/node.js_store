@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const { commentSchema } = require("./public.schema");
 
 const schema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -8,19 +9,18 @@ const schema = new mongoose.Schema({
   description: { type: String, required: true },
   images: { type: [String], required: true },
   tags: { type: [String], default: [] },
-  category: { type: mongoose.Types.ObjectId, required: true },
-  comment: { type: [], default: [] },
+  category: { type: mongoose.Types.ObjectId,ref : "category" , required: true },
+  comment: { type: [commentSchema], default: [] },
   //array of users
   // must login first
-  like: { type: [mongoose.Types.ObjectId], default: [] },
-  disLike: { type: [mongoose.Types.ObjectId], default: [] },
+  likes: { type: [mongoose.Types.ObjectId], default: [] },
+  disLikes: { type: [mongoose.Types.ObjectId], default: [] },
   bookmark: { type: [mongoose.Types.ObjectId], default: [] },
-  count: { type: String },
+  count: { type: Number },
   price: { type: Number, required: true },
-  //تخفیف
   disCount: { type: Number, default: 0 },
   //if its physical product
-  size: {
+  feature: {
     type: Object,
     default: {
       length: "",
@@ -28,19 +28,14 @@ const schema = new mongoose.Schema({
       height: "",
       width: "",
       colors: [],
-      model: "",
+      model: [],
       madeIn: "",
     },
   },
   //the product is physical or virtual
   type: { type: String, required: true },
-
-  // Below is related to virtual products
-
-  //virtual products duration (podcasts , videos , songs)
-  time: { type: String, default: "undefind" },
   format: { type: String },
-  teacher: { type: mongoose.Types.ObjectId, required: true },
+  supplier: { type: mongoose.Types.ObjectId, required: true },
 });
 module.exports = {
   productModel: mongoose.model("product", schema),
