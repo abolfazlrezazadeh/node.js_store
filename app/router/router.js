@@ -12,6 +12,7 @@ const { userAuthRouter } = require("./user/auth");
     NX: true,
   });
   await redisClient.get("key", (err, data) => {
+    // console.log(err);
     console.log(data);
   });
   // await  console.log(redisClient.ping);

@@ -7,7 +7,7 @@ function getToken(headers) {
   const [Bearer, token] = headers?.["access-token"]?.split(" ") || [];
   if (token && ["Bearer", "bearer"].includes(Bearer)) return token;
   throw createError.Unauthorized(
-    "could not find accoant please login to your accoant"
+    "can not find accoant please login to your accoant"
   );
 }
 

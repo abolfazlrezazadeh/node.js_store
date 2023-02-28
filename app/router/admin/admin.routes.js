@@ -1,12 +1,14 @@
 const router = require("express").Router();
 const { vrefiyAccessToken } = require("../../http/middleware/verifyAccesssToken");
 const { blogAdminApiRoute } = require("./blog");
-const { categoryRoutes } = require("./category");
-const { adminProductRouter } = require("./product");
+const { categoryAdminApiRoute } = require("./category");
+const { productAdminApiRoute } = require("./product");
 
 /**
  * @swagger
  *  tags:
+ *      -   name : product(adminPanel)
+ *          description : management of product route
  *      -   name : adminPanel
  *          description : category actions (add,edit,remove , ...)
  *      -   name : category(adminPanel)
@@ -14,9 +16,9 @@ const { adminProductRouter } = require("./product");
  *      -   name : blog(adminPanel)
  *          description : make admin panel api management
  */
-router.use("/category", categoryRoutes);
+router.use("/category", categoryAdminApiRoute);
 router.use("/blogs", blogAdminApiRoute);
-router.use("/product", adminProductRouter);
+router.use("/product", productAdminApiRoute);
 
 module.exports = {
   adminRoutes: router,
