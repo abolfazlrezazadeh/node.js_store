@@ -61,13 +61,21 @@ class productController extends controller {
       next(error);
     }
   }
-  async updateProduct(req, res, next) {
+  async getListOfProducts(req, res, next) {
     try {
+      console.log("1");
+      const product = await productModel.find({});
+      return res.status(200).json({
+        data:{
+          statusCode : 200,
+          product
+        }
+      })
     } catch (error) {
       next(error);
     }
   }
-  async getListOfProducts(req, res, next) {
+  async updateProduct(req, res, next) {
     try {
     } catch (error) {
       next(error);

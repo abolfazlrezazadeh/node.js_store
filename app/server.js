@@ -105,7 +105,7 @@ module.exports = class Application {
   errorHandler() {
     const createErrors = require("http-errors");
     this.#app.use((req, res, next) => {
-      next(createErrors.NotFound("the page not found"));
+      next(createErrors.NotFound("page not found"));
     });
     this.#app.use((error, req, res, next) => {
       const errorHandler = createErrors.InternalServerError();
