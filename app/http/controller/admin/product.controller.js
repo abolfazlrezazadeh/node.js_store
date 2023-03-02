@@ -1,10 +1,63 @@
+const path  = require("path");
+const { productModel } = require("../../../model/product");
+const {
+  deleteFileInPublic,
+  quantificationOfFeauters,
+  quantificationOfType
+} = require("../../../utils/function");
+const { createProductSchema } = require("../../validator/admin/product.schema");
 const controller = require("../controller");
 
 class productController extends controller {
   async addProduct(req, res, next) {
     try {
-      return res.json(req.body)
+      const productBody = await createProductSchema.validateAsync(req.body);
+      const {
+        title,
+        bio,
+        description,
+        tags,
+        category,
+        price,
+        count,
+        disCount,
+        height,
+        width,
+        length,
+        weight,
+      } = productBody;
+      req.body.image = path.join(
+        productBody.fileUploadPath,
+        productBody.fileName
+      );
+      const supplier = req.user._id;
+      req.body.image = req.body.image.replace(/\\/g, "/");
+      const image = req.body.image;
+      let feature = quantificationOfFeauters(height, width, length, weight);
+      let type = quantificationOfType(height, width, length, weight);
+      const product = await productModel.create({
+        title,
+        bio,
+        description,
+        tags,
+        category,
+        price,
+        count,
+        disCount,
+        image,
+        supplier,
+        feature,
+        type,
+      });
+      return res.status(201).json({
+        data: {
+          statusCode: 201,
+          message: "product create successfully",
+        },
+      });
     } catch (error) {
+      deleteFileInPublic(req.body.image);
+      console.log(error);
       next(error);
     }
   }

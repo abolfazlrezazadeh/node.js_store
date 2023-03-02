@@ -16,7 +16,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc3NTY4MzM0LCJleHAiOjE2Nzc2NTQ3MzR9.4NLFcrPNOkk34DAw14XigjXQguUIyRvNPdVRKxMzSws
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc3NzUyMjgyLCJleHAiOjE2Nzc4Mzg2ODJ9.ub9nZEx2_-Bb9I8z_PTR5ph0CxUK5TOnmcdKgicQCPQ
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -46,13 +46,33 @@ const router = require("express").Router();
  *                  required : true
  *                  type: string
  *              -   in: formData
- *                  name: discount
+ *                  name: disCount
  *                  required : true
  *                  type: string
  *              -   in: formData
  *                  name: image
  *                  required : true
  *                  type: file
+ *              -   in: formData
+ *                  example: 10 cm or 10/50 cm
+ *                  name: height
+ *                  description: height of product packet
+ *                  type: string
+ *              -   in: formData
+ *                  name: width
+ *                  example: 10 cm or 10/50 cm
+ *                  description: width of product packet
+ *                  type: string
+ *              -   in: formData
+ *                  name: length
+ *                  example: 10 cm or 10/50 cm
+ *                  description: length of product packet
+ *                  type: string
+ *              -   in: formData
+ *                  name: weight
+ *                  example: 10 cm or 10/50 cm
+ *                  description: weight of product packet
+ *                  type: string
  *          responses:
  *               201: 
  *                  description: success

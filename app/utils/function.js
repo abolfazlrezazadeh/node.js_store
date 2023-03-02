@@ -77,6 +77,29 @@ function deleteFileInPublic(fileAddress) {
     fs.unlinkSync(pathFile);
   }
 }
+function quantificationOfFeauters(height,width,length,weight){
+  let feature = {}
+  if(!height) feature.height = 0;
+  else feature.height = height;
+  if(!width) feature.width = 0;
+  else feature.width = width;
+  if(!length) feature.length = 0;
+  else feature.length = length;
+  if(!weight) feature.weight = 0;
+  else feature.weight = weight;
+
+  return feature;
+}
+function quantificationOfType(height,width,length,weight){
+  let type ;
+  if(height || width || length || weight){
+    type = "physical"
+  }else{
+    type = "virtual"
+  }
+
+  return type;
+}
 
 module.exports = {
   randomNumberGenerator,
@@ -84,4 +107,6 @@ module.exports = {
   signRefreshToken,
   verfiyRefreshToken,
   deleteFileInPublic,
+  quantificationOfFeauters,
+  quantificationOfType
 };
