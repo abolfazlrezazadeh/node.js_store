@@ -1,4 +1,3 @@
-const { url } = require("inspector");
 const { allRoutes } = require("./router/router");
 module.exports = class Application {
   #express = require("express");
@@ -21,8 +20,8 @@ module.exports = class Application {
     //dev == in developing status
     this.#app.use(morgan("dev"));
     this.#app.use(cors({ origin: true, credentials: true }));
-    this.#app.use(this.#express.json());
-    this.#app.use(this.#express.urlencoded({ extended: true }));
+    this.#app.use(this.#express.json({ limit: "50mb" }));
+    this.#app.use(this.#express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 100000 }));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
     this.#app.use(
       "/api-doc",
@@ -62,7 +61,7 @@ module.exports = class Application {
           // (**) => means all of the folders
           // (*) => means all of the files
           apis: ["./app/router/**/*.js"],
-        }),
+        })
         // { explorer: true }
       )
     );

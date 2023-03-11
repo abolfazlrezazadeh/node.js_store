@@ -10,11 +10,13 @@ const StringToArray = function (field) {
           req.body[field] = req.body[field]
             .split("#")
             .map((item) => item.trim());
-        }
-        if (req.body[field].indexOf(",") >= 0) {
+        } else if (req.body[field].indexOf(",") >= 0) {
           req.body[field] = req.body[field]
             .split(",")
             .map((item) => item.trim());
+        } else {
+          // if tag have one item
+          req.body[field] = [req.body[field]];
         }
       } else if (
         req.body[field].constructor.toString().toLowerCase().indexOf("array") >=

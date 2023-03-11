@@ -13,12 +13,14 @@ const router = require("express").Router();
  *          summary: create new product
  *          consumes:
  *              -   application/x-www-form-urlencoded
+ *          content:
+ *              -   multipart/form-data
  *          parameters:
  *              -   in: header
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc3NzUyMjgyLCJleHAiOjE2Nzc4Mzg2ODJ9.ub9nZEx2_-Bb9I8z_PTR5ph0CxUK5TOnmcdKgicQCPQ
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NTE5NzI5LCJleHAiOjE2Nzg2MDYxMjl9.RSwjb7_haTunWP7jCpyTCt2GEvM7_hyY7IP7U-4xcGE
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -52,28 +54,31 @@ const router = require("express").Router();
  *                  required : true
  *                  type: string
  *              -   in: formData
- *                  name: image
+ *                  name: images
  *                  required : true
- *                  type: file
+ *                  type: array
+ *                  items:
+ *                       type: file
+ *                  collectionFormat: multi
  *              -   in: formData
  *                  example: 10 cm or 10/50 cm
  *                  name: height
- *                  description: height of product packet
+ *                  description: height of product box
  *                  type: string
  *              -   in: formData
  *                  name: width
  *                  example: 10 cm or 10/50 cm
- *                  description: width of product packet
+ *                  description: width of product box
  *                  type: string
  *              -   in: formData
  *                  name: length
  *                  example: 10 cm or 10/50 cm
- *                  description: length of product packet
+ *                  description: length of product box
  *                  type: string
  *              -   in: formData
  *                  name: weight
  *                  example: 10 cm or 10/50 cm
- *                  description: weight of product packet
+ *                  description: weight of product box
  *                  type: string
  *          responses:
  *               201:
@@ -83,7 +88,7 @@ const router = require("express").Router();
  */
 router.post(
   "/add",
-  uploadFile.single("image"),
+  uploadFile.array("images",10),
   StringToArray("tags"),
   productController.addProduct
 );
@@ -98,7 +103,7 @@ router.post(
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc3NzUyMjgyLCJleHAiOjE2Nzc4Mzg2ODJ9.ub9nZEx2_-Bb9I8z_PTR5ph0CxUK5TOnmcdKgicQCPQ
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NTE5NzI5LCJleHAiOjE2Nzg2MDYxMjl9.RSwjb7_haTunWP7jCpyTCt2GEvM7_hyY7IP7U-4xcGE
  *          responses:
  *               200:
  *                  description: success

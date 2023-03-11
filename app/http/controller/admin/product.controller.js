@@ -31,11 +31,10 @@ class productController extends controller {
         productBody.fileName
       );
       const supplier = req.user._id;
-      req.body.image = req.body.image.replace(/\\/g, "/");
-      const image = req.body.image;
+      const images  = req.body.image.replace(/\\/g, "/");
       let feature = quantificationOfFeauters(height, width, length, weight);
       let type = quantificationOfType(height, width, length, weight);
-      const product = await productModel.create({
+      await productModel.create({
         title,
         bio,
         description,
@@ -44,7 +43,7 @@ class productController extends controller {
         price,
         count,
         disCount,
-        image,
+        images,
         supplier,
         feature,
         type,
@@ -63,7 +62,6 @@ class productController extends controller {
   }
   async getListOfProducts(req, res, next) {
     try {
-      console.log("1");
       const product = await productModel.find({});
       return res.status(200).json({
         data:{
