@@ -20,7 +20,7 @@ const createProductSchema = joi.object({
     .error(createError.BadRequest("tags must be at least 1 tag")),
   category: joi
     .string()
-    .pattern(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
+    .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
     .error(createError.BadRequest("category is not correct")),
   price: joi
     .number()
@@ -33,17 +33,21 @@ const createProductSchema = joi.object({
   disCount: joi
     .number()
     .error(createError.BadRequest("discount is not correct")),
-  height: joi.string().empty().error(createError("height is not corect")),
-  width: joi.string().empty().error(createError("width is not corect")),
-  length: joi.string().empty().error(createError("length is not corect")),
-  weight: joi.string().empty().error(createError("weight is not corect")),
+  height: joi.string().empty().error(createError.BadRequest("height is not corect")),
+  width: joi.string().empty().error(createError.BadRequest("width is not corect")),
+  length: joi.string().empty().error(createError.BadRequest("length is not corect")),
+  weight: joi.string().empty().error(createError.BadRequest("weight is not corect")),
   //image
   fileName: joi
     .string()
-    .pattern(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/)
+    .regex(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/)
     .error(createError.BadRequest("the image extantion is not correct")),
   fileUploadPath: joi.allow(),
+  // role of user
+  type: joi.string().regex(/(virtual|physical)/i).error(createError.BadRequest("Role of user is not correct")),
 });
+
+
 module.exports = {
   createProductSchema,
 };

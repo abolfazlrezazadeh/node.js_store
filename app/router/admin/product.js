@@ -92,6 +92,7 @@ router.post(
   StringToArray("tags"),
   productController.addProduct
 );
+
 /**
  * @swagger
  *  /admin/product/list:
@@ -111,6 +112,30 @@ router.post(
  *                  description: unsuccessfull
  */
 router.get("/list", productController.getListOfProducts);
+
+/**
+ * @swagger
+ *  /admin/product/{id}:
+ *      get:
+ *          tags: [product(adminPanel)]
+ *          summary: get a product by id
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NjI3Mzg3LCJleHAiOjE2Nzg3MTM3ODd9.2ChFjNsIbyndYfdtLlgFpZN2KeupyQqhVm3k4C48zt0
+ *              -   in: path
+ *                  name: id
+ *                  required : true
+ *                  type: string
+ *          responses:
+ *               200:
+ *                  description: success
+ *               400:
+ *                  description: unsuccessfull
+ */
+router.get("/:id", productController.getOneProduct);
 
 module.exports = {
   productAdminApiRoute: router,

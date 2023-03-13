@@ -1,4 +1,5 @@
 const path = require("path");
+const createError = require("http-errors");
 const { productModel } = require("../../../model/product");
 const {
   deleteFileInPublic,
@@ -7,6 +8,7 @@ const {
   listOfImagesFromRequest,
 } = require("../../../utils/function");
 const { createProductSchema } = require("../../validator/admin/product.schema");
+const { IdValidator } = require("../../validator/public.validator");
 const controller = require("../controller");
 
 class productController extends controller {
@@ -87,6 +89,12 @@ class productController extends controller {
     } catch (error) {
       next(error);
     }
+  }
+  async findProduct(productId){
+    const {id} = IdValidator.validateAsync({id : productId});
+    const product = await productModel.findById({id});
+    if(!product) throw createError.NotFound("No product found");
+    return product
   }
 }
 module.exports = {
