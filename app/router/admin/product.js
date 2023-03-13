@@ -12,8 +12,6 @@ const router = require("express").Router();
  *          tags: [product(adminPanel)]
  *          summary: create new product
  *          consumes:
- *              -   application/x-www-form-urlencoded
- *          content:
  *              -   multipart/form-data
  *          parameters:
  *              -   in: header
