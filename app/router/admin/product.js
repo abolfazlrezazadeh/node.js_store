@@ -20,7 +20,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NTE5NzI5LCJleHAiOjE2Nzg2MDYxMjl9.RSwjb7_haTunWP7jCpyTCt2GEvM7_hyY7IP7U-4xcGE
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NjI3Mzg3LCJleHAiOjE2Nzg3MTM3ODd9.2ChFjNsIbyndYfdtLlgFpZN2KeupyQqhVm3k4C48zt0
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -37,6 +37,8 @@ const router = require("express").Router();
  *                  name: tags
  *                  required : true
  *                  type: array
+ *                  items:
+ *                      type: string
  *              -   in: formData
  *                  name: category
  *                  required : true
@@ -58,8 +60,8 @@ const router = require("express").Router();
  *                  required : true
  *                  type: array
  *                  items:
- *                       type: file
- *                  collectionFormat: multi
+ *                      type: file
+ *                      format: binary
  *              -   in: formData
  *                  example: 10 cm or 10/50 cm
  *                  name: height
@@ -103,7 +105,7 @@ router.post(
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NTE5NzI5LCJleHAiOjE2Nzg2MDYxMjl9.RSwjb7_haTunWP7jCpyTCt2GEvM7_hyY7IP7U-4xcGE
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NjI3Mzg3LCJleHAiOjE2Nzg3MTM3ODd9.2ChFjNsIbyndYfdtLlgFpZN2KeupyQqhVm3k4C48zt0
  *          responses:
  *               200:
  *                  description: success

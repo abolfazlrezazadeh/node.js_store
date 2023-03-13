@@ -16,12 +16,13 @@ module.exports = class Application {
     const swaggerJsDoc = require("swagger-jsdoc");
     const path = require("path");
     const cors = require("cors");
+    const bodyParser = require("body-parser");
     //morgan is logging every requests
     //dev == in developing status
     this.#app.use(morgan("dev"));
     this.#app.use(cors({ origin: true, credentials: true }));
-    this.#app.use(this.#express.json({ limit: "50mb" }));
-    this.#app.use(this.#express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 100000 }));
+    this.#app.use(this.#express.urlencoded({ limit: "500000kb", extended : false}));
+    this.#app.use(this.#express.json({limit : "500000kb"}));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
     this.#app.use(
       "/api-doc",
