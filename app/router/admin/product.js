@@ -18,7 +18,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NjI3Mzg3LCJleHAiOjE2Nzg3MTM3ODd9.2ChFjNsIbyndYfdtLlgFpZN2KeupyQqhVm3k4C48zt0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -104,7 +104,7 @@ router.post(
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NjI3Mzg3LCJleHAiOjE2Nzg3MTM3ODd9.2ChFjNsIbyndYfdtLlgFpZN2KeupyQqhVm3k4C48zt0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
  *          responses:
  *               200:
  *                  description: success
@@ -124,7 +124,7 @@ router.get("/list", productController.getListOfProducts);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NjI3Mzg3LCJleHAiOjE2Nzg3MTM3ODd9.2ChFjNsIbyndYfdtLlgFpZN2KeupyQqhVm3k4C48zt0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
  *              -   in: path
  *                  name: id
  *                  required : true

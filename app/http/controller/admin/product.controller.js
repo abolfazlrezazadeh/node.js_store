@@ -21,7 +21,7 @@ class productController extends controller {
         description,
         tags,
         category,
-        price,  
+        price,
         count,
         disCount,
         height,
@@ -30,7 +30,11 @@ class productController extends controller {
         weight,
       } = productBody;
       const supplier = req.user._id;
-      const images = listOfImagesFromRequest(req?.files || [], req.body.fileUploadPath,productBody)
+      const images = listOfImagesFromRequest(
+        req?.files || [],
+        req.body.fileUploadPath,
+        productBody
+      );
       let feature = quantificationOfFeauters(height, width, length, weight);
       let type = quantificationOfType(height, width, length, weight);
       await productModel.create({
@@ -80,7 +84,25 @@ class productController extends controller {
   }
   async getOneProduct(req, res, next) {
     try {
+      const { id } = req.params;
+      const product = await this.findProduct(id);
+      if(product){
+        return res.status(200).json({
+          data: {
+            statusCode: 200,
+            product,
+          },
+        });
+      }else{
+        throw res.status(400).json({
+          data:{
+            statusCode : 400,
+            message : createError.NotFound("no product found")
+          }
+        })
+      }
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -90,11 +112,18 @@ class productController extends controller {
       next(error);
     }
   }
-  async findProduct(productId){
-    const {id} = IdValidator.validateAsync({id : productId});
-    const product = await productModel.findById({id});
-    if(!product) throw createError.NotFound("No product found");
-    return product
+  async findProduct(productId) {
+    try {
+      const { id } = await IdValidator.validateAsync({ id: productId });
+      const product = await productModel.findById(id);
+      if (!product) {
+        throw createError.NotFound("No product found");
+      } else {
+        return product;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 module.exports = {
