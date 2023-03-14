@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const { commentSchema } = require("./public.schema");
 
-const schema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   title: { type: String, required: true },
   //short description
   bio: { type: String, required: true },
@@ -37,6 +37,9 @@ const schema = new mongoose.Schema({
   format: { type: String },
   supplier: { type: mongoose.Types.ObjectId, required: true },
 });
+
+productSchema.index({title: "text", description : "text", bio : "text"});
+
 module.exports = {
-  productModel: mongoose.model("product", schema),
+  productModel: mongoose.model("product", productSchema),
 };
