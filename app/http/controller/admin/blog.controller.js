@@ -1,5 +1,6 @@
 const { createBlogSchema } = require("../../validator/admin/blog.schema");
 const controller = require("../controller");
+const {StatusCodes: httpStatus} = require("http-status-codes");
 const path = require("path");
 const createError = require("http-errors");
 const { blogModel } = require("../../../model/blog");
@@ -28,9 +29,9 @@ class blogController extends controller {
         image,
         author,
       });
-      return res.status(201).json({
+      return res.status(httpStatus.CREATED).json({
         data: {
-          statusCode: 201,
+          statusCode: httpStatus.CREATED,
           message: "the blog creat successfully",
         },
       });
@@ -63,9 +64,9 @@ class blogController extends controller {
       });
       const updateResult = await blogModel.updateOne({ _id: id }, { $set: data });
       if(updateResult.modifiedCount == 0 ) throw createError.InternalServerError("update failed");
-      return res.status(200).json({
+      return res.status(httpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: httpStatus.OK,
           message: "the blog update successfully",
         },
       });
@@ -82,9 +83,9 @@ class blogController extends controller {
       const result = await blogModel.deleteOne({ _id: id });
       if (result.deletedCount == 0)
         throw createError.InternalServerError("cant delete blog");
-      return res.status(200).json({
+      return res.status(httpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: httpStatus.OK,
           message: "blog already deleted",
         },
       });
@@ -96,9 +97,9 @@ class blogController extends controller {
     try {
       const { id } = req.params;
       const blog = await this.findBlog({ _id: id });
-      return res.status(200).json({
+      return res.status(httpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: httpStatus.OK,
           blog,
         },
       });
@@ -140,9 +141,9 @@ class blogController extends controller {
           },
         },
       ]);
-      return res.status(200).send({
+      return res.status(httpStatus.OK).send({
         data: {
-          statusCode: 200,
+          statusCode: httpStatus.OK,
           blogs,
         },
       });

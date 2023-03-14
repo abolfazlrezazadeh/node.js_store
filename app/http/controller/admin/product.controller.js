@@ -1,4 +1,5 @@
 const path = require("path");
+const {StatusCodes: httpStatus} = require("http-status-codes");
 const createError = require("http-errors");
 const { productModel } = require("../../../model/product");
 const {
@@ -66,9 +67,9 @@ class productController extends controller {
   async getListOfProducts(req, res, next) {
     try {
       const product = await productModel.find({});
-      return res.status(200).json({
+      return res.status(httpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: httpStatus.OK,
           product,
         },
       });
@@ -87,16 +88,16 @@ class productController extends controller {
       const { id } = req.params;
       const product = await this.findProduct(id);
       if (product) {
-        return res.status(200).json({
+        return res.status(httpStatus.OK).json({
           data: {
-            statusCode: 200,
+            statusCode: httpStatus.OK,
             product,
           },
         });
       } else {
-        throw res.status(400).json({
+        throw res.status(httpStatus.BAD_REQUEST).json({
           data: {
-            statusCode: 400,
+            statusCode: httpStatus.BAD_REQUEST,
             message: createError.NotFound("no product found"),
           },
         });
@@ -110,9 +111,9 @@ class productController extends controller {
     try {
       const { id } = req.params;
       const product = await this.findProduct(id);
-      if(!product) return res.status(404).json({
+      if(!product) return res.status(httpStatus.NOT_FOUND).json({
         data:{
-          statusCode:404,
+          statusCode:httpStatus.NOT_FOUND,
           message : "entered id is not correct"
         }
       })
@@ -121,9 +122,9 @@ class productController extends controller {
         throw createError.InternalServerError(
           "desired product was not deleted"
         );
-      return res.status(200).json({
+      return res.status(httpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: httpStatus.OK,
           message: "product deleted successfully",
         },
       });

@@ -3,6 +3,7 @@ const {
   checkOtpSchema,
 } = require("../../../validator/user/auth.schema");
 const createErrors = require("http-errors");
+const {StatusCodes: httpStatus} = require("http-status-codes");
 const {
   randomNumberGenerator,
   signAccessToken,
@@ -21,9 +22,9 @@ class userAuthController extends controller {
       const code = randomNumberGenerator();
       const result = await this.saveUser(phone, code);
       if (!result) throw createErrors.Unauthorized("Login failed");
-      return res.status(200).send({
+      return res.status(httpStatus.OK).send({
         data: {
-          statusCode: 200,
+          statusCode: httpStatus.OK,
           message: "Code sent successfully",
           code,
           phone,
