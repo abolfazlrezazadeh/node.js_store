@@ -29,6 +29,7 @@ class productController extends controller {
         width,
         length,
         weight,
+        colors,
       } = productBody;
       const supplier = req.user._id;
       const images = listOfImagesFromRequest(

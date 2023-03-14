@@ -18,6 +18,11 @@ const createProductSchema = joi.object({
     .min(0)
     .max(20)
     .error(createError.BadRequest("tags must be at least 1 tag")),
+  colors: joi
+    .array()
+    .min(0)
+    .max(20)
+    .error(createError.BadRequest("colors must be at least 1 tag")),
   category: joi
     .string()
     .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
