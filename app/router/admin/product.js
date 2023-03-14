@@ -137,6 +137,30 @@ router.get("/list", productController.getListOfProducts);
  */
 router.get("/:id", productController.getOneProduct);
 
+/**
+ * @swagger
+ *  /admin/product/remove/{id}:
+ *      delete:
+ *          tags: [product(adminPanel)]
+ *          summary: remove a product by id
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
+ *              -   in: path
+ *                  name: id
+ *                  required : true
+ *                  type: string
+ *          responses:
+ *               200:
+ *                  description: success
+ *               400:
+ *                  description: unsuccessfull
+ */
+router.delete("/remove/:id", productController.removeProduct);
+
 module.exports = {
   productAdminApiRoute: router,
 };

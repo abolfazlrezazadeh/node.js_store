@@ -86,20 +86,20 @@ class productController extends controller {
     try {
       const { id } = req.params;
       const product = await this.findProduct(id);
-      if(product){
+      if (product) {
         return res.status(200).json({
           data: {
             statusCode: 200,
             product,
           },
         });
-      }else{
+      } else {
         throw res.status(400).json({
-          data:{
-            statusCode : 400,
-            message : createError.NotFound("no product found")
-          }
-        })
+          data: {
+            statusCode: 400,
+            message: createError.NotFound("no product found"),
+          },
+        });
       }
     } catch (error) {
       console.log(error);
@@ -108,6 +108,25 @@ class productController extends controller {
   }
   async removeProduct(req, res, next) {
     try {
+      const { id } = req.params;
+      const product = await this.findProduct(id);
+      if(!product) return res.status(404).json({
+        data:{
+          statusCode:404,
+          message : "entered id is not correct"
+        }
+      })
+      const deleetdProduct = await productModel.deleteOne({ _id: product._id });
+      if (deleetdProduct.deletedCount == 0)
+        throw createError.InternalServerError(
+          "desired product was not deleted"
+        );
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: "product deleted successfully",
+        },
+      });
     } catch (error) {
       next(error);
     }
