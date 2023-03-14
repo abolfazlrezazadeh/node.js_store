@@ -1,5 +1,5 @@
 const path = require("path");
-const {StatusCodes: httpStatus} = require("http-status-codes");
+const { StatusCodes: httpStatus } = require("http-status-codes");
 const createError = require("http-errors");
 const { productModel } = require("../../../model/product");
 const {
@@ -111,12 +111,13 @@ class productController extends controller {
     try {
       const { id } = req.params;
       const product = await this.findProduct(id);
-      if(!product) return res.status(httpStatus.NOT_FOUND).json({
-        data:{
-          statusCode:httpStatus.NOT_FOUND,
-          message : "entered id is not correct"
-        }
-      })
+      if (!product)
+        return res.status(httpStatus.NOT_FOUND).json({
+          data: {
+            statusCode: httpStatus.NOT_FOUND,
+            message: "entered id is not correct",
+          },
+        });
       const deleetdProduct = await productModel.deleteOne({ _id: product._id });
       if (deleetdProduct.deletedCount == 0)
         throw createError.InternalServerError(

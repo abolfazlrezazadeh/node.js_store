@@ -80,9 +80,25 @@ const router = require("express").Router();
  *                  example: 10 cm or 10/50 cm
  *                  description: weight of product box
  *                  type: string
+ *              -   in: formData
+ *                  name: colors
+ *                  required : true
+ *                  type: array
+ *                  items:
+ *                       type: string
+ *                       enum:
+ *                           -    white
+ *                           -    black
+ *                           -    green
+ *                           -    red
+ *                           -    yellow
+ *                           -    gray
+ *                           -    pink
+ *                           -    purple
+ *                           -    khaki
  *          responses:
  *               201:
- *                  description: success
+ *                  description: created
  *               400:
  *                  description: failed
  */
