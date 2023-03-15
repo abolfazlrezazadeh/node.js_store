@@ -18,7 +18,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -82,20 +82,9 @@ const router = require("express").Router();
  *                  type: string
  *              -   in: formData
  *                  name: colors
- *                  required : true
  *                  type: array
  *                  items:
  *                       type: string
- *                       enum:
- *                           -    white
- *                           -    black
- *                           -    green
- *                           -    red
- *                           -    yellow
- *                           -    gray
- *                           -    pink
- *                           -    purple
- *                           -    khaki
  *          responses:
  *               201:
  *                  description: created
@@ -120,7 +109,7 @@ router.post(
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
  *              -   in: query
  *                  name: search
  *                  type: string
@@ -143,7 +132,7 @@ router.get("/list", productController.getListOfProducts);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
  *              -   in: path
  *                  name: id
  *                  required : true
@@ -167,7 +156,7 @@ router.get("/:id", productController.getOneProduct);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
  *              -   in: path
  *                  name: id
  *                  required : true
@@ -193,7 +182,7 @@ router.delete("/remove/:id", productController.removeProduct);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
  *              -   in: path
  *                  name: id
  *                  required : true
@@ -255,16 +244,6 @@ router.delete("/remove/:id", productController.removeProduct);
  *                  type: array
  *                  items:
  *                       type: string
- *                       enum:
- *                           -    white
- *                           -    black
- *                           -    green
- *                           -    red
- *                           -    yellow
- *                           -    gray
- *                           -    pink
- *                           -    purple
- *                           -    khaki
  *          responses:
  *               201:
  *                  description: created

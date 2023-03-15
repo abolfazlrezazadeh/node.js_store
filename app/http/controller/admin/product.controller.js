@@ -7,6 +7,8 @@ const {
   quantificationOfFeauters,
   quantificationOfType,
   listOfImagesFromRequest,
+  copyObject,
+  deleteFolderRecursive,
 } = require("../../../utils/function");
 const { createProductSchema } = require("../../validator/admin/product.schema");
 const { IdValidator } = require("../../validator/public.validator");
@@ -15,6 +17,8 @@ const controller = require("../controller");
 class productController extends controller {
   async addProduct(req, res, next) {
     try {
+      req.body.image = req.body.fileUploadPath;
+      console.log(req.body.image);
       const productBody = await createProductSchema.validateAsync(req.body);
       const {
         title,
@@ -25,11 +29,6 @@ class productController extends controller {
         price,
         count,
         disCount,
-        height,
-        width,
-        length,
-        weight,
-        colors,
       } = productBody;
       const supplier = req.user._id;
       const images = listOfImagesFromRequest(
@@ -37,8 +36,9 @@ class productController extends controller {
         req.body.fileUploadPath,
         productBody
       );
-      let feature = quantificationOfFeauters(height, width, length, weight);
-      let type = quantificationOfType(height, width, length, weight);
+      // req.body.image = copyObject(images);
+      let feature = quantificationOfFeauters(req.body);
+      let type = quantificationOfType(req.body);
       await productModel.create({
         title,
         bio,
@@ -53,18 +53,19 @@ class productController extends controller {
         feature,
         type,
       });
-      return res.status(201).json({
+      return res.status(httpStatus.CREATED).json({
         data: {
-          statusCode: 201,
+          statusCode: httpStatus.CREATED,
           message: "product create successfully",
         },
       });
     } catch (error) {
-      deleteFileInPublic(req.body.image);
+      deleteFolderRecursive(req.body.image);
       console.log(error);
       next(error);
     }
   }
+
   async getListOfProducts(req, res, next) {
     try {
       const search = req?.query?.search || "";
@@ -88,8 +89,12 @@ class productController extends controller {
       next(error);
     }
   }
+
   async updateProduct(req, res, next) {
     try {
+      const data = copyObject(req.body);
+      data.images = listOfImagesFromRequest(req?.files || [],req.body.fileUploadPath, data);
+
     } catch (error) {
       next(error);
     }

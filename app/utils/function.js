@@ -71,14 +71,32 @@ async function verfiyRefreshToken(token) {
     });
   });
 }
-function deleteFileInPublic(fileAddress) {
+async function deleteFileInPublic(fileAddress) {
   if (fileAddress) {
     const pathFile = path.join(__dirname, "..", "..", "public", fileAddress);
-    fs.unlinkSync(pathFile);
+    fs.unlinkSync(pathFile)
   }
 }
-function quantificationOfFeauters(height, width, length, weight) {
+function deleteFolderRecursive(fileAddress){
+  console.log(fileAddress);
+  const pathFile = path.join(__dirname, "..", "..", "public", fileAddress );
+  if( fs.existsSync(pathFile) ) {
+    fs.readdirSync(pathFile).forEach(function(file) {
+      var curPath = pathFile + "/" + file;
+        if(fs.lstatSync(curPath).isDirectory()) { // recurse
+            deleteFolderRecursive(curPath);
+        } else { // delete file
+            fs.unlinkSync(curPath);
+        }
+    });
+    fs.rmdirSync(path);
+  }
+}
+function quantificationOfFeauters(body) {
+  const {height, width, length, weight,colors} = body;
   let feature = {};
+  if(!feature.colors) feature.colors = [];
+  feature.colors = colors;
   if (!height) feature.height = 0;
   else feature.height = height;
   if (!width) feature.width = 0;
@@ -87,11 +105,11 @@ function quantificationOfFeauters(height, width, length, weight) {
   else feature.length = length;
   if (!weight) feature.weight = 0;
   else feature.weight = weight;
-
   return feature;
 }
-function quantificationOfType(height, width, length, weight) {
+function quantificationOfType(body) {
   let type;
+  const {height, width, length, weight} = body
   if (height || width || length || weight) {
     type = "physical";
   } else {
@@ -104,10 +122,13 @@ function listOfImagesFromRequest(files, fileUploadPath, productBody) {
   if (files?.length > 0) {
     return files
       .map((file) => path.join(fileUploadPath, productBody.fileName))
-      .map((item) => item.replace(/\\/g, "/"));
+      .map((item) => req.body.image = item.replace(/\\/g, "/"));
   } else {
     return [];
   }
+}
+function copyObject(object) {
+  return JSON.parse(JSON.stringify(object));
 }
 
 module.exports = {
@@ -119,4 +140,6 @@ module.exports = {
   quantificationOfFeauters,
   quantificationOfType,
   listOfImagesFromRequest,
+  copyObject,
+  deleteFolderRecursive
 };
