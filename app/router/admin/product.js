@@ -180,6 +180,104 @@ router.get("/:id", productController.getOneProduct);
  */
 router.delete("/remove/:id", productController.removeProduct);
 
+/**
+ * @swagger
+ *  /admin/product/edit/{id}:
+ *      patch:
+ *          tags: [product(adminPanel)]
+ *          summary: update product
+ *          consumes:
+ *              -   multipart/form-data
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4NzE2MjI5LCJleHAiOjE2Nzg4MDI2Mjl9.HwPCskCwyNbxqsuyHSbH9UcOWJxaC6ZwWQFd_gLNd5A
+ *              -   in: path
+ *                  name: id
+ *                  required : true
+ *                  type: string
+ *              -   in: formData
+ *                  name: title
+ *                  type: string
+ *              -   in: formData
+ *                  name: bio
+ *                  type: string
+ *              -   in: formData
+ *                  name: description
+ *                  type: string
+ *              -   in: formData
+ *                  name: tags
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *              -   in: formData
+ *                  name: category
+ *                  type: string
+ *              -   in: formData
+ *                  name: price
+ *                  type: string
+ *              -   in: formData
+ *                  name: count
+ *                  type: string
+ *              -   in: formData
+ *                  name: disCount
+ *                  type: string
+ *              -   in: formData
+ *                  name: images
+ *                  type: array
+ *                  items:
+ *                      type: file
+ *                      format: binary
+ *              -   in: formData
+ *                  example: 10 cm or 10/50 cm
+ *                  name: height
+ *                  description: height of product box
+ *                  type: string
+ *              -   in: formData
+ *                  name: width
+ *                  example: 10 cm or 10/50 cm
+ *                  description: width of product box
+ *                  type: string
+ *              -   in: formData
+ *                  name: length
+ *                  example: 10 cm or 10/50 cm
+ *                  description: length of product box
+ *                  type: string
+ *              -   in: formData
+ *                  name: weight
+ *                  example: 10 cm or 10/50 cm
+ *                  description: weight of product box
+ *                  type: string
+ *              -   in: formData
+ *                  name: colors
+ *                  type: array
+ *                  items:
+ *                       type: string
+ *                       enum:
+ *                           -    white
+ *                           -    black
+ *                           -    green
+ *                           -    red
+ *                           -    yellow
+ *                           -    gray
+ *                           -    pink
+ *                           -    purple
+ *                           -    khaki
+ *          responses:
+ *               201:
+ *                  description: created
+ *               400:
+ *                  description: failed
+ */
+router.patch(
+  "/edit/:id",
+  uploadFile.array("images",10),
+  StringToArray("tags"),
+  productController.updateProduct
+);
+
 module.exports = {
   productAdminApiRoute: router,
 };
