@@ -18,11 +18,7 @@ const createProductSchema = joi.object({
     .min(0)
     .max(20)
     .error(createError.BadRequest("tags must be at least 1 tag")),
-  // colors: joi
-  //   .array()
-  //   .empty()
-  //   .max(20)
-  //   .error(createError.BadRequest("colors must be at least 1 tag")),
+  colors: joi.string().empty().error(createError.BadRequest("color is not correct")),
   category: joi
     .string()
     .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
@@ -50,6 +46,7 @@ const createProductSchema = joi.object({
   fileUploadPath: joi.allow(),
   // role of user
   type: joi.string().regex(/(virtual|physical)/i).error(createError.BadRequest("Role of user is not correct")),
+  image : joi.allow()
 });
 
 

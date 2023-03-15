@@ -78,7 +78,6 @@ async function deleteFileInPublic(fileAddress) {
   }
 }
 function deleteFolderRecursive(fileAddress){
-  console.log(fileAddress);
   const pathFile = path.join(__dirname, "..", "..", "public", fileAddress );
   if( fs.existsSync(pathFile) ) {
     fs.readdirSync(pathFile).forEach(function(file) {
@@ -89,7 +88,7 @@ function deleteFolderRecursive(fileAddress){
             fs.unlinkSync(curPath);
         }
     });
-    fs.rmdirSync(path);
+    fs.rmdirSync(pathFile);
   }
 }
 function quantificationOfFeauters(body) {
@@ -122,7 +121,7 @@ function listOfImagesFromRequest(files, fileUploadPath, productBody) {
   if (files?.length > 0) {
     return files
       .map((file) => path.join(fileUploadPath, productBody.fileName))
-      .map((item) => req.body.image = item.replace(/\\/g, "/"));
+      .map((item) => item.replace(/\\/g, "/"));
   } else {
     return [];
   }
