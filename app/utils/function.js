@@ -11,7 +11,6 @@ const redisClient = require("./redis_init");
 function randomNumberGenerator() {
   return Math.floor(Math.random() * 90000);
 }
-
 async function signAccessToken(userId) {
   return new Promise(async (resolve, reject) => {
     const user = await userModel.findById(userId);
@@ -105,7 +104,7 @@ function quantificationOfType(body) {
 }
 function listOfImagesFromRequest(files, fileUploadPath, productBody /*req*/) {
   if (files?.length > 0) {
-  return files
+    return files
       .map((file) => path.join(fileUploadPath, productBody.fileName))
       .map((item) => item.replace(/\\/g, "/"));
     // req.body.image = aks;
@@ -128,6 +127,18 @@ async function deleteSeveralFilseInPublic(files, callback) {
     console.error(err);
   }
 }
+function deleteInvalidPropertyInObject(data = {}, blackList = []) {
+  let nullishData = ["", " ", "  ", "0", null, undefined, 0];
+  Object.keys(data).forEach((key) => {
+    if (blackList.includes(key)) delete data[key];
+    if (typeof data[key] == "string") data[key] = data[key].trim();
+    if (Array.isArray(data[key]) && data[key].length > 0)
+      data[key] = data[key].map((item) => item.trim());
+    //if array is empty dont update that field
+    if (Array.isArray(data[key]) && data[key].length == 0) delete data[key];
+    if (nullishData.includes(data[key])) delete data[key];
+  });
+}
 
 module.exports = {
   randomNumberGenerator,
@@ -140,4 +151,5 @@ module.exports = {
   listOfImagesFromRequest,
   copyObject,
   deleteSeveralFilseInPublic,
+  deleteInvalidPropertyInObject,
 };
