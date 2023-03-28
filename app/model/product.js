@@ -1,3 +1,4 @@
+const { string } = require("@hapi/joi");
 const { default: mongoose } = require("mongoose");
 const { commentSchema } = require("./public.schema");
 
@@ -27,7 +28,7 @@ const productSchema = new mongoose.Schema({
       weight: "",
       height: "",
       width: "",
-      colors: [],
+      colors: { type : [string] , default : []},
       model: [],
       madeIn: "",
     },

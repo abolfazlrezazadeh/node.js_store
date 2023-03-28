@@ -18,7 +18,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -109,7 +109,7 @@ router.post(
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
  *              -   in: query
  *                  name: search
  *                  type: string
@@ -132,7 +132,7 @@ router.get("/list", productController.getListOfProducts);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
  *              -   in: path
  *                  name: id
  *                  required : true
@@ -156,7 +156,7 @@ router.get("/:id", productController.getOneProduct);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
  *              -   in: path
  *                  name: id
  *                  required : true
@@ -182,7 +182,7 @@ router.delete("/remove/:id", productController.removeProduct);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc4ODY1MjM4LCJleHAiOjE2Nzg5NTE2Mzh9.VQDqjXKbwiHnr0s979wKzg5Rfx2TM1eWGBxcivRr8Tw
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
  *              -   in: path
  *                  name: id
  *                  required : true

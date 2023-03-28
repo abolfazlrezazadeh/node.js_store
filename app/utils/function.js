@@ -74,27 +74,13 @@ async function verfiyRefreshToken(token) {
 async function deleteFileInPublic(fileAddress) {
   if (fileAddress) {
     const pathFile = path.join(__dirname, "..", "..", "public", fileAddress);
-    fs.unlinkSync(pathFile)
-  }
-}
-function deleteFolderRecursive(fileAddress){
-  const pathFile = path.join(__dirname, "..", "..", "public", fileAddress );
-  if( fs.existsSync(pathFile) ) {
-    fs.readdirSync(pathFile).forEach(function(file) {
-      var curPath = pathFile + "/" + file;
-        if(fs.lstatSync(curPath).isDirectory()) { // recurse
-            deleteFolderRecursive(curPath);
-        } else { // delete file
-            fs.unlinkSync(curPath);
-        }
-    });
-    fs.rmdirSync(pathFile);
+    fs.unlinkSync(pathFile);
   }
 }
 function quantificationOfFeauters(body) {
-  const {height, width, length, weight,colors} = body;
+  const { height, width, length, weight, colors } = body;
   let feature = {};
-  if(!feature.colors) feature.colors = [];
+  if (!feature.colors) feature.colors = [];
   feature.colors = colors;
   if (!height) feature.height = 0;
   else feature.height = height;
@@ -108,7 +94,7 @@ function quantificationOfFeauters(body) {
 }
 function quantificationOfType(body) {
   let type;
-  const {height, width, length, weight} = body
+  const { height, width, length, weight } = body;
   if (height || width || length || weight) {
     type = "physical";
   } else {
@@ -117,17 +103,30 @@ function quantificationOfType(body) {
 
   return type;
 }
-function listOfImagesFromRequest(files, fileUploadPath, productBody) {
+function listOfImagesFromRequest(files, fileUploadPath, productBody /*req*/) {
   if (files?.length > 0) {
-    return files
+  return files
       .map((file) => path.join(fileUploadPath, productBody.fileName))
       .map((item) => item.replace(/\\/g, "/"));
+    // req.body.image = aks;
+    // return aks;
   } else {
     return [];
   }
 }
 function copyObject(object) {
   return JSON.parse(JSON.stringify(object));
+}
+async function deleteSeveralFilseInPublic(files, callback) {
+  try {
+    files
+      .map((image) => path.join(__dirname, "..", "..", "public", image))
+      .forEach((path) => fs.existsSync(path) && fs.unlinkSync(path));
+    // success code here
+  } catch (err) {
+    // error handling here
+    console.error(err);
+  }
 }
 
 module.exports = {
@@ -140,5 +139,5 @@ module.exports = {
   quantificationOfType,
   listOfImagesFromRequest,
   copyObject,
-  deleteFolderRecursive
+  deleteSeveralFilseInPublic,
 };

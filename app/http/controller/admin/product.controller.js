@@ -8,7 +8,7 @@ const {
   quantificationOfType,
   listOfImagesFromRequest,
   copyObject,
-  deleteFolderRecursive,
+  deleteSeveralFilseInPublic,
 } = require("../../../utils/function");
 const { createProductSchema } = require("../../validator/admin/product.schema");
 const { IdValidator } = require("../../validator/public.validator");
@@ -17,8 +17,11 @@ const controller = require("../controller");
 class productController extends controller {
   async addProduct(req, res, next) {
     try {
-      req.body.image = req.body.fileUploadPath;
-      console.log(req.body.image);
+      const images = listOfImagesFromRequest(
+        req?.files || [],
+        req.body.fileUploadPath,
+        req.body
+      );
       const productBody = await createProductSchema.validateAsync(req.body);
       const {
         title,
@@ -31,12 +34,6 @@ class productController extends controller {
         disCount,
       } = productBody;
       const supplier = req.user._id;
-      const images = listOfImagesFromRequest(
-        req?.files || [],
-        req.body.fileUploadPath,
-        productBody
-      );
-      // req.body.image = copyObject(images);
       let feature = quantificationOfFeauters(req.body);
       let type = quantificationOfType(req.body);
       await productModel.create({
@@ -60,7 +57,14 @@ class productController extends controller {
         },
       });
     } catch (error) {
-      deleteFolderRecursive(req.body.image);
+      deleteFileInPublic(req.body.image)
+      // deleteSeveralFilseInPublic(req.body.image, function(err) {
+      //   if (err) {
+      //     console.log(err);
+      //   } else {
+      //     console.log('all files removed');
+      //   }
+      // });
       console.log(error);
       next(error);
     }
@@ -92,10 +96,33 @@ class productController extends controller {
 
   async updateProduct(req, res, next) {
     try {
+      const {id}= req.params ;
+      const product = await productModel.findOne(id);
       const data = copyObject(req.body);
       data.images = listOfImagesFromRequest(req?.files || [],req.body.fileUploadPath, data);
+      data.feature = quantificationOfFeauters(req.body);
+      let nullishData = ["", " ", "  ", "0", null, undefined, 0];
+      let blackList = ["bookmark", "disLike", "like", "comment","supplier","feature"/*, "height", "weight","length","width","colors"*/];
+      Object.keys(data).forEach((key) => {
+        if (blackList.includes(key)) delete data[key];
+        if (typeof data[key] == "string") data[key] = data[key].trim();
+        if (Array.isArray(data[key]) && data[key].length > 0) data[key] = data[key].map((item) => item.trim());
+        //if array is empty dont update that field
+        if (Array.isArray(data[key]) && data[key].length == 0) delete data[key]
+        if (nullishData.includes(data[key])) delete data[key];
+      });
+      const updateProductResult = await productModel.updateOne({_id : product._id},{$set : data});
+      if(updateProductResult.modifiedCount == 0) throw {status : httpStatus.INTERNAL_SERVER_ERROR , message : "Internal server error"}
+      return res.status(httpStatus.OK).json({
+        data : {
+          statusCode : httpStatus.OK,
+          message : "The desired product has been updated"
+        }
+      })
 
     } catch (error) {
+      deleteFileInPublic(req.body.image);
+      console.log(error);
       next(error);
     }
   }
