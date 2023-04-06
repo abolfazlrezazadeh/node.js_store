@@ -1,15 +1,15 @@
 const { default: mongoose } = require("mongoose");
-const { commentSchema } = require("./public.schema");
+const { commentSchema } = require("./public.Schema");
 
-const episodes = mongoose.schema({
+const episodes = mongoose.Schema({
   title: { type: String, required: true },
-  text: { type: string, required: true },
+  text: { type: String, required: true },
   type: { type: String, default: "free" },
-  time: { type: string, required: true },
+  time: { type: String, required: true },
 });
-const chapter = mongoose.schema({
-  title: { type: string, required: true },
-  text: { type: string, default: "" },
+const chapter = mongoose.Schema({
+  title: { type: String, required: true },
+  text: { type: String, default: "" },
   episodes: { type: [episodes], default: [] },
 });
 
