@@ -33,9 +33,11 @@ const courseSchema = new mongoose.Schema({
   },
   time: { type: String, default: "00:00:00" },
   teacher: { type: mongoose.Types.ObjectId, required: true },
-  chapters : {type : [chapter] , default : []},
-  students : {type : [mongoose.Types.ObjectId] , default : [], ref : "user"}
+  chapters: { type: [chapter], default: [] },
+  students: { type: [mongoose.Types.ObjectId], default: [], ref: "user" },
 });
+courseSchema.index({ title: "text", bio: "text", description: "text" });
+
 module.exports = {
   courseModel: mongoose.model("course", courseSchema),
 };
