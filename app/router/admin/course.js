@@ -14,7 +14,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwNzcyODYzLCJleHAiOjE2ODA4NTkyNjN9.MLBRW1JyPwkAaMYncF-sAoeT7CuNBY7NYiiLRcyvHpU
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwODU4NzcwLCJleHAiOjE2ODA5NDUxNzB9.miRHrYuEdU2ZDzABj6O9tzk8lVEHR9ceF8YGDWZ5ZXI
  *              -   in: query
  *                  name: search
  *                  type: string

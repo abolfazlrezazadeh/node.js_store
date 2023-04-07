@@ -31,6 +31,7 @@ const courseSchema = new mongoose.Schema({
     default: "free" /*cash, free , premium */,
     required: true,
   },
+  status :{type : String, default : "not started" /*not started, holding, compeleted */},
   time: { type: String, default: "00:00:00" },
   teacher: { type: mongoose.Types.ObjectId, required: true },
   chapters: { type: [chapter], default: [] },

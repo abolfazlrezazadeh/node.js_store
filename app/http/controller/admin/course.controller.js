@@ -1,23 +1,28 @@
 const { courseModel } = require("../../../model/course");
 const controller = require("../controller");
+const createError = require("http-errors");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const path = require("path");
+const { createCourseSchema } = require("../../validator/admin/course.schema");
+const { deleteFileInPublic } = require("../../../utils/function");
 
 class courseController extends controller {
   async getListOfCourses(req, res, next) {
     try {
-        const {search} = req?.query?.search || "";
-      let  courses;
+      const  search  = req?.query?.search || "";
+      let courses;
       if (search) {
-        courses = await courseModel.find({
-          $text: {
-            $search: search
-          },
-        }).sort({ _id: -1 });;
+        courses = await courseModel
+          .find({
+            $text: {
+              $search: new RegExp(search, "ig"),
+            },
+          })
+          .sort({ _id: -1 });
       } else {
-        courses = await courseModel.find({})
+        courses = await courseModel.find({});
       }
-       // sort from last to first
+      // sort from last to first
       return res.status(httpStatus.OK).json({
         statusCode: httpStatus.OK,
         courses,
@@ -26,15 +31,37 @@ class courseController extends controller {
       next(error);
     }
   }
-  async addCourse(req,res,next){
+  async addCourse(req, res, next) {
     try {
-        const {fileUploadPath, fileName} = req.body;
-        const image = path.join(fileUploadPath, fileName).replace(/\\/g, "/");
-        
-        const {title, bio, description, tags, category, price, disCount,  type} = req.body;
-        return res.status(httpStatus.CREATED).json({title, bio, description, tags, category, price, disCount,  type, image});
+      await createCourseSchema.validateAsync(req.body)
+      const { fileUploadPath, fileName } = req.body;
+      req.body.image = path.join(fileUploadPath, fileName).replace(/\\/g, "/");
+      const { title, bio, description, tags, category, price, disCount, type } = req.body;
+      if(Number(price) > 0 && type === "free") throw createError.BadRequest("for free courses can not set price")
+      const teacher = req.user._id;
+      const image = req.body.image;
+      const course = await courseModel.create({
+        title,
+        bio,
+        description,
+        tags,
+        category,
+        price,
+        disCount,
+        time: "00:00:00",
+        type,
+        image,
+        teacher,
+        status : "not started"
+      });
+      if(!course._id) throw createError.InternalServerError("Course not created")
+      return res.status(httpStatus.CREATED).json({
+        statusCode: httpStatus.CREATED,
+        message: "course created successfully",
+      });
     } catch (error) {
-        next(error)
+      deleteFileInPublic(req.body.image);
+      next(error);
     }
   }
 }
