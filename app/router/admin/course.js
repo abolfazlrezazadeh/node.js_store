@@ -3,6 +3,7 @@ const { StringToArray } = require("../../http/middleware/stringatoArray");
 const { uploadFile } = require("../../utils/multer");
 
 const router = require("express").Router();
+
 /**
  * @swagger
  *  /admin/course/list:
@@ -14,7 +15,7 @@ const router = require("express").Router();
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwODU4NzcwLCJleHAiOjE2ODA5NDUxNzB9.miRHrYuEdU2ZDzABj6O9tzk8lVEHR9ceF8YGDWZ5ZXI
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwOTgxNTk3LCJleHAiOjE2ODEwNjc5OTd9.8eSpjq770mJNrjQFHMFQ--eSm08xdnF1MIpkHeq1fHo
  *              -   in: query
  *                  name: search
  *                  type: string
@@ -40,7 +41,7 @@ router.get("/list",courseController.getListOfCourses);
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwODU4NzcwLCJleHAiOjE2ODA5NDUxNzB9.miRHrYuEdU2ZDzABj6O9tzk8lVEHR9ceF8YGDWZ5ZXI
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwOTgxNTk3LCJleHAiOjE2ODEwNjc5OTd9.8eSpjq770mJNrjQFHMFQ--eSm08xdnF1MIpkHeq1fHo
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -96,6 +97,30 @@ router.post(
     StringToArray("tags"),
     courseController.addCourse
   );
+
+ /**
+ * @swagger
+ *  /admin/course/{id}:
+ *      get:
+ *          tags: [course(adminPanel)]
+ *          summary: get a course
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwOTgxNTk3LCJleHAiOjE2ODEwNjc5OTd9.8eSpjq770mJNrjQFHMFQ--eSm08xdnF1MIpkHeq1fHo
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  description : id box
+ *          responses:
+ *               200:
+ *                  description: success
+ *               404:
+ *                  description: notFound
+ */
+router.get("/:id",courseController.getCourseById); 
 
 module.exports = {
   courseAdminApiRouter: router,

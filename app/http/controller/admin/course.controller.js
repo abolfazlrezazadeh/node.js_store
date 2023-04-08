@@ -9,7 +9,7 @@ const { deleteFileInPublic } = require("../../../utils/function");
 class courseController extends controller {
   async getListOfCourses(req, res, next) {
     try {
-      const  search  = req?.query?.search || "";
+      const search = req?.query?.search || "";
       let courses;
       if (search) {
         courses = await courseModel
@@ -33,11 +33,13 @@ class courseController extends controller {
   }
   async addCourse(req, res, next) {
     try {
-      await createCourseSchema.validateAsync(req.body)
+      await createCourseSchema.validateAsync(req.body);
       const { fileUploadPath, fileName } = req.body;
       req.body.image = path.join(fileUploadPath, fileName).replace(/\\/g, "/");
-      const { title, bio, description, tags, category, price, disCount, type } = req.body;
-      if(Number(price) > 0 && type === "free") throw createError.BadRequest("for free courses can not set price")
+      const { title, bio, description, tags, category, price, disCount, type } =
+        req.body;
+      if (Number(price) > 0 && type === "free")
+        throw createError.BadRequest("for free courses can not set price");
       const teacher = req.user._id;
       const image = req.body.image;
       const course = await courseModel.create({
@@ -52,15 +54,32 @@ class courseController extends controller {
         type,
         image,
         teacher,
-        status : "not started"
+        status: "not started",
       });
-      if(!course._id) throw createError.InternalServerError("Course not created")
+      if (!course._id)
+        throw createError.InternalServerError("Course not created");
       return res.status(httpStatus.CREATED).json({
         statusCode: httpStatus.CREATED,
         message: "course created successfully",
       });
     } catch (error) {
       deleteFileInPublic(req.body.image);
+      next(error);
+    }
+  }
+  async getCourseById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const course = await courseModel.findById({ _id: id });
+      if (!course) throw createError.NotFound("can not find the course");
+      return res.status(httpStatus.OK).json({
+        statuscode: httpStatus.OK,
+        data: {
+          course,
+        },
+      });
+    } catch (error) {
+      console.log(error);
       next(error);
     }
   }
