@@ -19,7 +19,7 @@ async function signAccessToken(userId) {
     };
     const options = {
       // 1 hour
-      expiresIn: "1d",
+      expiresIn: "10d",
     };
     jwt.sign(payload, ACCESS_TOKEN_SECRET_KEY, options, (err, token) => {
       if (err) reject(createError.InternalServerError("server error"));
