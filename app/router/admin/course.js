@@ -1,4 +1,4 @@
-const {courseController} = require("../../http/controller/admin/course.controller");
+const {courseController} = require("../../http/controller/admin/course/course.controller");
 const { StringToArray } = require("../../http/middleware/stringatoArray");
 const { uploadFile } = require("../../utils/multer");
 

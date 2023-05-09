@@ -1,7 +1,7 @@
 const path = require("path");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const createError = require("http-errors");
-const { productModel } = require("../../../model/product");
+const { productModel } = require("../../../../model/product");
 const {
   deleteFileInPublic,
   quantificationOfFeauters,
@@ -10,10 +10,10 @@ const {
   copyObject,
   deleteSeveralFilseInPublic,
   deleteInvalidPropertyInObject,
-} = require("../../../utils/function");
-const { createProductSchema } = require("../../validator/admin/product.schema");
-const { IdValidator } = require("../../validator/public.validator");
-const controller = require("../controller");
+} = require("../../../../utils/function");
+const { createProductSchema } = require("../../../validator/admin/product.schema");
+const { IdValidator } = require("../../../validator/public.validator");
+const controller = require("../../controller");
 const productBlackList = {
   BOOKMARK: "bookmark",
   DISLIKE: "disLike",

@@ -1,10 +1,10 @@
-const { courseModel } = require("../../../model/course");
-const controller = require("../controller");
+const { courseModel } = require("../../../../model/course");
+const controller = require("../../controller");
 const createError = require("http-errors");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const path = require("path");
-const { createCourseSchema } = require("../../validator/admin/course.schema");
-const { deleteFileInPublic } = require("../../../utils/function");
+const { createCourseSchema } = require("../../../validator/admin/course.schema");
+const { deleteFileInPublic } = require("../../../../utils/function");
 const { default: mongoose } = require("mongoose");
 
 class courseController extends controller {

@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const {
   categoryController,
-} = require("../../http/controller/admin/category.controller");
+} = require("../../http/controller/admin/category/category.controller");
 
 
 
