@@ -5,6 +5,7 @@ const { StatusCodes: httpStatus } = require("http-status-codes");
 const path = require("path");
 const { createCourseSchema } = require("../../validator/admin/course.schema");
 const { deleteFileInPublic } = require("../../../utils/function");
+const { default: mongoose } = require("mongoose");
 
 class courseController extends controller {
   async getListOfCourses(req, res, next) {
@@ -86,6 +87,33 @@ class courseController extends controller {
       console.log(error);
       next(error);
     }
+  }
+  async addChapter(req, res, next) {
+    try {
+      const { id, title, text } = req.body;
+      await this.findCourseById(id);
+      const saveChapter = await courseModel.updateOne(
+        { _id: id },
+        { $push: { chapters: { title, text, episodes: [] } } }
+      );
+      if(saveChapter.modifiedCount == 0) throw createError.InternalServerError("can not add Chapter");
+      return res.staus(httpStatus.CREATED).json({
+        statusCode : httpStatus.CREATED,
+        data : {
+          message : "chapter added successfully"
+        }
+      })
+
+    } catch (error) {
+      next(error);
+    }
+  }
+  async findCourseById(id) {
+    if (!mongoose.isValidObjectId(id))
+      throw createError.BadRequest("Id is not correct");
+    const course = await courseModel.findById(id);
+    if (!course) throw createError.NotFound("Course not found");
+    return course;
   }
 }
 
