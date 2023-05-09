@@ -11,7 +11,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgxMzc5NTE3LCJleHAiOjE2ODE0NjU5MTd9.2Vgz95oH3raPDwplJqcj-Jaf_a3EL9REQ-flW6eYJgE
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -96,7 +96,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgxMzc5NTE3LCJleHAiOjE2ODE0NjU5MTd9.2Vgz95oH3raPDwplJqcj-Jaf_a3EL9REQ-flW6eYJgE
  *              -   in: query
  *                  name: search
  *                  type: string
@@ -118,7 +118,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgxMzc5NTE3LCJleHAiOjE2ODE0NjU5MTd9.2Vgz95oH3raPDwplJqcj-Jaf_a3EL9REQ-flW6eYJgE
  *              -   in: path
  *                  name: id
  *                  required : true
@@ -141,7 +141,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgxMzc5NTE3LCJleHAiOjE2ODE0NjU5MTd9.2Vgz95oH3raPDwplJqcj-Jaf_a3EL9REQ-flW6eYJgE
  *              -   in: path
  *                  name: id
  *                  required : true
@@ -166,7 +166,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjc5OTg0OTgxLCJleHAiOjE2ODAwNzEzODF9.EwOKNdY_45tuP_iElgN_uFcuNa_rCsYbJOwSq2_gyW0
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgxMzc5NTE3LCJleHAiOjE2ODE0NjU5MTd9.2Vgz95oH3raPDwplJqcj-Jaf_a3EL9REQ-flW6eYJgE
  *              -   in: path
  *                  name: id
  *                  required : true

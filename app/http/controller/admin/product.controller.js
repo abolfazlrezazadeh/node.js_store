@@ -61,8 +61,8 @@ class productController extends controller {
         type,
       });
       return res.status(httpStatus.CREATED).json({
+        statusCode: httpStatus.CREATED,
         data: {
-          statusCode: httpStatus.CREATED,
           message: "product create successfully",
         },
       });
@@ -79,7 +79,6 @@ class productController extends controller {
       next(error);
     }
   }
-
   async getListOfProducts(req, res, next) {
     try {
       const search = req?.query?.search || "";
@@ -94,8 +93,8 @@ class productController extends controller {
         product = await productModel.find({});
       }
       return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
         data: {
-          statusCode: httpStatus.OK,
           product,
         },
       });
@@ -103,7 +102,6 @@ class productController extends controller {
       next(error);
     }
   }
-
   async updateProduct(req, res, next) {
     try {
       const { id } = req.params;
@@ -111,8 +109,8 @@ class productController extends controller {
       const product = await this.findProduct(id);
       if (!product)
         return res.status(httpStatus.NOT_FOUND).json({
+          statusCode: httpStatus.NOT_FOUND,
           data: {
-            statusCode: httpStatus.NOT_FOUND,
             message: "entered id is not correct or there is no product",
           },
         });
@@ -125,7 +123,7 @@ class productController extends controller {
       data.feature = quantificationOfFeauters(req.body);
       //type of blackList is array
       let blackList = Object.values(productBlackList);
-      deleteInvalidPropertyInObject(data,blackList)
+      deleteInvalidPropertyInObject(data, blackList);
       const updateProductResult = await productModel.updateOne(
         { _id: product._id },
         { $set: data }
@@ -136,8 +134,8 @@ class productController extends controller {
           message: "Internal server error",
         };
       return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
         data: {
-          statusCode: httpStatus.OK,
           message: "The desired product has been updated",
         },
       });
@@ -153,15 +151,15 @@ class productController extends controller {
       const product = await this.findProduct(id);
       if (product) {
         return res.status(httpStatus.OK).json({
+          statusCode: httpStatus.OK,
           data: {
-            statusCode: httpStatus.OK,
             product,
           },
         });
       } else {
         throw res.status(httpStatus.BAD_REQUEST).json({
+          statusCode: httpStatus.BAD_REQUEST,
           data: {
-            statusCode: httpStatus.BAD_REQUEST,
             message: createError.NotFound("no product found"),
           },
         });
@@ -177,8 +175,8 @@ class productController extends controller {
       const product = await this.findProduct(id);
       if (!product)
         return res.status(httpStatus.NOT_FOUND).json({
+          statusCode: httpStatus.NOT_FOUND,
           data: {
-            statusCode: httpStatus.NOT_FOUND,
             message: "entered id is not correct",
           },
         });
@@ -188,8 +186,8 @@ class productController extends controller {
           "desired product was not deleted"
         );
       return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
         data: {
-          statusCode: httpStatus.OK,
           message: "product deleted successfully",
         },
       });

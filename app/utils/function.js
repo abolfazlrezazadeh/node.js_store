@@ -35,7 +35,7 @@ async function signRefreshToken(userId) {
     };
     const options = {
       // 1 YEAR
-      expiresIn: "1y",
+      expiresIn: "1d",
     };
     jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, options, async (err, token) => {
       if (err) reject(createError.InternalServerError("server error"));

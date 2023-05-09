@@ -25,7 +25,9 @@ class courseController extends controller {
       // sort from last to first
       return res.status(httpStatus.OK).json({
         statusCode: httpStatus.OK,
-        courses,
+        data: {
+          courses,
+        },
       });
     } catch (error) {
       next(error);
@@ -60,7 +62,9 @@ class courseController extends controller {
         throw createError.InternalServerError("Course not created");
       return res.status(httpStatus.CREATED).json({
         statusCode: httpStatus.CREATED,
-        message: "course created successfully",
+        data: {
+          message: "course created successfully",
+        },
       });
     } catch (error) {
       deleteFileInPublic(req.body.image);

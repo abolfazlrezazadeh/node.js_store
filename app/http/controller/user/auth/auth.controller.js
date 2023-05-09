@@ -3,7 +3,7 @@ const {
   checkOtpSchema,
 } = require("../../../validator/user/auth.schema");
 const createErrors = require("http-errors");
-const {StatusCodes: httpStatus} = require("http-status-codes");
+const { StatusCodes: httpStatus } = require("http-status-codes");
 const {
   randomNumberGenerator,
   signAccessToken,
@@ -11,7 +11,7 @@ const {
   signRefreshToken,
 } = require("../../../../utils/function");
 const { userModel } = require("../../../../model/users");
-const {  roles } = require("../../../../utils/constants");
+const { roles } = require("../../../../utils/constants");
 const controller = require("../../controller");
 
 class userAuthController extends controller {
@@ -25,9 +25,11 @@ class userAuthController extends controller {
       return res.status(httpStatus.OK).send({
         data: {
           statusCode: httpStatus.OK,
-          message: "Code sent successfully",
-          code,
-          phone,
+          data: {
+            message: "Code sent successfully",
+            code,
+            phone,
+          },
         },
       });
     } catch (error) {
@@ -49,11 +51,11 @@ class userAuthController extends controller {
       if (+user.otp.expiresIn < now)
         throw createErrors.Unauthorized("The entered code has expired");
       const accessToken = await signAccessToken(user._id);
-      const refreshToken = await signRefreshToken(user._id); 
+      const refreshToken = await signRefreshToken(user._id);
       return res.json({
         data: {
           accessToken,
-          refreshToken
+          refreshToken,
         },
       });
     } catch (error) {
@@ -61,21 +63,21 @@ class userAuthController extends controller {
     }
   }
 
-  async refreshToken(req, res, next){
+  async refreshToken(req, res, next) {
     try {
-      const {refreshToken} = req.body;
+      const { refreshToken } = req.body;
       const phone = await verfiyRefreshToken(refreshToken);
-      const user = await userModel.findOne({phone});
+      const user = await userModel.findOne({ phone });
       const accessToken = await signAccessToken(user._id);
-      const newRefreshToken = await signRefreshToken(user._id); 
+      const newRefreshToken = await signRefreshToken(user._id);
       return res.json({
-        data : {
+        data: {
           accessToken,
-          refreshToken : newRefreshToken
-        }
-      })
+          refreshToken: newRefreshToken,
+        },
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
@@ -85,7 +87,7 @@ class userAuthController extends controller {
     let otp = {
       code,
       // 120.000 miliSeconds == 2 day
-      expiresIn: (new Date().getTime() + 172800000),
+      expiresIn: new Date().getTime() + 172800000,
     };
     const result = await this.checkExistUser(phone);
     if (result) {

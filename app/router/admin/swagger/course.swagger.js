@@ -19,6 +19,17 @@
  *                  description: success
  *               400:
  *                  description: unsuccessfull
+ *                  content:
+ *                      type: array
+ *                      items:
+ *                         type: object
+ *                         properties:
+ *                              _id:
+ *                                  type: string
+ *                                  example: 643024e98c18285e6140b50a
+ *                              title:
+ *                                  type: string
+ *                                  example: "title of course"
  */
 
 /**

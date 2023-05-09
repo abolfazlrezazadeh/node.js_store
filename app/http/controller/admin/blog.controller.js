@@ -30,8 +30,8 @@ class blogController extends controller {
         author,
       });
       return res.status(httpStatus.CREATED).json({
+        statusCode: httpStatus.CREATED,
         data: {
-          statusCode: httpStatus.CREATED,
           message: "the blog creat successfully",
         },
       });
@@ -65,8 +65,8 @@ class blogController extends controller {
       const updateResult = await blogModel.updateOne({ _id: id }, { $set: data });
       if(updateResult.modifiedCount == 0 ) throw createError.InternalServerError("update failed");
       return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
         data: {
-          statusCode: httpStatus.OK,
           message: "the blog update successfully",
         },
       });
@@ -84,8 +84,8 @@ class blogController extends controller {
       if (result.deletedCount == 0)
         throw createError.InternalServerError("cant delete blog");
       return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
         data: {
-          statusCode: httpStatus.OK,
           message: "blog already deleted",
         },
       });
@@ -98,8 +98,8 @@ class blogController extends controller {
       const { id } = req.params;
       const blog = await this.findBlog({ _id: id });
       return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
         data: {
-          statusCode: httpStatus.OK,
           blog,
         },
       });
@@ -142,8 +142,8 @@ class blogController extends controller {
         },
       ]);
       return res.status(httpStatus.OK).send({
+        statusCode: httpStatus.OK,
         data: {
-          statusCode: httpStatus.OK,
           blogs,
         },
       });
