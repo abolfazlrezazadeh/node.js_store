@@ -15,8 +15,10 @@ router.post(
     courseController.addCourse
   );
 
- 
-router.get("/:id",courseController.getCourseById); 
+  
+  
+  router.get("/:id",courseController.getCourseById); 
+  router.put("/add-chapter", courseController.addChapter);
 
 module.exports = {
   courseAdminApiRouter: router,

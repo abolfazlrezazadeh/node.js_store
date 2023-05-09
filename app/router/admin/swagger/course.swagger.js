@@ -9,7 +9,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwOTgxNTk3LCJleHAiOjE2ODEwNjc5OTd9.8eSpjq770mJNrjQFHMFQ--eSm08xdnF1MIpkHeq1fHo
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgzNjI1ODQ1LCJleHAiOjE2ODQ0ODk4NDV9.5dJjfClwvhcvqDLdWl78QJGbKAXV_uTNv_FjaGyP9UA
  *              -   in: query
  *                  name: search
  *                  type: string
@@ -19,17 +19,38 @@
  *                  description: success
  *               400:
  *                  description: unsuccessfull
- *                  content:
- *                      type: array
- *                      items:
- *                         type: object
- *                         properties:
- *                              _id:
- *                                  type: string
- *                                  example: 643024e98c18285e6140b50a
- *                              title:
- *                                  type: string
- *                                  example: "title of course"
+ */
+
+/**
+ * @swagger
+ *  /admin/course/add-chapter:
+ *      put:
+ *          tags: [course(adminPanel)]
+ *          summary: add new chapter for course
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgzNjI1ODQ1LCJleHAiOjE2ODQ0ODk4NDV9.5dJjfClwvhcvqDLdWl78QJGbKAXV_uTNv_FjaGyP9UA
+ *              -   in: formData
+ *                  name: id
+ *                  required: true
+ *                  type: string
+ *              -   in: formData
+ *                  name: title
+ *                  type: string
+ *                  required: true
+ *                  description : title of chapter
+ *              -   in: formData
+ *                  name: text
+ *                  type: string
+ *                  description : text of chapter
+ *          responses:
+ *               200:
+ *                  description: successfull
+ *               400:
+ *                  description: unsuccessfull
  */
 
 /**
@@ -45,7 +66,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwOTgxNTk3LCJleHAiOjE2ODEwNjc5OTd9.8eSpjq770mJNrjQFHMFQ--eSm08xdnF1MIpkHeq1fHo
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgzNjI1ODQ1LCJleHAiOjE2ODQ0ODk4NDV9.5dJjfClwvhcvqDLdWl78QJGbKAXV_uTNv_FjaGyP9UA
  *              -   in: formData
  *                  name: title
  *                  required : true
@@ -107,7 +128,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgwOTgxNTk3LCJleHAiOjE2ODEwNjc5OTd9.8eSpjq770mJNrjQFHMFQ--eSm08xdnF1MIpkHeq1fHo
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgzNjI1ODQ1LCJleHAiOjE2ODQ0ODk4NDV9.5dJjfClwvhcvqDLdWl78QJGbKAXV_uTNv_FjaGyP9UA
  *              -   in: path
  *                  name: id
  *                  type: string
@@ -118,3 +139,4 @@
  *               404:
  *                  description: notFound
  */
+
