@@ -4,6 +4,7 @@ const createError = require("http-errors");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const { default: mongoose } = require("mongoose");
 const { courseController } = require("./course.controller");
+const { deleteInvalidPropertyInObject } = require("../../../../utils/function");
 
 class chapterController extends controller {
   async addChapter(req, res, next) {
@@ -50,10 +51,10 @@ class chapterController extends controller {
         { "chapters._id": chapterId },
         {
           $pull: {
-            chapters : {
-              _id: chapterId
-            }
-           },
+            chapters: {
+              _id: chapterId,
+            },
+          },
         }
       );
       if (removeChapter.modifiedCount == 0)
@@ -61,7 +62,34 @@ class chapterController extends controller {
       return res.status(httpStatus.OK).json({
         statusCode: httpStatus.OK,
         data: {
-          message : "chapter successfully deleted",
+          message: "chapter successfully deleted",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateChapterById(req, res, next) {
+    try {
+      const { chapterId } = req.params;
+      //check chapter exist
+      await getOneChapterOfCourse(chapterId);
+      const data = req.body;
+      deleteInvalidPropertyInObject(req.body, [""]);
+      const updateResult = await courseModel.updateOne(
+        { "chapters._id": chapterId },
+        {
+          $set: {
+            "chapters.$": data,
+          },
+        }
+      );
+      if (updateResult.modifiedCount == 0)
+        throw createError.InternalServerError("couldn't update the chapter");
+      return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
+        data: {
+          message: "chapter successfully updated",
         },
       });
     } catch (error) {
