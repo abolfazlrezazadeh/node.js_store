@@ -9,6 +9,8 @@ router.get("/list/:courseId", chapterController.listOfChapters);
 
 router.patch("/remove/:chapterId", chapterController.removeChapterById);
 
+router.patch("/update/:chapterId", chapterController.updateChapterById);
+
 
 module.exports = {
   chapterAdminApiRoute: router,

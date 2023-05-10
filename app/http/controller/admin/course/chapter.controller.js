@@ -73,9 +73,9 @@ class chapterController extends controller {
     try {
       const { chapterId } = req.params;
       //check chapter exist
-      await getOneChapterOfCourse(chapterId);
+      await this.getOneChapterOfCourse(chapterId);
       const data = req.body;
-      deleteInvalidPropertyInObject(req.body, [""]);
+      deleteInvalidPropertyInObject(data, ["_id"]);
       const updateResult = await courseModel.updateOne(
         { "chapters._id": chapterId },
         {
