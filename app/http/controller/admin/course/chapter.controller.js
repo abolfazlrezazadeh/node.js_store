@@ -31,12 +31,37 @@ class chapterController extends controller {
   async listOfChapters(req, res, next) {
     try {
       const { courseId } = req.params;
-      console.log(courseId);
       const course = await this.findChaptersOfCourse(courseId);
       return res.status(httpStatus.OK).json({
         statusCode: httpStatus.OK,
         data: {
           course,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async removeChapterById(req, res, next) {
+    try {
+      const { chapterId } = req.params;
+      const course = await this.getOneChapterOfCourse(chapterId);
+      const removeChapter = await courseModel.updateOne(
+        { "chapters._id": chapterId },
+        {
+          $pull: {
+            chapters : {
+              _id: chapterId
+            }
+           },
+        }
+      );
+      if (removeChapter.modifiedCount == 0)
+        throw createError.InternalServerError("The chapter was not deleted");
+      return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
+        data: {
+          message : "chapter successfully deleted",
         },
       });
     } catch (error) {
@@ -51,6 +76,15 @@ class chapterController extends controller {
     if (!chapters)
       throw createError.NotFound("can not found course with this Id");
     return chapters;
+  }
+  async getOneChapterOfCourse(id) {
+    const chapter = await courseModel.findOne(
+      { "chapters._id": id },
+      { "chapters.$": 1 }
+    );
+    if (!chapter)
+      throw createError.NotFound("No chapter was found with this Id");
+    return chapter;
   }
 }
 

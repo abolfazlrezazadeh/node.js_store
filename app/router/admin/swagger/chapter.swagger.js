@@ -34,7 +34,7 @@
  *  /admin/chapter/list/{courseId}:
  *      get:
  *          tags: [chapter(adminPanel)]
- *          summary: add new chapter for course
+ *          summary: get list of chapters in course
  *          parameters:
  *              -   in: header
  *                  name: access-token
@@ -43,6 +43,28 @@
  *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgzNzA1MTA4LCJleHAiOjE2ODQ1NjkxMDh9.DcMdtgxBxUqJIpU0fo3KqQVLkaPlF-cyIvO6-XUBZlU
  *              -   in: path
  *                  name: courseId
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *               200:
+ *                  description: successfull
+ *               400:
+ *                  description: unsuccessfull
+ */
+/**
+ * @swagger
+ *  /admin/chapter/remove/{chapterId}:
+ *      patch:
+ *          tags: [chapter(adminPanel)]
+ *          summary: aremove a chapter from course
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjgzNzA1MTA4LCJleHAiOjE2ODQ1NjkxMDh9.DcMdtgxBxUqJIpU0fo3KqQVLkaPlF-cyIvO6-XUBZlU
+ *              -   in: path
+ *                  name: chapterId
  *                  required: true
  *                  type: string
  *          responses:
