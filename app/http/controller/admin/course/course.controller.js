@@ -3,7 +3,9 @@ const controller = require("../../controller");
 const createError = require("http-errors");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const path = require("path");
-const { createCourseSchema } = require("../../../validator/admin/course.schema");
+const {
+  createCourseSchema,
+} = require("../../../validator/admin/course.schema");
 const { deleteFileInPublic } = require("../../../../utils/function");
 const { default: mongoose } = require("mongoose");
 
@@ -19,9 +21,25 @@ class courseController extends controller {
               $search: new RegExp(search, "ig"),
             },
           })
+          .populate([
+            { path: "category", select: { title : 1 } },
+            {
+              path: "teacher",
+              select: { first_name: 1, last_name: 1, phone: 1, email: 1, },
+            },
+          ])
           .sort({ _id: -1 });
       } else {
-        courses = await courseModel.find({});
+        courses = await courseModel
+          .find({})
+          .populate([
+            { path: "category", select: { title : 1 } },
+            {
+              path: "teacher",
+              select: { first_name: 1, last_name: 1, phone: 1, email: 1, },
+            },
+          ])
+          .sort({ _id: -1 });
       }
       // sort from last to first
       return res.status(httpStatus.OK).json({
@@ -31,6 +49,7 @@ class courseController extends controller {
         },
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -88,7 +107,6 @@ class courseController extends controller {
       next(error);
     }
   }
-
   async findCourseById(id) {
     console.log(id);
     if (!mongoose.isValidObjectId(id))

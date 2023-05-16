@@ -1,4 +1,4 @@
-const { categoryModel } = require("../../../../model/cetegory");
+const { categoryModel } = require("../../../../model/category");
 const createErrors = require("http-errors");
 const {StatusCodes: httpStatus} = require("http-status-codes");
 const controller = require("../../controller");

@@ -19,7 +19,7 @@ const courseSchema = new mongoose.Schema({
   description: { type: String, required: true },
   image: { type: String, required: true },
   tags: { type: [String], default: [] },
-  category: { type: mongoose.Types.ObjectId, ref: "category", required: true },
+  category: { type: mongoose.Types.ObjectId, ref: "category" , required: true },
   comment: { type: [commentSchema], default: [] },
   likes: { type: [mongoose.Types.ObjectId], default: [] },
   disLikes: { type: [mongoose.Types.ObjectId], default: [] },
@@ -33,7 +33,7 @@ const courseSchema = new mongoose.Schema({
   },
   status :{type : String, default : "not started" /*not started, holding, compeleted */},
   time: { type: String, default: "00:00:00" },
-  teacher: { type: mongoose.Types.ObjectId, required: true },
+  teacher: { type: mongoose.Types.ObjectId, ref: "user" , required: true },
   chapters: { type: [chapter], default: [] },
   students: { type: [mongoose.Types.ObjectId], default: [], ref: "user" },
 });
