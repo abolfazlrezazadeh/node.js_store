@@ -36,11 +36,41 @@ const createCourseSchema = joi.object({
     .error(createError.BadRequest("image extantion is not correct")),
   fileUploadPath: joi.allow(),
   // role of user
-  type: joi.string().regex(/(free|cash|premium)/i).error(createError.BadRequest("Type of course is not correct")),
-  image : joi.allow()
+  type: joi
+    .string()
+    .regex(/(free|cash|premium)/i)
+    .error(createError.BadRequest("Type of course is not correct")),
+  image: joi.allow(),
 });
 
+const createEpisodeSchema = joi.object({
+  title: joi
+    .string()
+    .min(5)
+    .error(createError.BadRequest("title is not correct")),
+  text: joi
+    .string()
+    .min(5)
+    .error(createError.BadRequest("text must be at least 5 letters")),
+  type: joi
+    .string()
+    .regex(/(unlock|lock)/i)
+    .error(createError.BadRequest("Type of episode is not correct")),
+  time: joi
+    .string()
+    .regex(/[0-9]{2}\:[0-9]{2}\:[0-9]{2}/i)
+    .error(createError.BadRequest("time of episode is not correct")), // 00:00:00
+  chapterId: joi
+    .string()
+    .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
+    .error(createError.BadRequest("ID of category is not correct")),
+  courseId: joi
+    .string()
+    .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
+    .error(createError.BadRequest("ID of course is not correct")),
+})
 
 module.exports = {
-    createCourseSchema,
+  createEpisodeSchema,
+  createCourseSchema,
 };

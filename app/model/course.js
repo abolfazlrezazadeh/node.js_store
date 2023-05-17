@@ -1,10 +1,10 @@
 const { default: mongoose } = require("mongoose");
-const { commentSchema } = require("./public.Schema");
+const { commentSchema } = require("./public.schema");
 
 const episodes = mongoose.Schema({
   title: { type: String, required: true },
   text: { type: String, required: true },
-  type: { type: String, default: "free" },
+  type: { type: String, default: "unlock" /* types: unlock / lock */ },
   time: { type: String, required: true },
 });
 const chapter = mongoose.Schema({
