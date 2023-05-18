@@ -6,6 +6,7 @@ const episodes = mongoose.Schema({
   text: { type: String, required: true },
   type: { type: String, default: "unlock" /* types: unlock / lock */ },
   time: { type: String, required: true },
+  videoAddress: { type: String, required: true },
 });
 const chapter = mongoose.Schema({
   title: { type: String, required: true },
@@ -19,7 +20,7 @@ const courseSchema = new mongoose.Schema({
   description: { type: String, required: true },
   image: { type: String, required: true },
   tags: { type: [String], default: [] },
-  category: { type: mongoose.Types.ObjectId, ref: "category" , required: true },
+  category: { type: mongoose.Types.ObjectId, ref: "category", required: true },
   comment: { type: [commentSchema], default: [] },
   likes: { type: [mongoose.Types.ObjectId], default: [] },
   disLikes: { type: [mongoose.Types.ObjectId], default: [] },
@@ -31,9 +32,12 @@ const courseSchema = new mongoose.Schema({
     default: "free" /*cash, free , premium */,
     required: true,
   },
-  status :{type : String, default : "not started" /*not started, holding, compeleted */},
+  status: {
+    type: String,
+    default: "not started" /*not started, holding, compeleted */,
+  },
   time: { type: String, default: "00:00:00" },
-  teacher: { type: mongoose.Types.ObjectId, ref: "user" , required: true },
+  teacher: { type: mongoose.Types.ObjectId, ref: "user", required: true },
   chapters: { type: [chapter], default: [] },
   students: { type: [mongoose.Types.ObjectId], default: [], ref: "user" },
 });

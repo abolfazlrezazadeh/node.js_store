@@ -56,10 +56,6 @@ const createEpisodeSchema = joi.object({
     .string()
     .regex(/(unlock|lock)/i)
     .error(createError.BadRequest("Type of episode is not correct")),
-  time: joi
-    .string()
-    .regex(/[0-9]{2}\:[0-9]{2}\:[0-9]{2}/i)
-    .error(createError.BadRequest("time of episode is not correct")), // 00:00:00
   chapterId: joi
     .string()
     .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
@@ -68,6 +64,11 @@ const createEpisodeSchema = joi.object({
     .string()
     .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
     .error(createError.BadRequest("ID of course is not correct")),
+    fileName: joi
+    .string()
+    .regex(/(\.mp4|\.avi|\.mkv|\.mpeg|\.mov)$/)
+    .error(createError.BadRequest("video extantion is not correct")),
+  fileUploadPath: joi.allow(),
 })
 
 module.exports = {

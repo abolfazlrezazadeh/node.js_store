@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
       req.body.fileName = fileName;
       return cb(null, fileName);
     }
-    cb(null,null);
+    cb(null, null);
   },
 });
 function fileFilter(req, file, cb) {
@@ -50,12 +50,27 @@ function fileFilter(req, file, cb) {
   }
   return cb(createError.BadRequest("The picture sent is not correct"));
 }
+function videoFilter(req, file, cb) {
+  const ext = path.extname(file.originalname);
+  const mimtypes = [".mp4", ".avi", ".mkv", ".mov", ".mpeg"];
+  if (mimtypes.includes(ext)) {
+    return cb(null, true);
+  }
+  return cb(createError.BadRequest("video format is not correct"));
+}
 const uploadFile = multer({
   storage,
+  fileFilter,
   limits: { fileSize: 50 * 1000 * 1000 },
   //50mb max file size
-  fileFilter,
+});
+const uploadVideo = multer({
+  storage,
+  videoFilter,
+  limits: { fileSize: 300 * 1000 * 1000 },
+  //300mb max file size
 });
 module.exports = {
   uploadFile,
+  uploadVideo
 };

@@ -29,11 +29,10 @@
  *                  required : true
  *                  type: string
  *              -   in: formData
- *                  name: time
+ *                  name: video
  *                  required : true
- *                  example : HH:MM:SS
  *                  value: 00:05:21
- *                  type: string
+ *                  type: file
  *              -   in: formData
  *                  name: type
  *                  description: lock / unlock 
