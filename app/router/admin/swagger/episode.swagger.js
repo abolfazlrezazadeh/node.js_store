@@ -11,7 +11,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0MjIyMzY0LCJleHAiOjE2ODUwODYzNjR9.s4-RtizTqKILVkW-Mgpa4ARfk9Iz_yQmnYWjE3naD-M
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
  *              -   in: formData
  *                  name: courseId
  *                  required : true
@@ -45,4 +45,27 @@
  *                  description: created
  *               400:
  *                  description: failed
+ */
+
+/**
+ * @swagger
+ *  /admin/episode/remove/{episodeId}:
+ *      delete:
+ *          tags: [episode(adminPanel)]
+ *          summary: remove a episodeof chapter
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
+ *              -   in: path
+ *                  name: episodeId
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *               200:
+ *                  description: successfull
+ *               400:
+ *                  description: unsuccessfull
  */

@@ -9,7 +9,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0MjIyMzY0LCJleHAiOjE2ODUwODYzNjR9.s4-RtizTqKILVkW-Mgpa4ARfk9Iz_yQmnYWjE3naD-M
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
  *              -   in: formData
  *                  name: id
  *                  required: true
@@ -29,6 +29,7 @@
  *               400:
  *                  description: unsuccessfull
  */
+
 /**
  * @swagger
  *  /admin/chapter/list/{courseId}:
@@ -40,7 +41,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0MjIyMzY0LCJleHAiOjE2ODUwODYzNjR9.s4-RtizTqKILVkW-Mgpa4ARfk9Iz_yQmnYWjE3naD-M
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
  *              -   in: path
  *                  name: courseId
  *                  required: true
@@ -51,6 +52,7 @@
  *               400:
  *                  description: unsuccessfull
  */
+
 /**
  * @swagger
  *  /admin/chapter/remove/{chapterId}:
@@ -62,7 +64,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0MjIyMzY0LCJleHAiOjE2ODUwODYzNjR9.s4-RtizTqKILVkW-Mgpa4ARfk9Iz_yQmnYWjE3naD-M
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
  *              -   in: path
  *                  name: chapterId
  *                  required: true
@@ -73,6 +75,7 @@
  *               400:
  *                  description: unsuccessfull
  */
+
 /**
  * @swagger
  *  /admin/chapter/update/{chapterId}:
@@ -84,7 +87,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0MjIyMzY0LCJleHAiOjE2ODUwODYzNjR9.s4-RtizTqKILVkW-Mgpa4ARfk9Iz_yQmnYWjE3naD-M
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
  *              -   in: path
  *                  name: chapterId
  *                  required: true

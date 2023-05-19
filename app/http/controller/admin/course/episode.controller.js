@@ -8,6 +8,7 @@ const { getTime } = require("../../../../utils/function");
 const { courseModel } = require("../../../../model/course");
 const createError = require("http-errors");
 const { StatusCodes: httpStatus } = require("http-status-codes");
+const { IdValidator } = require("../../../validator/public.validator");
 
 class episodeController extends controller {
   async addNewEpisode(req, res, next) {
@@ -46,18 +47,51 @@ class episodeController extends controller {
         }
       );
       if (createEpisodeResult.modifiedCount == 0)
-        throw createError.InternalServerError(
-          "adding episode is failed"
-        );
+        throw createError.InternalServerError("adding episode is failed");
       return res.status(httpStatus.OK).json({
-        StatusCodes : httpStatus.OK,
-        data : {
-            message : "adding episde is successfull"
-        }
+        StatusCodes: httpStatus.OK,
+        data: {
+          message: "adding episde is successfull",
+        },
       });
     } catch (error) {
       next(error);
     }
+  }
+  async removeEpisodeById(req, res, next) {
+    try {
+      const {id: episodeId } = await IdValidator.validateAsync({id : req.params.episodeId});
+      // await this.getOneEpisodeInChapter(episodeId);
+      const removeEpisodeById = await courseModel.updateOne(
+        { "chapters.episodes._id": episodeId },
+        {
+          $pull: {
+            "chapters.$.episodes": {
+              _id: episodeId,
+            },
+          },
+        }
+      );
+      if (removeEpisodeById.modifiedCount == 0)
+        throw createError.InternalServerError("deleting episode is failed");
+      return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
+        data: {
+          message: "deleting episode id successfully",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getOneEpisodeInChapter(id) {
+    const chapter = await courseModel.findOne(
+      { "episodes._id": id },
+      { "episodes.$": 1 }
+    );
+    if (!chapter)
+      throw createError.NotFound("No episode was found with this Id");
+    return chapter;
   }
 }
 
