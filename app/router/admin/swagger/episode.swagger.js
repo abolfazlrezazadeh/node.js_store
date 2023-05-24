@@ -9,9 +9,8 @@
  *          parameters:
  *              -   in: header
  *                  name: access-token
- *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0OTE0Mzk3LCJleHAiOjE2ODU3NzgzOTd9.wSBlHMmbGHMdfH2zMGPK7AIkpZgEvQWu7lOlgBSbG2w
  *              -   in: formData
  *                  name: courseId
  *                  required : true
@@ -58,7 +57,7 @@
  *                  name: access-token
  *                  required : true
  *                  type: string
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0NDgxNDE1LCJleHAiOjE2ODUzNDU0MTV9.9wFuKyfW7lbEEBzW-sBM_GfvdavXrqu9ogcFnBIvw3s
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0OTE0Mzk3LCJleHAiOjE2ODU3NzgzOTd9.wSBlHMmbGHMdfH2zMGPK7AIkpZgEvQWu7lOlgBSbG2w
  *              -   in: path
  *                  name: episodeId
  *                  required: true
@@ -68,4 +67,45 @@
  *                  description: successfull
  *               400:
  *                  description: unsuccessfull
+ */
+
+/**
+ * @swagger
+ *  /admin/episode/update/{episodeId}:
+ *      patch:
+ *          tags: [episode(adminPanel)]
+ *          summary: adit episode of chapter
+ *          consumes:
+ *              -   multipart/form-data
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg0OTE0Mzk3LCJleHAiOjE2ODU3NzgzOTd9.wSBlHMmbGHMdfH2zMGPK7AIkpZgEvQWu7lOlgBSbG2w
+ *              -   in: path
+ *                  name: episodeId
+ *                  required : true
+ *                  type: string
+ *              -   in: formData
+ *                  name: title
+ *                  type: string
+ *              -   in: formData
+ *                  name: text
+ *                  type: string
+ *              -   in: formData
+ *                  name: video
+ *                  type: file
+ *              -   in: formData
+ *                  name: type
+ *                  description: lock / unlock 
+ *                  type: string
+ *                  enum: 
+ *                      -   lock
+ *                      -   unlock
+ *          responses:
+ *               201:
+ *                  description: created
+ *               400:
+ *                  description: failed
  */

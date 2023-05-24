@@ -7,6 +7,8 @@ router.post("/add",  uploadVideo.single("video"), episodeController.addNewEpisod
 
 router.delete("/remove/:episodeId",  episodeController.removeEpisodeById);
 
+router.patch("/update/:episodeId",  episodeController.updateEpisode);
+
 module.exports = {
     episodeAdminApiRoute : router
 }
