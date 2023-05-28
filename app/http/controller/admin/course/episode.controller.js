@@ -7,6 +7,7 @@ const path = require("path");
 const {
   getTime,
   deleteInvalidPropertyInObject,
+  copyObject,
 } = require("../../../../utils/function");
 const { courseModel } = require("../../../../model/course");
 const createError = require("http-errors");
@@ -66,7 +67,7 @@ class episodeController extends controller {
       const { id: episodeId } = await IdValidator.validateAsync({
         id: req.params.episodeId,
       });
-      // await this.getOneEpisodeInChapter(episodeId);
+      await this.getOneEpisodeInChapter(episodeId);
       const removeEpisodeById = await courseModel.updateOne(
         { "chapters.episodes._id": episodeId },
         {
@@ -91,35 +92,39 @@ class episodeController extends controller {
   }
   async updateEpisode(req, res, next) {
     try {
-      const { id: episodeId } = await IdValidator.validateAsync({
-        id: req.params.episodeId,
-      });
+      const { episodeId } = req.params;
+      const episode = await this.getOneEpisodeInChapter(episodeId);
       let blackListFields = ["._id"];
       const { fileUploadPath, fileName } = req.body;
       if (fileUploadPath && fileName) {
         const fileAddress = path.join(fileUploadPath, fileName);
         req.body.videoAddress = fileAddress.replace(/\\/g, "/");
-        const videoUrl = `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${videoAddress}`;
+        const videoUrl = `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${req.body.videoAddress}`;
         //package for get video time in second
         const second = await getVideoDurationInSeconds(videoUrl);
         //get time return seconds in 00:00:00 format
         req.body.time = getTime(second);
+        blackListFields.push("fileName");
+        blackListFields.push("fileUploadPath");
       } else {
         blackListFields.push("time");
         blackListFields.push("videoAddress");
       }
       const data = req.body;
-      console.log(data);
       deleteInvalidPropertyInObject(data, blackListFields);
+      const newEpisode = {
+        ...episode,
+        ...data,
+      };
       const createEpisodeResult = await courseModel.updateOne(
         { "chapters.episodes._id": episodeId },
         {
           $set: {
-            "chapters.$.episodes": data,
+            "chapters.$.episodes": newEpisode,
           },
         }
       );
-      if (createEpisodeResult.modifiedCount == 0)
+      if (!createEpisodeResult.modifiedCount)
         throw createError.InternalServerError("updating episode is failed");
       return res.status(httpStatus.OK).json({
         StatusCodes: httpStatus.OK,
@@ -128,17 +133,21 @@ class episodeController extends controller {
         },
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
-  async getOneEpisodeInChapter(id) {
-    const chapter = await courseModel.findOne(
-      { "episodes._id": id },
-      { "episodes.$": 1 }
+  async getOneEpisodeInChapter(episodeId) {
+    const course = await courseModel.findOne(
+      { "chapters.episodes._id": episodeId },
+      { "chapters.episodes": 1 }
     );
-    if (!chapter)
+    if (!course)
       throw createError.NotFound("No episode was found with this Id");
-    return chapter;
+    const episode = await course?.chapters?.[0]?.episodes?.[0];
+    if (!episode)
+      throw createError.NotFound("No episodes was found with this Id");
+    return copyObject(episode);
   }
 }
 
