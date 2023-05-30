@@ -14,35 +14,49 @@ const chapter = mongoose.Schema({
   episodes: { type: [episodes], default: [] },
 });
 
-const courseSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  bio: { type: String, required: true },
-  description: { type: String, required: true },
-  image: { type: String, required: true },
-  tags: { type: [String], default: [] },
-  category: { type: mongoose.Types.ObjectId, ref: "category", required: true },
-  comment: { type: [commentSchema], default: [] },
-  likes: { type: [mongoose.Types.ObjectId], default: [] },
-  disLikes: { type: [mongoose.Types.ObjectId], default: [] },
-  bookmark: { type: [mongoose.Types.ObjectId], default: [] },
-  price: { type: Number, required: true },
-  disCount: { type: Number, default: 0 },
-  type: {
-    type: String,
-    default: "free" /*cash, free , premium */,
-    required: true,
+const courseSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    bio: { type: String, required: true },
+    description: { type: String, required: true },
+    image: { type: String, required: true },
+    tags: { type: [String], default: [] },
+    category: {
+      type: mongoose.Types.ObjectId,
+      ref: "category",
+      required: true,
+    },
+    comment: { type: [commentSchema], default: [] },
+    likes: { type: [mongoose.Types.ObjectId], default: [] },
+    disLikes: { type: [mongoose.Types.ObjectId], default: [] },
+    bookmark: { type: [mongoose.Types.ObjectId], default: [] },
+    price: { type: Number, required: true },
+    disCount: { type: Number, default: 0 },
+    type: {
+      type: String,
+      default: "free" /*cash, free , premium */,
+      required: true,
+    },
+    status: {
+      type: String,
+      default: "not started" /*not started, holding, compeleted */,
+    },
+    time: { type: String, default: "00:00:00" },
+    teacher: { type: mongoose.Types.ObjectId, ref: "user", required: true },
+    chapters: { type: [chapter], default: [] },
+    students: { type: [mongoose.Types.ObjectId], default: [], ref: "user" },
   },
-  status: {
-    type: String,
-    default: "not started" /*not started, holding, compeleted */,
-  },
-  time: { type: String, default: "00:00:00" },
-  teacher: { type: mongoose.Types.ObjectId, ref: "user", required: true },
-  chapters: { type: [chapter], default: [] },
-  students: { type: [mongoose.Types.ObjectId], default: [], ref: "user" },
-});
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  }
+);
 courseSchema.index({ title: "text", bio: "text", description: "text" });
 
+courseSchema.virtual("imageURL").get(function () {
+  return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.image}`;
+});
 module.exports = {
   courseModel: mongoose.model("course", courseSchema),
 };
