@@ -6,8 +6,14 @@ const path = require("path");
 const {
   createCourseSchema,
 } = require("../../../validator/admin/course.schema");
-const { deleteFileInPublic } = require("../../../../utils/function");
+const {
+  deleteFileInPublic,
+  deleteInvalidPropertyInObject,
+  copyObject,
+} = require("../../../../utils/function");
 const { default: mongoose } = require("mongoose");
+const { isValidObjectId } = require("mongoose");
+const { IdValidator } = require("../../../validator/public.validator");
 
 class courseController extends controller {
   async getListOfCourses(req, res, next) {
@@ -22,10 +28,10 @@ class courseController extends controller {
             },
           })
           .populate([
-            { path: "category", select: { title : 1 } },
+            { path: "category", select: { title: 1 } },
             {
               path: "teacher",
-              select: { first_name: 1, last_name: 1, phone: 1, email: 1, },
+              select: { first_name: 1, last_name: 1, phone: 1, email: 1 },
             },
           ])
           .sort({ _id: -1 });
@@ -33,10 +39,10 @@ class courseController extends controller {
         courses = await courseModel
           .find({})
           .populate([
-            { path: "category", select: { title : 1 } },
+            { path: "category", select: { title: 1 } },
             {
               path: "teacher",
-              select: { first_name: 1, last_name: 1, phone: 1, email: 1, },
+              select: { first_name: 1, last_name: 1, phone: 1, email: 1 },
             },
           ])
           .sort({ _id: -1 });
@@ -79,7 +85,7 @@ class courseController extends controller {
         status: "not started",
       });
       if (!course._id)
-        throw createError.InternalServerError("Course not created");
+        throw createError.InternalServerError("creating course is failed");
       return res.status(httpStatus.CREATED).json({
         statusCode: httpStatus.CREATED,
         data: {
@@ -107,8 +113,48 @@ class courseController extends controller {
       next(error);
     }
   }
+  async updateCourse(req, res, next) {
+    try {
+      const { courseId } = req.params;
+      const course = await this.findCourseById(courseId);
+      const data = copyObject(req.body);
+      const { fileUploadPath, fileName } = req.body;
+      let blackListFields = [
+        "chapters",
+        "episodes",
+        "students",
+        "time",
+        "bookmark",
+        "likes",
+        "disLikes",
+        "comment",
+        "fileUploadPath",
+        "fileName",
+      ];
+      deleteInvalidPropertyInObject(data, blackListFields);
+      if (req.file) {
+        data.image = path.join(fileUploadPath, fileName).replace(/\\/g, "/");
+        deleteFileInPublic(course.image);
+      }
+      const updateCourseResult = await courseModel.updateOne(
+        { _id: courseId },
+        {
+          $set: data,
+        }
+      );
+      if (!updateCourseResult.modifiedCount)
+        throw createError.InternalServerError("updating course is failed");
+      return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
+        data: {
+          message: "updating course is successfull",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
   async findCourseById(id) {
-    console.log(id);
     if (!mongoose.isValidObjectId(id))
       throw createError.BadRequest("Id is not correct");
     const course = await courseModel.findById(id);

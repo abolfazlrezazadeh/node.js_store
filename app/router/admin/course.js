@@ -14,6 +14,12 @@ router.post(
   StringToArray("tags"),
   courseController.addCourse
 );
+router.patch(
+  "/update/:courseId",
+  uploadFile.single("image"),
+  StringToArray("tags"),
+  courseController.updateCourse
+);
 
 router.get("/:id", courseController.getCourseById);
 // router.put("/add-chapter", courseController.addChapter);

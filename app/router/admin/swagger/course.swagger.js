@@ -7,7 +7,6 @@
  *          parameters:
  *              -   in: header
  *                  name: access-token
- *                  required : true
  *                  type: string
  *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg1MjU3NzUyLCJleHAiOjE2ODYxMjE3NTJ9.AnHuinUN9pr8KbvLQ_9LxztGKSbU_0Yp03_V1j-Mvl0
  *              -   in: query
@@ -32,7 +31,6 @@
  *          parameters:
  *              -   in: header
  *                  name: access-token
- *                  required : true
  *                  type: string
  *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg1MjU3NzUyLCJleHAiOjE2ODYxMjE3NTJ9.AnHuinUN9pr8KbvLQ_9LxztGKSbU_0Yp03_V1j-Mvl0
  *              -   in: formData
@@ -108,3 +106,62 @@
  *                  description: notFound
  */
 
+/**
+ * @swagger
+ *  /admin/course/update/{courseId}:
+ *      patch:
+ *          tags: [course(adminPanel)]
+ *          summary: update course by id
+ *          consumes:
+ *              -   multipart/form-data
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  required : true
+ *                  type: string
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6OTM5MjMyNzQ5MywiaWF0IjoxNjg1MjU3NzUyLCJleHAiOjE2ODYxMjE3NTJ9.AnHuinUN9pr8KbvLQ_9LxztGKSbU_0Yp03_V1j-Mvl0
+ *              -   in: path
+ *                  name: courseId
+ *                  required : true
+ *                  type: string
+ *              -   in: formData
+ *                  name: title
+ *                  type: string
+ *              -   in: formData
+ *                  name: bio
+ *                  type: string
+ *              -   in: formData
+ *                  name: description
+ *                  type: string
+ *              -   in: formData
+ *                  name: tags
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *              -   in: formData
+ *                  name: category
+ *                  type: string
+ *              -   in: formData
+ *                  name: price
+ *                  type: string
+ *              -   in: formData
+ *                  name: disCount
+ *                  type: string
+ *              -   in: formData
+ *                  name: image
+ *                  type: file
+ *                  format: binary
+ *              -   in: formData
+ *                  name: type
+ *                  description: cash / free / premium
+ *                  type: string
+ *                  enum: 
+ *                      -   free
+ *                      -   cash
+ *                      -   premium
+ *          responses:
+ *               201:
+ *                  description: created
+ *               400:
+ *                  description: failed
+ */
