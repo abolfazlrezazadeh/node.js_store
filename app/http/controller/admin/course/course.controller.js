@@ -10,6 +10,7 @@ const {
   deleteFileInPublic,
   deleteInvalidPropertyInObject,
   copyObject,
+  gettalTimeOfCourses,
 } = require("../../../../utils/function");
 const { default: mongoose } = require("mongoose");
 const { isValidObjectId } = require("mongoose");
@@ -102,6 +103,7 @@ class courseController extends controller {
       const { id } = req.params;
       const course = await courseModel.findById({ _id: id });
       if (!course) throw createError.NotFound("can not find the course");
+      course.time = gettalTimeOfCourses(course.chapters);
       return res.status(httpStatus.OK).json({
         statuscode: httpStatus.OK,
         data: {

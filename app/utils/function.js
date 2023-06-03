@@ -142,19 +142,49 @@ function deleteInvalidPropertyInObject(data = {}, blackList = []) {
 function getTime(time) {
   let total = Math.round(time) / 60;
   let [min, percentage] = String(total).split(".");
-  if(percentage == undefined) percentage = "0"
-  let sec = Math.round(((percentage.substring(0,2)) * 60) / 100);
+  if (percentage == undefined) percentage = "0";
+  let sec = Math.round((percentage.substring(0, 2) * 60) / 100);
   let hour = 0;
   if (min > 59) {
     total = min / 60;
-    [hour , percentage] = String(total).split(".")
-    if(percentage == undefined) percentage = "0"
-    min = Math.round(((percentage.substring(0,2)) * 60) / 100);
+    [hour, percentage] = String(total).split(".");
+    if (percentage == undefined) percentage = "0";
+    min = Math.round((percentage.substring(0, 2) * 60) / 100);
   }
-  if(hour < 10 ) hour = `0${hour}` ;
-  if(min < 10) min = `0${min}`
-  if(sec < 10) sec = `0${sec}`
+  if (hour < 10) hour = `0${hour}`;
+  if (min < 10) min = `0${min}`;
+  if (sec < 10) sec = `0${sec}`;
   return hour + ":" + min + ":" + sec;
+}
+function gettalTimeOfCourses(chapters = []) {
+  let time,
+    hour,
+    minute,
+    seconds = 0;
+  for (const chapter of chapters) {
+    if (Array.isArray(chapter?.episodes)) {
+      for (const episode of chapter.episodes) {
+        if (episode?.time)time = episode.time.split(":"); //00:00:00
+        else time = "00:00:00".split(":");
+        if (time.length == 3) {
+          seconds += Number(time[0]) * 3600; // convert hour to sdeconds
+          seconds += Number(time[1]) * 60; // convert min to secs
+          seconds += Number(time[2]);
+        } else if (time.length == 2) {
+          // 05:23
+          seconds += Number(time[0]) * 60; // convert min to secs
+          seconds += Number(time[1]);
+        }
+      }
+    }
+  }
+  hour = Math.floor(seconds / 3600); // convert second to hour
+  minute = Math.floor(seconds / 60) % 60; // convert sec to min
+  seconds = Math.floor(seconds % 60); // sec to sec
+  if (String(hour).length == 1) hour = `0${hour}`;
+  if (String(minute).length == 1) minute = `0${minute}`;
+  if (String(seconds).length == 1) seconds = `0${seconds}`;
+  return hour + ":" + minute + ":" + seconds;
 }
 
 module.exports = {
@@ -170,4 +200,5 @@ module.exports = {
   deleteSeveralFilseInPublic,
   deleteInvalidPropertyInObject,
   getTime,
+  gettalTimeOfCourses,
 };
