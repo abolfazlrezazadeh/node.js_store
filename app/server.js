@@ -17,7 +17,6 @@ module.exports = class Application {
     const swaggerJsDoc = require("swagger-jsdoc");
     const path = require("path");
     const cors = require("cors");
-    const bodyParser = require("body-parser");
     //morgan is logging every requests
     //dev == in developing status
     this.#app.use(morgan("dev"));

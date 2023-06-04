@@ -1,7 +1,6 @@
 const createError = require("http-errors");
 const multer = require("multer");
 const path = require("path");
-const name = "notFoundImage.png";
 const fs = require("fs");
 function createRoute(req) {
   const date = new Date();

@@ -1,4 +1,4 @@
-const path = require("path");
+
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const createError = require("http-errors");
 const { productModel } = require("../../../../model/product");
