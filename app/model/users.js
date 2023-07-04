@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema(
     first_name: { type: String },
     last_name: { type: String },
     username: { type: String, lowercase: true, unique: true },
-    phone: { type: Number, required: true },
+    phone: { type: String, required: true },
     email: { type: String, lowercase: true, unique: true },
     password: { type: String },
     courses: { type: [mongoose.Types.ObjectId], default: [], ref: "course" },
@@ -32,7 +32,12 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.index({first_name: "text", last_name : "text", phone : "text" , email: "text", username : "text"})
+userSchema.index({
+  first_name: "text",
+  last_name: "text",
+  phone: "text",
+  email: "text",
+});
 module.exports = {
   userModel: mongoose.model("user", userSchema),
 };

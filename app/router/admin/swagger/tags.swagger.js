@@ -1,8 +1,6 @@
 /**
  * @swagger
  *  tags:
- *      -   name : adminPanel
- *          description : actions of admin (add,edit,remove , ...)
  *      -   name : user(adminPanel)
  *          description : management of user
  *      -   name : course(adminPanel)
