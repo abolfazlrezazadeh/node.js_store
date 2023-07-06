@@ -3,6 +3,8 @@
  *  tags:
  *      -   name : user(adminPanel)
  *          description : management of user
+ *      -   name : RBAC(adminPanel)
+ *          description : roleBaseAccessControle System
  *      -   name : course(adminPanel)
  *          description : managment of course actions like manage episodes, chapter and courses
  *      -   name : chapter(adminPanel)
