@@ -22,7 +22,7 @@ module.exports = class Application {
     this.#app.use(morgan("dev"));
     this.#app.use(cors({ origin: true, credentials: true }));
     this.#app.use(
-      this.#express.urlencoded({ limit: "500000kb", extended: false })
+      this.#express.urlencoded({ limit: "500000kb", extended: true })
     );
     this.#app.use(this.#express.json({ limit: "500000kb" }));
     this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));

@@ -4,8 +4,6 @@
  *      post:
  *          tags: [RBAC(adminPanel)]
  *          summary: create new role
- *          consumes:
- *              -   multipart/form-data
  *          parameters:
  *              -   in: header
  *                  name: access-token
@@ -13,16 +11,11 @@
  *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MzkyMzI3NDkzIiwiaWF0IjoxNjg4NDU4MzQ3LCJleHAiOjE2ODkzMjIzNDd9.JStuGyhHdh3d9VBYsZFLZjFu2Z8ar_A_Au3hyvgwqOw
  *              -   in: formData
  *                  name: title
- *                  required : true
  *                  type: string
+ *                  required: true
  *              -   in: formData
  *                  name: premissions
- *                  description: blog / course / product
- *                  type: string
- *                  enum: 
- *                      -   blog
- *                      -   course
- *                      -   product
+ *                  type: array
  *          responses:
  *               201:
  *                  description: created
