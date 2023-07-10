@@ -60,7 +60,7 @@
 
 /**
  * @swagger
- *  /admin/role/remove/{id}:
+ *  /admin/role/remove/{field}:
  *      delete:
  *          tags: [RBAC(adminPanel)]
  *          summary: edit the role
@@ -72,9 +72,10 @@
  *                  type: string
  *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MzkyMzI3NDkzIiwiaWF0IjoxNjg4NDU4MzQ3LCJleHAiOjE2ODkzMjIzNDd9.JStuGyhHdh3d9VBYsZFLZjFu2Z8ar_A_Au3hyvgwqOw
  *              -   in: path
- *                  name: id
+ *                  name: field
  *                  type: string
  *                  required: true
+ *                  description: enter title of role or objectId of role
  *          responses:
  *               200:
  *                  description: created
