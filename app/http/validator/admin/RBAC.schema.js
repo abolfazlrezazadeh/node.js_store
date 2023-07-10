@@ -9,6 +9,11 @@ const addRoleSchema = joi.object({
     .array()
     .items(joi.string().pattern(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i))
     .error(new Error("premissions of role is not correct")),
+  description: joi
+    .string()
+    .min(0)
+    .max(100)
+    .error(new Error("description of premission is not correct")),
 });
 const addPremissiomSchema = joi.object({
   name: joi
@@ -16,7 +21,7 @@ const addPremissiomSchema = joi.object({
     .min(2)
     .max(30)
     .error(new Error("name of premission is not correct")),
-    description: joi
+  description: joi
     .string()
     .min(0)
     .max(100)
@@ -25,5 +30,5 @@ const addPremissiomSchema = joi.object({
 
 module.exports = {
   addRoleSchema,
-  addPremissiomSchema
+  addPremissiomSchema,
 };

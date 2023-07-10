@@ -4,6 +4,11 @@ const { StatusCodes: httpStatus } = require("http-status-codes");
 const { roleModel } = require("../../../../model/role");
 const { addRoleSchema } = require("../../../validator/admin/RBAC.schema");
 const { default: mongoose } = require("mongoose");
+const {
+  copyObject,
+  deleteInvalidPropertyInObject,
+} = require("../../../../utils/function");
+const { log } = require("sharp/lib/libvips");
 
 class roleController extends controller {
   async getAllRoles(req, res, next) {
@@ -22,11 +27,10 @@ class roleController extends controller {
   }
   async createRole(req, res, next) {
     try {
-      const { title, premissions } = await addRoleSchema.validateAsync(
-        req.body
-      );
+      const { title, premissions, description } =
+        await addRoleSchema.validateAsync(req.body);
       await this.findRoleWithTitle(title);
-      const role = await roleModel.create({ title, premissions });
+      const role = await roleModel.create({ title, premissions, description });
       if (!role)
         throw createError.InternalServerError("creating role is failed");
       return res.status(httpStatus.CREATED).json({
@@ -51,6 +55,31 @@ class roleController extends controller {
         statusCode: httpStatus.OK,
         data: {
           message: "Role deleted successfully",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateRolById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const role = await this.findRoleWithIdOrTitle(id);
+      const data = copyObject(req.body);
+      console.log(data);
+      deleteInvalidPropertyInObject(data, []);
+      const updateRoleResult = await roleModel.updateOne(
+        { _id: role._id },
+        {
+          $set: data,
+        }
+      );
+      if (updateRoleResult.modifiedCount == 0)
+        throw createError.InternalServerError("The role was not updated");
+      return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
+        data: {
+          message: "Role updated successfully",
         },
       });
     } catch (error) {

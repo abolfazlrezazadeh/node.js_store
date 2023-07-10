@@ -14,6 +14,9 @@
  *                  type: string
  *                  required: true
  *              -   in: formData
+ *                  name: description
+ *                  type: string
+ *              -   in: formData
  *                  name: premissions
  *                  type: array
  *          responses:
@@ -44,13 +47,11 @@
  *                  name: title
  *                  type: string
  *              -   in: formData
- *                  name: premissions
- *                  description: blog / course / product
+ *                  name: description
  *                  type: string
- *                  enum: 
- *                      -   blog
- *                      -   course
- *                      -   product
+ *              -   in: formData
+ *                  name: premissions
+ *                  type: array
  *          responses:
  *               200:
  *                  description: created
