@@ -76,6 +76,7 @@
  *              -   in: path
  *                  name: id
  *                  type: string
+ *                  description: remove by objectId
  *                  required: true
  *          responses:
  *               200:

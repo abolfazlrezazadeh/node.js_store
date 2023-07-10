@@ -18,6 +18,22 @@ class premissionController extends controller {
       next(error);
     }
   }
+  async removePremissionById(req, res, next) {
+    try {
+      const {id} = req.params;
+      const premission = await this.findpremissionWithId(id);
+      const premissionsDeleteResult = await premissionModel.deleteOne({_id : premission._id});
+      if(premissionsDeleteResult.deletedCount == 0) throw createError.InternalServerError("premission was not deleted")
+      return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
+        data: {
+          message : "premission deleted successfully",
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
   async createPremission(req, res, next) {
     try {
       const { name, description } = await addPremissiomSchema.validateAsync(req.body);
@@ -43,6 +59,12 @@ class premissionController extends controller {
       throw createError.BadRequest(
         "The desired premission has already been registered"
       );
+  }
+  async findpremissionWithId(_id) {
+    const premission = await premissionModel.findOne({ _id });
+    if (!premission)
+      throw createError.BadRequest("premission not found");
+      return premission
   }
 }
 

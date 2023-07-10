@@ -5,6 +5,7 @@ const router = require("express").Router();
 
 router.post("/add",upload.none(), premissionController.createPremission);
 router.get("/list", premissionController.getAllPremissions);
+router.delete("/remove/:id", premissionController.removePremissionById);
 
 module.exports = {
   premissionAdminApiRoute: router,
