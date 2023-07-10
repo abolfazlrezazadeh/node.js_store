@@ -26,8 +26,8 @@ class roleController extends controller {
       const role = await roleModel.create({ title, premissions });
       if (!role)
         throw createError.InternalServerError("creating role is failed");
-      return res.status(httpStatus.OK).json({
-        statusCode: httpStatus.OK,
+      return res.status(httpStatus.CREATED).json({
+        statusCode: httpStatus.CREATED,
         data: {
           message: "creating role is successfull",
         },

@@ -1,8 +1,14 @@
 const { allRoutes } = require("./router/router");
 require("dotenv").config();
+const express = require("express");
+const morgan = require("morgan");
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+const bodyParser = require("body-parser");
+const path = require("path");
+const cors = require("cors");
 module.exports = class Application {
-  #express = require("express");
-  #app = this.#express();
+  #app = express();
   constructor(PORT, DB_URL) {
     this.configDatabase(DB_URL);
     this.redis_init();
@@ -12,20 +18,14 @@ module.exports = class Application {
     this.errorHandler();
   }
   configApplication() {
-    const morgan = require("morgan");
-    const swaggerUI = require("swagger-ui-express");
-    const swaggerJsDoc = require("swagger-jsdoc");
-    const path = require("path");
-    const cors = require("cors");
+    this.#app.use(cors());
     //morgan is logging every requests
     //dev == in developing status
     this.#app.use(morgan("dev"));
-    this.#app.use(cors({ origin: true, credentials: true }));
-    this.#app.use(
-      this.#express.urlencoded({ limit: "500000kb", extended: true })
-    );
-    this.#app.use(this.#express.json({ limit: "500000kb" }));
-    this.#app.use(this.#express.static(path.join(__dirname, "..", "public")));
+    // this.#app.use(bodyParser.urlencoded({ parameterLimit: 100000, limit: '50mb', extended: false }));
+    this.#app.use(express.json());
+    this.#app.use(express.urlencoded({ parameterLimit: 100000, limit: '50mb', extended: false }));
+    this.#app.use(express.static(path.join(__dirname, "..", "public")));
     this.#app.use(
       "/api-doc",
       swaggerUI.serve,

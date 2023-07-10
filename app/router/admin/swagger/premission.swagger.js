@@ -5,24 +5,19 @@
  *          tags: [RBAC(adminPanel)]
  *          summary: create new premission
  *          consumes:
- *              -   multipart/form-data
+ *              -   application/x-www-form-urlencoded
  *          parameters:
  *              -   in: header
  *                  name: access-token
  *                  type: string
  *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjA5MzkyMzI3NDkzIiwiaWF0IjoxNjg4NDU4MzQ3LCJleHAiOjE2ODkzMjIzNDd9.JStuGyhHdh3d9VBYsZFLZjFu2Z8ar_A_Au3hyvgwqOw
  *              -   in: formData
- *                  name: title
+ *                  name: name
  *                  required : true
  *                  type: string
  *              -   in: formData
- *                  name: premissions
- *                  description: blog / course / product
+ *                  name: description
  *                  type: string
- *                  enum: 
- *                      -   blog
- *                      -   course
- *                      -   product
  *          responses:
  *               201:
  *                  description: created
