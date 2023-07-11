@@ -3,6 +3,7 @@ const createError = require("http-errors");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const controller = require("../../controller");
 const { addPremissiomSchema } = require("../../../validator/admin/RBAC.schema");
+const { deleteInvalidPropertyInObject, copyObject } = require("../../../../utils/function");
 
 class premissionController extends controller {
   async getAllPremissions(req, res, next) {
@@ -50,6 +51,31 @@ class premissionController extends controller {
       });
     } catch (error) {
       console.log(error);
+      next(error);
+    }
+  }
+  async updatePremissionById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const premission = await this.findpremissionWithId(id);
+      const data = copyObject(req.body);
+      console.log(data);
+      deleteInvalidPropertyInObject(data, []);
+      const updateRoleResult = await premissionModel.updateOne(
+        { _id: premission._id },
+        {
+          $set: data,
+        }
+      );
+      if (updateRoleResult.modifiedCount == 0)
+        throw createError.InternalServerError("The premission was not updated");
+      return res.status(httpStatus.OK).json({
+        statusCode: httpStatus.OK,
+        data: {
+          message: "premission updated successfully",
+        },
+      });
+    } catch (error) {
       next(error);
     }
   }

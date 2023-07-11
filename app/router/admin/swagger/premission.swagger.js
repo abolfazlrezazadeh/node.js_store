@@ -43,16 +43,11 @@
  *                  type: string
  *                  required: true
  *              -   in: formData
- *                  name: title
+ *                  name: name
  *                  type: string
  *              -   in: formData
- *                  name: premissions
- *                  description: blog / course / product
+ *                  name: description
  *                  type: string
- *                  enum: 
- *                      -   blog
- *                      -   course
- *                      -   product
  *          responses:
  *               200:
  *                  description: created
