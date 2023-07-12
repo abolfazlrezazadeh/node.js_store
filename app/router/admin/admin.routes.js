@@ -17,7 +17,7 @@ router.use("/product", checkPremission([PERMISSIONS.CONTENT_MANAGER]), productAd
 router.use("/course", checkPremission([PERMISSIONS.TEACHER]), courseAdminApiRouter);
 router.use("/chapter", checkPremission([PERMISSIONS.TEACHER]), chapterAdminApiRoute);
 router.use("/episode", checkPremission([PERMISSIONS.TEACHER]), episodeAdminApiRoute);
-router.use("/user", checkPremission([PERMISSIONS.USER]), userAdminApiRouter);
+router.use("/user", userAdminApiRouter);
 router.use("/role", checkPremission([PERMISSIONS.ADMIN]), roleAdminApiRoute);
 router.use("/premission", checkPremission([PERMISSIONS.ADMIN]), premissionAdminApiRoute);
 

@@ -16,8 +16,6 @@ function checkPremission(requiredPremissions = []) {
       const hasPremission = allPremissions.every((premission) => {
         return userPremissions.includes(premission);
       });
-      console.log(allPremissions + " 11");
-      console.log(userPremissions);
       if (userPremissions.includes(PERMISSIONS.ALL)) return next();
       if (allPremissions.length == 0 || hasPremission) return next();
       throw createHttpError.Forbidden("you cant access this part of site");

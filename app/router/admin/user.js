@@ -8,6 +8,8 @@ router.get("/list", checkPremission([PERMISSIONS.ADMIN]), userController.getAllU
 
 router.patch("/update-profile", userController.updateUser);
 
+router.get("/profile",checkPremission([]), userController.userProfile);
+
 module.exports = {
     userAdminApiRouter : router,
 }
