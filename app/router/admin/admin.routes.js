@@ -11,15 +11,15 @@ const { productAdminApiRoute } = require("./product");
 const { roleAdminApiRoute } = require("./role");
 const { userAdminApiRouter } = require("./user");
 
-router.use("/course",checkPremission([PERMISSIONS.COURSES]), courseAdminApiRouter);
-router.use("/category",checkPremission([PERMISSIONS.CATEGORY]), categoryAdminApiRoute);
-router.use("/blogs",checkPremission([PERMISSIONS.BLOGS]), blogAdminApiRoute);
-router.use("/product",checkPremission([PERMISSIONS.PRODUCTS]), productAdminApiRoute);
-router.use("/chapter", checkPremission([PERMISSIONS.CHAPTERS]),chapterAdminApiRoute);
-router.use("/episode",checkPremission([PERMISSIONS.EPISODES]), episodeAdminApiRoute);
-router.use("/user",checkPremission([PERMISSIONS.USER]), userAdminApiRouter);
-router.use("/role",checkPremission([PERMISSIONS.ALL]), roleAdminApiRoute);
-router.use("/premission",checkPremission([PERMISSIONS.ALL]), premissionAdminApiRoute);
+router.use("/category", checkPremission([PERMISSIONS.CONTENT_MANAGER]), categoryAdminApiRoute);
+router.use("/blogs", checkPremission([PERMISSIONS.CONTENT_MANAGER]), blogAdminApiRoute);
+router.use("/product", checkPremission([PERMISSIONS.CONTENT_MANAGER]), productAdminApiRoute);
+router.use("/course", checkPremission([PERMISSIONS.TEACHER]), courseAdminApiRouter);
+router.use("/chapter", checkPremission([PERMISSIONS.TEACHER]), chapterAdminApiRoute);
+router.use("/episode", checkPremission([PERMISSIONS.TEACHER]), episodeAdminApiRoute);
+router.use("/user", checkPremission([PERMISSIONS.USER]), userAdminApiRouter);
+router.use("/role", checkPremission([PERMISSIONS.ADMIN]), roleAdminApiRoute);
+router.use("/premission", checkPremission([PERMISSIONS.ADMIN]), premissionAdminApiRoute);
 
 module.exports = {
   adminRoutes: router,

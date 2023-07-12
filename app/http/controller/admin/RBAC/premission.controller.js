@@ -38,7 +38,6 @@ class premissionController extends controller {
   async createPremission(req, res, next) {
     try {
       const { name, description } = await addPremissiomSchema.validateAsync(req.body);
-      console.log(req.body);
       await this.findpremissionWithName(name);
       const premission = await premissionModel.create({ name, description });
       if (!premission)

@@ -6,20 +6,22 @@ const { PERMISSIONS } = require("../../utils/constants");
 function checkPremission(requiredPremissions = []) {
   return async function (req, res, next) {
     try {
+      const allPremissions = requiredPremissions.flat(2);
       const user = req.user;
       const role = await roleModel.findOne({ title: user.role });
       const permissions = await premissionModel.find({
         _id: { $in: role.premissions },
       });
       const userPremissions = permissions.map((item) => item.name);
-      const hasPremission = requiredPremissions.every((premission) => {
+      const hasPremission = allPremissions.every((premission) => {
         return userPremissions.includes(premission);
       });
+      console.log(allPremissions + " 11");
+      console.log(userPremissions);
       if (userPremissions.includes(PERMISSIONS.ALL)) return next();
-      if (requiredPremissions.length == 0 || hasPremission) return next();
+      if (allPremissions.length == 0 || hasPremission) return next();
       throw createHttpError.Forbidden("you cant access this part of site");
     } catch (error) {
-      console.log(error);
       next(error);
     }
   };
