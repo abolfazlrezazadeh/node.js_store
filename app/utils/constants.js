@@ -1,7 +1,7 @@
 module.exports = {
   roles: {
     regexForMongoDbID : /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i ,
-    user: "user",
+    user: "USER",
     admin: "admin",
     writer: "writer",
     teacher: "teacher",

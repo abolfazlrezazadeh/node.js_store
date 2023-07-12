@@ -19,7 +19,7 @@ const { userAuthRouter } = require("./user/auth");
 })();
 const router = require("express").Router();
 router.use("/user", userAuthRouter);
-router.use("/admin", vrefiyAccessToken, checkRole("ADMIN"), adminRoutes);
+router.use("/admin", vrefiyAccessToken, adminRoutes);
 router.use("/developer", developerRoute);
 router.use("/", homeRoutes);
 

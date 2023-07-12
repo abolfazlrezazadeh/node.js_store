@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
     disCount: { type: Number, default: 0 },
     //if fill the birthday it gets discount on his birth day
     birthday: { type: String },
-    roles: { type: [String], default: ["user"] },
+    role: { type: String, default: "USER" },
   },
   {
     timestamps: true,

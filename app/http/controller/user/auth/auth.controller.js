@@ -99,7 +99,7 @@ class userAuthController extends controller {
       phone,
       otp,
       //in utils
-      roles: [roles.user],
+      role: roles.user,
     }));
   }
 

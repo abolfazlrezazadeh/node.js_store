@@ -34,19 +34,8 @@ async function vrefiyAccessToken(req, res, next) {
   }
 }
 
-function checkRole(role) {
-  return function (req, res, next) {
-    try {
-      const user = req.user;
-      if (user.roles.includes(role)) return next();
-      throw createError.Unauthorized("you cant access this part of site");
-    } catch (error) {
-      next(error);
-    }
-  };
-}
+
 
 module.exports = {
   vrefiyAccessToken,
-  checkRole,
 };
