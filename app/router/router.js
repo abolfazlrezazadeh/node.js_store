@@ -1,3 +1,4 @@
+const { graphqlHTTP } = require("express-graphql");
 const {
   vrefiyAccessToken,
   checkRole,
@@ -6,7 +7,9 @@ const redisClient = require("../utils/redis_init");
 const { adminRoutes } = require("./admin/admin.routes");
 const { homeRoutes } = require("./api");
 const { developerRoute } = require("./developer.routes");
+const { graphqlSchema } = require("./../graphql/index.resolver");
 const { userAuthRouter } = require("./user/auth");
+const { configGraphql } = require("../utils/graphql.config");
 (async () => {
   await redisClient.v4.set("key", "value", {
     NX: true,
@@ -21,6 +24,7 @@ const router = require("express").Router();
 router.use("/user", userAuthRouter);
 router.use("/admin", vrefiyAccessToken, adminRoutes);
 router.use("/developer", developerRoute);
+router.use("/graphql", graphqlHTTP(configGraphql));
 router.use("/", homeRoutes);
 
 module.exports = {
