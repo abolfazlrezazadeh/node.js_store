@@ -18,5 +18,5 @@ const categoryType = new GraphQLObjectType({
 
 module.exports = {
   authorType,
-  categoryType
+  categoryType,
 };
