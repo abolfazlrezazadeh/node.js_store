@@ -45,7 +45,7 @@
  *              -   in: formData
  *                  name: tags
  *                  example: tag#tag2#
- *                  type: string
+ *                  type: array
  *                  required : false
  *              -   in: formData
  *                  name : category
