@@ -6,7 +6,6 @@ const categoryResolver = {
   type: new GraphQLList(categoriesType),
 
   resolve: async () => {
-    console.log(args);
     // get  all categories
     const categories = await categoryModel.find({});
     return categories;
