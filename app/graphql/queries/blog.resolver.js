@@ -10,6 +10,7 @@ const blogResolver = {
   resolve: async (_, args, context, info) => {
     const { req, res } = context;
     await vrefiyAccessTokenInGraphQL(req, res);
+    console.log(req.user);
     return await blogModel
       .find({})
       .populate([{ path: "author" }, { path: "category" }]);

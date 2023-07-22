@@ -47,11 +47,13 @@ async function vrefiyAccessTokenInGraphQL(req, res) {
         if (!user) throw createError.Unauthorized("User account not found");
         req.user = user;
       } catch (error) {
-        // throw createError[401](error.message);
+        req.error = error
       }
     });
+    if(Object.keys(req?.error || {})?.length) throw createError.Unauthorized()
   } catch (error) {
-    // throw createError[401](error.message);
+    console.log(error);
+    throw createError.Unauthorized()
   }
 }
 
