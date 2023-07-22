@@ -8,9 +8,8 @@ const {
 const blogResolver = {
   type: new GraphQLList(blogType),
   resolve: async (_, args, context, info) => {
-    const { req, res } = context;
-    await vrefiyAccessTokenInGraphQL(req, res);
-    console.log(req.user);
+    // const { req } = context;
+    // req.user = await vrefiyAccessTokenInGraphQL(req);
     return await blogModel
       .find({})
       .populate([{ path: "author" }, { path: "category" }]);
