@@ -33,9 +33,31 @@ async function vrefiyAccessToken(req, res, next) {
     next(error);
   }
 }
+async function vrefiyAccessTokenInGraphQL(req, res) {
+  try {
+    const token = getToken(req.headers);
+    jwt.verify(token, ACCESS_TOKEN_SECRET_KEY, async (err, payload) => {
+      try {
+        if (err) throw createError.Unauthorized("login to your accoant");
+        const { phone } = payload || {};
+        const user = await userModel.findOne(
+          { phone },
+          { password: 0, otp: 0, bills: 0 }
+        );
+        if (!user) throw createError.Unauthorized("User account not found");
+        req.user = user;
+      } catch (error) {
+        // throw createError[401](error.message);
+      }
+    });
+  } catch (error) {
+    // throw createError[401](error.message);
+  }
+}
 
 
 
 module.exports = {
   vrefiyAccessToken,
+  vrefiyAccessTokenInGraphQL
 };
