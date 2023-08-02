@@ -12,10 +12,10 @@ const blogType = new GraphQLObjectType({
     imageURL: { type: GraphQLString },
     image: { type: GraphQLString },
     tags: { type: new GraphQLList(GraphQLString) },
-    category: { type: publicCategoryType },
+    category: { type: new GraphQLList(publicCategoryType) },
   },
 });
 
 module.exports = {
-    blogType
-}
+  blogType,
+};
