@@ -1,0 +1,29 @@
+# Try to write your query here
+{
+  courses {
+    title
+    bio
+    price
+    disCount
+    image
+    imageURL
+    tags
+    teacher {
+      first_name
+    }
+    category{
+      title
+    }
+    chapters {
+      title
+      text
+      episodes {
+        title
+        time
+        type
+        videoAddress
+        videoUrl
+      }
+    }
+  }
+}
