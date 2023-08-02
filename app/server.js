@@ -81,6 +81,7 @@ module.exports = class Application {
   }
   configDatabase(DB_URL) {
     const mongoose = require("mongoose");
+    mongoose.set("strictQuery", false);
     //Set up default mongoose connection
     mongoose.connect(DB_URL, (error) => {
       if (error) throw error;
