@@ -8,6 +8,7 @@ const {
 } = require("../../http/middleware/verifyAccesssToken");
 const { responseType } = require("../typeDefs/public.type");
 const { copyObject } = require("../../utils/function");
+const { default: mongoose } = require("mongoose");
 
 const createCommentForBlog = {
   type: responseType,
@@ -23,7 +24,13 @@ const createCommentForBlog = {
     const { comment, blogId, parent } = args;
     await checkExistBlog(blogId);
     // check exist parent of comment
-    const commentDocument = await getComment(blogModel, parent);
+    let commentDocument;
+    if (parent) {
+      commentDocument = await getComment(blogModel, parent);
+    }
+    //check openToComment
+    if (commentDocument && !commentDocument?.openToComment)
+      throw createHttpError.BadRequest("you cannot allowed to reply comment");
     //push data
     await blogModel.updateOne(
       { _id: blogId },
@@ -35,6 +42,7 @@ const createCommentForBlog = {
             show: false,
             // if !parent => true
             openToComment: !parent,
+            parent: mongoose.isValidObjectId(parent) ? parent : undefined,
           },
         },
       }
@@ -54,9 +62,13 @@ async function checkExistBlog(id) {
   return blog;
 }
 async function getComment(model, id) {
-  const findedComment = await model.findOne({ "comments._id": id }, { "comments.$": 1 });
+  const findedComment = await model.findOne(
+    { "comments._id": id },
+    { "comments.$": 1 }
+  );
   const comment = copyObject(findedComment);
-  if (!comment?.comments?.[0]) throw createHttpError.NotFound("comment not found");
+  if (!comment?.comments?.[0])
+    throw createHttpError.NotFound("comment not found");
   return comment?.comments?.[0];
 }
 

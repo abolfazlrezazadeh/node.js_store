@@ -11,9 +11,9 @@ const blogSchema = new mongoose.Schema(
     tags: { type: [String], default: [] },
     category: { type: [mongoose.Types.ObjectId], required: true },
     comments: { type: [commentSchema], default: [] },
-    like: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
-    disLike: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
-    bookmark: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
+    like: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
+    disLike: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
+    bookmark: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
   },
   {
     timestamps: true,
@@ -23,7 +23,7 @@ const blogSchema = new mongoose.Schema(
     },
   }
 );
-blogSchema.virtual("users", {
+blogSchema.virtual("user", {
   ref: "user",
   localField: "_id", 
   foreignField: "author",

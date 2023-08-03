@@ -11,6 +11,9 @@ const parentOfCommentType = new GraphQLObjectType({
   fields: {
     user: { type: userType },
     comment: { type: GraphQLString },
+    createdAt: { type: GraphQLString },
+    show: { type: GraphQLBoolean },
+    openToComment: { type: GraphQLBoolean },
   },
 });
 const commentType = new GraphQLObjectType({
@@ -21,6 +24,7 @@ const commentType = new GraphQLObjectType({
     parent: { type: parentOfCommentType },
     show: { type: GraphQLBoolean },
     openToComment: { type: GraphQLBoolean },
+    createdAt: { type: GraphQLString },
   },
 });
 

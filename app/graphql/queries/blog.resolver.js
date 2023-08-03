@@ -7,17 +7,26 @@ const { blogModel } = require("../../model/blog");
 
 const blogResolver = {
   type: new GraphQLList(blogType),
-  args : {
-    category: {type : GraphQLString}
+  args: {
+    category: { type: GraphQLString },
   },
   resolve: async (_, args, context, info) => {
-    // const { req } = context;
-    // req.user = await vrefiyAccessTokenInGraphQL(req);
-    const {category} = args
-    const findQuery = category? {category} : {}
-    return await blogModel 
-      .find(findQuery)
-      .populate([{ path: "author" }, { path: "category" }]);
+    try {
+      // const { req } = context;
+      // req.user = await vrefiyAccessTokenInGraphQL(req);
+      const { category } = args;
+      const findQuery = category ? { category } : {};
+      return await blogModel
+        .find(findQuery)
+        .populate([
+          { path: "author" },
+          { path: "category" },
+          { path: "comments.user" },
+          { path: "comments.parent" },
+        ]);
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 
