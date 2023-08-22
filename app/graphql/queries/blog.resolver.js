@@ -22,7 +22,7 @@ const blogResolver = {
           { path: "author" },
           { path: "category" },
           { path: "comments.user" },
-          { path: "comments.parent" },
+          { path: "comments.answers.user" },
         ]);
     } catch (error) {
       console.log(error);

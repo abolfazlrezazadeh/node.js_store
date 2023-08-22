@@ -6,14 +6,13 @@ const {
 } = require("graphql");
 const { userType, anyType } = require("./public.type");
 
-const parentOfCommentType = new GraphQLObjectType({
-  name: "parentOfCommentType",
+const commentAnswerType = new GraphQLObjectType({
+  name: "commentAnswerType",
   fields: {
     user: { type: userType },
     comment: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     show: { type: GraphQLBoolean },
-    openToComment: { type: GraphQLBoolean },
   },
 });
 const commentType = new GraphQLObjectType({
@@ -21,7 +20,7 @@ const commentType = new GraphQLObjectType({
   fields: {
     user: { type: userType },
     comment: { type: GraphQLString },
-    parent: { type: parentOfCommentType },
+    answers: { type: new GraphQLList(commentAnswerType) },
     show: { type: GraphQLBoolean },
     openToComment: { type: GraphQLBoolean },
     createdAt: { type: GraphQLString },
