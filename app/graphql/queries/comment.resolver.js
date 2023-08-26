@@ -18,35 +18,61 @@ const createCommentForBlog = {
     parent: { type: GraphQLString },
   },
   resolve: async (_, args, context) => {
-    // authentacate
+    // authenticate
     const { req } = context;
     const user = await vrefiyAccessTokenInGraphQL(req);
     const { comment, blogId, parent } = args;
+    //check BlogID
+    if (!mongoose.isValidObjectId(blogId))
+      throw createHttpError.BadRequest("blog Id is not correct");
     await checkExistBlog(blogId);
     // check exist parent of comment
-    let commentDocument;
     if (parent) {
-      commentDocument = await getComment(blogModel, parent);
-    }
-    //check openToComment
-    if (commentDocument && !commentDocument?.openToComment)
-      throw createHttpError.BadRequest("you cannot allowed to reply comment");
-    //push data
-    await blogModel.updateOne(
-      { _id: blogId },
-      {
-        $push: {
-          comments: {
-            comment,
-            user: user._id,
-            show: false,
-            // if !parent => true
-            openToComment: !parent,
-            parent: mongoose.isValidObjectId(parent) ? parent : undefined,
+      const commentDocument = await getComment(blogModel, parent);
+      //check openToComment
+      if (commentDocument && !commentDocument?.openToComment)
+        throw createHttpError.BadRequest("you cannot allowed to reply comment");
+      const createAnswerResult = await blogModel.updateOne(
+        { "comments._id": parent },
+        {
+          $push: {
+            "comments.$.answers": {
+              comment,
+              user: user._id,
+              show: false,
+              openToComment: false,
+            },
           },
-        },
+        }
+      );
+      if (!createAnswerResult.modifiedCount) {
+        throw createHttpError.InternalServerError(
+          "The answer was not registered"
+        );
       }
-    );
+      return {
+        statusCode: httpStatus.CREATED,
+        data: {
+          message: "your answer is registred successfully",
+        },
+      };
+    } else {
+      //if !parent = create new comment
+      await blogModel.updateOne(
+        { _id: blogId },
+        {
+          $push: {
+            comments: {
+              comment,
+              user: user._id,
+              show: false,
+              // if !parent = true
+              openToComment: true,
+            },
+          },
+        }
+      );
+    }
     return {
       statusCode: httpStatus.CREATED,
       data: {
