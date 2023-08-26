@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema(
       ref: "category",
       required: true,
     },
-    comment: { type: [commentSchema], default: [] },
+    comments: { type: [commentSchema], default: [] },
     //array of users
     // must login first
     likes: { type: [mongoose.Types.ObjectId], default: [] },
@@ -41,7 +41,7 @@ const productSchema = new mongoose.Schema(
     //the product is physical or virtual
     type: { type: String, required: true },
     format: { type: String },
-    supplier: { type: mongoose.Types.ObjectId,ref : "user" , required: true },
+    supplier: { type: mongoose.Types.ObjectId, ref: "user", required: true },
   },
   {
     toJSON: {
@@ -52,7 +52,10 @@ const productSchema = new mongoose.Schema(
 
 productSchema.index({ title: "text", description: "text", bio: "text" });
 productSchema.virtual("imagesURL").get(function () {
-  return this.images.map(image=>`${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${image}`);
+  return this.images.map(
+    (image) =>
+      `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${image}`
+  );
 });
 module.exports = {
   productModel: mongoose.model("product", productSchema),

@@ -25,5 +25,20 @@
         videoUrl
       }
     }
+     comments {
+    comment
+    show
+    user{
+      first_name
+    }
+    openToComment
+    answers{
+      comment
+      user{
+        first_name
+      }
+      show
+    }
+  }
   }
 }

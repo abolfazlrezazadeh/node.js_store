@@ -1,0 +1,10 @@
+mutation{
+  createCommentForBlog(
+    comment : "reply to main comment 1",
+    Id :"64b8e3da2f889bcdfb4a8227",
+    parent :"64e9bf4bd51b689d113e8e40"
+  ){
+  statusCode
+    data
+}
+}

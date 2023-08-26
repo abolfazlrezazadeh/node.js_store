@@ -43,7 +43,7 @@ const courseSchema = new mongoose.Schema(
       ref: "category",
       required: true,
     },
-    comment: { type: [commentSchema], default: [] },
+    comments: { type: [commentSchema], default: [] },
     likes: { type: [mongoose.Types.ObjectId], default: [] },
     disLikes: { type: [mongoose.Types.ObjectId], default: [] },
     bookmark: { type: [mongoose.Types.ObjectId], default: [] },
