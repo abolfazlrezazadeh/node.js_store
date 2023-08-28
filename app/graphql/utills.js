@@ -1,4 +1,8 @@
 const { Kind } = require("graphql");
+const { blogModel } = require("../model/blog");
+const { courseModel } = require("../model/course");
+const { productModel } = require("../model/product");
+const createHttpError = require("http-errors");
 
 function parseObject(valueNode) {
   const value = Object.create(null);
@@ -22,7 +26,6 @@ function praseValueNode(valueNode) {
       return null;
   }
 }
-
 function parseLiteral(valueNode) {
   switch (valueNode.kind) {
     case Kind.STRING:
@@ -42,10 +45,27 @@ function toObject(value) {
   if (typeof value === "string" && value.charAt(0) === "{")
     return JSON.parse(value);
 }
-
+async function checkExistBlog(id) {
+  const blog = await blogModel.findOne({ _id: id });
+  if (!blog) throw createHttpError.NotFound("Blog not found");
+  return blog;
+}
+async function checkExistCourse(id) {
+  const course = await courseModel.findOne({ _id: id });
+  if (!course) throw createHttpError.NotFound("course not found");
+  return course;
+}
+async function checkExistProduct(id) {
+  const product = await productModel.findOne({ _id: id });
+  if (!product) throw createHttpError.NotFound("product not found");
+  return product;
+}
 module.exports = {
   toObject,
   praseValueNode,
   parseLiteral,
   parseObject,
+  checkExistBlog,
+  checkExistCourse,
+  checkExistProduct
 };

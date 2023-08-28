@@ -10,6 +10,7 @@ const { copyObject } = require("../../utils/function");
 const { default: mongoose } = require("mongoose");
 const { courseModel } = require("../../model/course");
 const { productModel } = require("../../model/product");
+const { checkExistProduct, checkExistBlog, checkExistCourse } = require("../utills");
 
 const createCommentForBlog = {
   type: responseType,
@@ -228,21 +229,7 @@ const createCommentForCourse = {
   },
 };
 
-async function checkExistBlog(id) {
-  const blog = await blogModel.findOne({ _id: id });
-  if (!blog) throw createHttpError.NotFound("Blog not found");
-  return blog;
-}
-async function checkExistCourse(id) {
-  const course = await courseModel.findOne({ _id: id });
-  if (!course) throw createHttpError.NotFound("course not found");
-  return course;
-}
-async function checkExistProduct(id) {
-  const product = await productModel.findOne({ _id: id });
-  if (!product) throw createHttpError.NotFound("product not found");
-  return product;
-}
+
 async function getComment(model, id) {
   const findedComment = await model.findOne(
     { "comments._id": id },
