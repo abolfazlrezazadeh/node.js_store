@@ -4,11 +4,12 @@ const {
   GraphQLList,
   GraphQLBoolean,
 } = require("graphql");
-const { userType, anyType } = require("./public.type");
+const { userType } = require("./public.type");
 
 const commentAnswerType = new GraphQLObjectType({
   name: "commentAnswerType",
   fields: {
+    _id : { type: GraphQLString },
     user: { type: userType },
     comment: { type: GraphQLString },
     createdAt: { type: GraphQLString },
@@ -18,6 +19,7 @@ const commentAnswerType = new GraphQLObjectType({
 const commentType = new GraphQLObjectType({
   name: "commentType",
   fields: {
+    _id : { type: GraphQLString },
     user: { type: userType },
     comment: { type: GraphQLString },
     answers: { type: new GraphQLList(commentAnswerType) },

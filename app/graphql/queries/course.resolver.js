@@ -17,7 +17,7 @@ const courseResolver = {
       .populate([
         { path: "teacher" },
         { path: "category" },
-          { path: "comments.user" },
+        { path: "comments.user" },
         { path: "comments.answers.user" },
       ]);
   },
