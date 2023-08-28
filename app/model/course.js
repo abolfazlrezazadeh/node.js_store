@@ -44,9 +44,9 @@ const courseSchema = new mongoose.Schema(
       required: true,
     },
     comments: { type: [commentSchema], default: [] },
-    likes: { type: [mongoose.Types.ObjectId], default: [] },
-    disLikes: { type: [mongoose.Types.ObjectId], default: [] },
-    bookmark: { type: [mongoose.Types.ObjectId], default: [] },
+    likes: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
+    disLikes: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
+    bookmark: { type: [mongoose.Types.ObjectId], ref: "user", default: [] },
     price: { type: Number, required: true },
     disCount: { type: Number, default: 0 },
     type: {

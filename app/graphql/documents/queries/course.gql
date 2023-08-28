@@ -1,44 +1,45 @@
-# Try to write your query here
-{
-  courses {
+query getCourses($categoryId: String) {
+  alias: courses(category: $categoryId) {
+    ...courseFields
+  }
+}
+
+fragment courseFields on courseType {
+  title
+  image
+  imageURL
+  tags
+  teacher {
+    first_name
+  }
+  category {
     title
-    bio
-    price
-    disCount
-    image
-    imageURL
-    tags
-    teacher {
-      first_name
-    }
-    category{
+  }
+  chapters {
+    text
+    episodes {
       title
+      time
+      type
+      videoAddress
+      videoUrl
     }
-    chapters {
-      title
-      text
-      episodes {
-        title
-        time
-        type
-        videoAddress
-        videoUrl
-      }
-    }
-     comments {
+  }
+  comments {
     comment
+    _id
     show
-    user{
+    user {
       first_name
     }
     openToComment
-    answers{
+    answers {
+      _id
       comment
-      user{
+      user {
         first_name
       }
       show
     }
-  }
   }
 }
