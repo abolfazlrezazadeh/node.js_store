@@ -4,7 +4,7 @@ const { productModel } = require("../../model/product");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const { vrefiyAccessTokenInGraphQL } = require("../../http/middleware/verifyAccesssToken");
 
-const likeAndDislikeProduct = {
+const likeProduct = {
   type: responseType,
   args: {
     productId: { type: GraphQLString },
@@ -14,24 +14,17 @@ const likeAndDislikeProduct = {
     const { req } = context;
     const user = await vrefiyAccessTokenInGraphQL(req);
     const { productId } = args;
-    let message = "";
-    let likedProduct = await productModel.findOne({_id : productId, likes : {}})
-    let disLikedProduct = await productModel.findOne({_id : productId, likes : user._id})
-
-    if(likedProduct){
-      await productModel.updateOne({_id : productId},{$pull : {likes : user._id}})
-      if(!disLikedProduct) await productModel.updateOne({_id : productId},{$push : {disLikes : user._id}})
-      message = "liking product is successfully done"
-    }
-    if(disLikedProduct){
+    let likedProduct = await productModel.findOne({_id : productId, likes :  user._id})
+    let disLikedProduct = await productModel.findOne({_id : productId, disLikes : user._id})
+    const updateQuery = likedProduct ? {$pull : {likes : user._id}} : {$push : {likes : user._id}};
+    await productModel.updateOne({_id : productId},updateQuery);     
+    if(disLikedProduct && !likedProduct){
       await productModel.updateOne({_id : productId},{$pull : {disLikes : user._id}})
-      if(!disLikedProduct) await productModel.updateOne({_id : productId},{$push : {likes : user._id}})
-      message = "disliking product is successfully done"
     }
     return {
       statusCode : httpStatus.CREATED,
       data : {
-        message
+        message : "liking product is successfully done"
       }
     }
   },
@@ -65,5 +58,5 @@ const likeBlog = {
 
 
 module.exports = {
-  likeAndDislikeProduct
+  likeProduct
 }
