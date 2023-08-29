@@ -1,0 +1,31 @@
+# Try to write your query here
+mutation {
+  likeProduct(
+    productId: "64156848ccbcc175892d7999"
+  ) {
+    statusCode
+    data
+  }
+}
+
+
+# Try to write your query here
+mutation {
+  likeCourse(
+    courseId: "643024e98c18285e6140b50a"
+  ) {
+    statusCode
+    data
+  }
+}
+
+
+# Try to write your query here
+mutation {
+  likeBlog(
+    blogId: "64b8e3da2f889bcdfb4a8227"
+  ) {
+    statusCode
+    data
+  }
+}

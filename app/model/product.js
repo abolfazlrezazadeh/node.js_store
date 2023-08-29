@@ -18,9 +18,9 @@ const productSchema = new mongoose.Schema(
     comments: { type: [commentSchema], default: [] },
     //array of users
     // must login first
-    likes: { type: [mongoose.Types.ObjectId], default: [] },
-    disLikes: { type: [mongoose.Types.ObjectId], default: [] },
-    bookmark: { type: [mongoose.Types.ObjectId], default: [] },
+    likes: { type: [mongoose.Types.ObjectId],ref: "user", default: [] },
+    disLikes: { type: [mongoose.Types.ObjectId],ref: "user", default: [] },
+    bookmark: { type: [mongoose.Types.ObjectId],ref: "user", default: [] },
     count: { type: Number },
     price: { type: Number, required: true },
     disCount: { type: Number, default: 0 },

@@ -30,7 +30,10 @@ const productType = new GraphQLObjectType({
     price: { type: GraphQLInt },
     feature: { type: featureType },
     supplier: { type: userType },
-    comments : {type : new GraphQLList(commentType)}
+    comments : {type : new GraphQLList(commentType)},
+    likes : {type : new GraphQLList(userType)},
+    disLikes : {type : new GraphQLList(userType)},
+    bookmark : {type : new GraphQLList(userType)},
   },
 });
 

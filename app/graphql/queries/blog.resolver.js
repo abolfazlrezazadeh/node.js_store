@@ -23,6 +23,9 @@ const blogResolver = {
           { path: "category" },
           { path: "comments.user" },
           { path: "comments.answers.user" },
+          { path: "likes" },
+          { path: "disLikes" },
+          { path: "bookmark" },
         ]);
     } catch (error) {
       console.log(error);

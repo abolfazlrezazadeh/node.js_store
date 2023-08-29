@@ -7,6 +7,11 @@ const {
   likeCourse,
 } = require("./mutations/likes.resolver");
 const {
+  disLikeProduct,
+  disLikeCourse,
+  disLikeBlog,
+} = require("./mutations/disLikes.resolver");
+const {
   categoryResolver,
   categoryChildResolver,
 } = require("./queries/category.resolver");
@@ -36,6 +41,9 @@ const rootMutations = new GraphQLObjectType({
     likeProduct,
     likeBlog,
     likeCourse,
+    disLikeProduct,
+    disLikeCourse,
+    disLikeBlog,
   },
 });
 const graphqlSchema = new GraphQLSchema({
