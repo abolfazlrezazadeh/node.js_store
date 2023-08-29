@@ -12,6 +12,11 @@ const {
   disLikeBlog,
 } = require("./mutations/disLikes.resolver");
 const {
+  bookmarkProduct,
+  bookmarkCourse,
+  bookmarkBlog,
+} = require("./mutations/bookmark.resolver");
+const {
   categoryResolver,
   categoryChildResolver,
 } = require("./queries/category.resolver");
@@ -44,6 +49,9 @@ const rootMutations = new GraphQLObjectType({
     disLikeProduct,
     disLikeCourse,
     disLikeBlog,
+    bookmarkProduct,
+    bookmarkCourse,
+    bookmarkBlog,
   },
 });
 const graphqlSchema = new GraphQLSchema({
