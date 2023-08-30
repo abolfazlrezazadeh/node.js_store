@@ -1,4 +1,4 @@
-const { default: mongoose, Mongoose } = require("mongoose");
+const { default: mongoose,   } = require("mongoose");
 const productSchema = new mongoose.Schema({
   productId : { type : mongoose.Types.ObjectId , ref : "product"},
   count : {type : Number , default : 1}
@@ -8,8 +8,8 @@ const courseSchema = new mongoose.Schema({
   count : {type : Number , default : 1}
 })
 const basketSchema = new mongoose.Schema({
-  product : {type : [productSchema] , default : []},
-  course : {type : [courseSchema] , default : []}
+  products : {type : [productSchema] , default : []},
+  courses : {type : [courseSchema] , default : []}
 })
 const userSchema = new mongoose.Schema(
   {

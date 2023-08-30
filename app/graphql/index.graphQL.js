@@ -12,6 +12,12 @@ const {
   disLikeBlog,
 } = require("./mutations/disLikes.resolver");
 const {
+  addProductToBasket,
+  addCourseToBasket,
+  removeProductFromBasket,
+  removeCourseFromBasket,
+} = require("./mutations/basket.resolver");
+const {
   bookmarkProduct,
   bookmarkCourse,
   bookmarkBlog,
@@ -61,6 +67,10 @@ const rootMutations = new GraphQLObjectType({
     bookmarkProduct,
     bookmarkCourse,
     bookmarkBlog,
+    addProductToBasket,
+    addCourseToBasket,
+    removeProductFromBasket,
+    removeCourseFromBasket,
   },
 });
 const graphqlSchema = new GraphQLSchema({
