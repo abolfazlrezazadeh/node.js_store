@@ -43,7 +43,7 @@ const rootQuery = new GraphQLObjectType({
     childOfCategory: categoryChildResolver,
     getUserBookmarkedBlogs,
     getUserBookmarkedProducts,
-    // getUserBookmarkedCourses,
+    getUserBookmarkedCourses,
   },
 });
 const rootMutations = new GraphQLObjectType({

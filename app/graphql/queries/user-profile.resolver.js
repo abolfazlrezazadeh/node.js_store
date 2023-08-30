@@ -34,33 +34,56 @@ const getUserBookmarkedBlogs = {
   },
 };
 const getUserBookmarkedProducts = {
-    type: new GraphQLList(productType),
-    resolve: async (_, args, context, info) => {
-      try {
-        // authenticate
-        const { req } = context;
-        const user = await vrefiyAccessTokenInGraphQL(req);
-        const products = await productModel
-          .find({ bookmark: user._id })
-          .populate([
-            { path: "supplier" },
-            { path: "category" },
-            { path: "comments.user" },
-            { path: "comments.answers.user" },
-            { path: "likes" },
-            { path: "disLikes" },
-            { path: "bookmark" },
-          ]);
-        return products;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  };
+  type: new GraphQLList(productType),
+  resolve: async (_, args, context, info) => {
+    try {
+      // authenticate
+      const { req } = context;
+      const user = await vrefiyAccessTokenInGraphQL(req);
+      const products = await productModel
+        .find({ bookmark: user._id })
+        .populate([
+          { path: "supplier" },
+          { path: "category" },
+          { path: "comments.user" },
+          { path: "comments.answers.user" },
+          { path: "likes" },
+          { path: "disLikes" },
+          { path: "bookmark" },
+        ]);
+      return products;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+};
 
-
+const getUserBookmarkedCourses = {
+  type: new GraphQLList(courseType),
+  resolve: async (_, args, context, info) => {
+    try {
+      // authenticate
+      const { req } = context;
+      const user = await vrefiyAccessTokenInGraphQL(req);
+      const courses = await courseModel
+        .find({ bookmark: user._id })
+        .populate([
+          { path: "teacher" },
+          { path: "category" },
+          { path: "comments.user" },
+          { path: "comments.answers.user" },
+          { path: "likes" },
+          { path: "disLikes" },
+          { path: "bookmark" },
+        ]);
+      return courses;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+};
 module.exports = {
   getUserBookmarkedBlogs,
-//   getUserBookmarkedCourses,
+  getUserBookmarkedCourses,
   getUserBookmarkedProducts,
 };
