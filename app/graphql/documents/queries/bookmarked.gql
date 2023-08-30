@@ -1,0 +1,26 @@
+mutation {
+  bookmarkProduct(
+    productId: "64156848ccbcc175892d7999"
+  ) {
+    statusCode
+    data
+  }
+}
+
+mutation {
+  bookmarkCourse(
+    courseId: "643024e98c18285e6140b50a"
+  ) {
+    statusCode
+    data
+  }
+}
+
+mutation {
+  bookmarkBlog(
+    blogId: "64b8e3da2f889bcdfb4a8227"
+  ) {
+    statusCode
+    data
+  }
+}
