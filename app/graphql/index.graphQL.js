@@ -42,7 +42,7 @@ const rootQuery = new GraphQLObjectType({
     categories: categoryResolver,
     childOfCategory: categoryChildResolver,
     getUserBookmarkedBlogs,
-    // getUserBookmarkedProducts,
+    getUserBookmarkedProducts,
     // getUserBookmarkedCourses,
   },
 });
