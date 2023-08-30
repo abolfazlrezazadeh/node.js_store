@@ -1,5 +1,16 @@
-const { default: mongoose } = require("mongoose");
-
+const { default: mongoose, Mongoose } = require("mongoose");
+const productSchema = new mongoose.Schema({
+  productId : { type : mongoose.Types.ObjectId , ref : "product"},
+  count : {type : Number , default : 1}
+})
+const courseSchema = new mongoose.Schema({
+  courseId : { type : mongoose.Types.ObjectId , ref : "course"},
+  count : {type : Number , default : 1}
+})
+const basketSchema = new mongoose.Schema({
+  product : {type : [productSchema] , default : []},
+  course : {type : [courseSchema] , default : []}
+})
 const userSchema = new mongoose.Schema(
   {
     first_name: { type: String },
@@ -9,6 +20,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, lowercase: true, unique: true },
     password: { type: String },
     courses: { type: [mongoose.Types.ObjectId], default: [], ref: "course" },
+    basket : {type : [basketSchema], default : []},
     otp: {
       type: Object,
       default: {
