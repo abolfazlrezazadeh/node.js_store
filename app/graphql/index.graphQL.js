@@ -22,6 +22,12 @@ const {
 } = require("./queries/category.resolver");
 const { courseResolver } = require("./queries/course.resolver");
 const {
+  getUserBookmarkedBlogs,
+  getUserBookmarkedProducts,
+  getUserBookmarkedCourses,
+} = require("./queries/user-profile.resolver");
+
+const {
   createCommentForBlog,
   createCommentForCourse,
   createCommentForProduct,
@@ -35,6 +41,9 @@ const rootQuery = new GraphQLObjectType({
     courses: courseResolver,
     categories: categoryResolver,
     childOfCategory: categoryChildResolver,
+    getUserBookmarkedBlogs,
+    // getUserBookmarkedProducts,
+    // getUserBookmarkedCourses,
   },
 });
 const rootMutations = new GraphQLObjectType({
