@@ -114,6 +114,38 @@ const removeProductFromBasket = {
     if (!mongoose.isValidObjectId(productId))
       throw createHttpError.BadRequest("productId is not correct");
     await checkExistProduct(productId);
+    const product = await findProductInBasket(user._id, productId);
+    let message;
+    if (!product)
+      throw createHttpError.NotFound("can not find product in your basket");
+    //add count
+    if (product.count > 1) {
+      await userModel.updateOne(
+        {
+          _id: user._id,
+          "basket.products.productId": productId,
+        },
+        {
+          $inc: {
+            "basket.products.$.count": -1,
+          },
+        }
+      );
+      message = "The number of products in your shopping cart was reduced.";
+    } else {
+      // add to basket
+      await userModel.updateOne(
+        { _id: user._id, "basket.products.productId": productId },
+        { $pull: { "basket.products": { productId } } }
+      );
+      message = "The product has been removed from your basket";
+    }
+    return {
+      statusCode: httpStatus.OK,
+      data: {
+        message
+      },
+    };
   },
 };
 
