@@ -131,7 +131,7 @@ const removeProductFromBasket = {
           },
         }
       );
-      message = "The number of products in your shopping cart was reduced.";
+      message = "The number of products in your basket was reduced.";
     } else {
       // add to basket
       await userModel.updateOne(
@@ -143,7 +143,7 @@ const removeProductFromBasket = {
     return {
       statusCode: httpStatus.OK,
       data: {
-        message
+        message,
       },
     };
   },
@@ -163,6 +163,38 @@ const removeCourseFromBasket = {
     if (!mongoose.isValidObjectId(courseId))
       throw createHttpError.BadRequest("courseId is not correct");
     await checkExistCourse(courseId);
+    const course = await findCourseInBasket(user._id, courseId);
+    let message;
+    if (!course)
+      throw createHttpError.NotFound("can not find product in your basket");
+    //add count
+    if (course.count > 1) {
+      await userModel.updateOne(
+        {
+          _id: user._id,
+          "basket.courses.courseId": courseId,
+        },
+        {
+          $inc: {
+            "basket.courses.$.count": -1,
+          },
+        }
+      );
+      message = "The number of courses in your basket was reduced.";
+    } else {
+      // add to basket
+      await userModel.updateOne(
+        { _id: user._id, "basket.courses.courseId": courseId },
+        { $pull: { "basket.courses": { courseId } } }
+      );
+      message = "The course has been removed from your basket";
+    }
+    return {
+      statusCode: httpStatus.OK,
+      data: {
+        message,
+      },
+    };
   },
 };
 
