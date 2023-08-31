@@ -30,17 +30,18 @@ const addProductToBasket = {
     //add count
     if (product) {
       await userModel.updateOne(
-        { 
-            _id: user._id, "basket.products.productId" : productId 
+        {
+          _id: user._id,
+          "basket.products.productId": productId,
         },
-        { 
-            $inc: {
-             "basket.products.$.count": 1 
-            } 
+        {
+          $inc: {
+            "basket.products.$.count": 1,
+          },
         }
       );
     } else {
-        // add to basket
+      // add to basket
       await userModel.updateOne(
         { _id: user._id },
         { $push: { "basket.products": { productId, count: 1 } } }
@@ -48,9 +49,9 @@ const addProductToBasket = {
     }
     return {
       statusCode: httpStatus.OK,
-      data : {
-        message : "product has been added to the basket"
-      }
+      data: {
+        message: "product has been added to the basket",
+      },
     };
   },
 };
@@ -69,6 +70,33 @@ const addCourseToBasket = {
     if (!mongoose.isValidObjectId(courseId))
       throw createHttpError.BadRequest("courseId is not correct");
     await checkExistCourse(courseId);
+    const course = await findCourseInBasket(user._id, courseId);
+    //add count
+    if (course) {
+      await userModel.updateOne(
+        {
+          _id: user._id,
+          "basket.courses.courseId": courseId,
+        },
+        {
+          $inc: {
+            "basket.courses.$.count": 1,
+          },
+        }
+      );
+    } else {
+      // add to basket
+      await userModel.updateOne(
+        { _id: user._id },
+        { $push: { "basket.courses": { courseId, count: 1 } } }
+      );
+    }
+    return {
+      statusCode: httpStatus.OK,
+      data: {
+        message: "course has been added to the basket",
+      },
+    };
   },
 };
 
@@ -107,13 +135,23 @@ const removeCourseFromBasket = {
 };
 
 async function findProductInBasket(userId, productId) {
-  const basketProduct = await userModel.findOne(
+  const findResult = await userModel.findOne(
     { _id: userId, "basket.products.productId": productId },
     { "basket.products.$": 1 }
   );
-  const product = await copyObject(basketProduct);
-  return product?.basket?.[0]?.products?.[0];
+  const userDetail = await copyObject(findResult);
+  return userDetail?.basket?.[0]?.products?.[0];
 }
+
+async function findCourseInBasket(userId, courseId) {
+  const findResult = await userModel.findOne(
+    { _id: userId, "basket.courses.courseId": courseId },
+    { "basket.courses.$": 1 }
+  );
+  const userDetail = await copyObject(findResult);
+  return userDetail?.basket?.[0]?.courses?.[0];
+}
+
 module.exports = {
   addProductToBasket,
   addCourseToBasket,
