@@ -73,17 +73,7 @@ const addCourseToBasket = {
     const course = await findCourseInBasket(user._id, courseId);
     //add count
     if (course) {
-      await userModel.updateOne(
-        {
-          _id: user._id,
-          "basket.courses.courseId": courseId,
-        },
-        {
-          $inc: {
-            "basket.courses.$.count": 1,
-          },
-        }
-      );
+      throw createHttpError.BadRequest("this course is already added to your basket")
     } else {
       // add to basket
       await userModel.updateOne(
@@ -166,7 +156,7 @@ const removeCourseFromBasket = {
     const course = await findCourseInBasket(user._id, courseId);
     let message;
     if (!course)
-      throw createHttpError.NotFound("can not find product in your basket");
+      throw createHttpError.NotFound("can not find course in your basket");
     //add count
     if (course.count > 1) {
       await userModel.updateOne(
@@ -204,7 +194,7 @@ async function findProductInBasket(userId, productId) {
     { "basket.products.$": 1 }
   );
   const userDetail = await copyObject(findResult);
-  return userDetail?.basket?.[0]?.products?.[0];
+  return userDetail?.basket?.products?.[0];
 }
 
 async function findCourseInBasket(userId, courseId) {
@@ -213,7 +203,7 @@ async function findCourseInBasket(userId, courseId) {
     { "basket.courses.$": 1 }
   );
   const userDetail = await copyObject(findResult);
-  return userDetail?.basket?.[0]?.courses?.[0];
+  return userDetail?.basket?.courses?.[0];
 }
 
 module.exports = {
