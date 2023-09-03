@@ -110,24 +110,41 @@ const getUserBasket = {
           as: "courseDetail",
         },
       },
-      { $unwind: "$productDetail" },
       {
         $addFields: {
-          "productDetail.basketDetail": {
-            $filter: {
-              input: "$basket.products",
-              as: "product",
-              cond: {
-                $eq: ["$productDetail._id", "$$product.productId"],
+          productDetail: {
+            $function: {
+              body: function (productDetail, products) {
+                return productDetail.map(function (product) {
+                  return {
+                    ...product,
+                    basketCount: products.find(
+                      (item) =>
+                        item.productId.valueOf() == product._id.valueOf()
+                    ).count,
+                    totalPrice:
+                      products.find(
+                        (item) =>
+                          item.productId.valueOf() == product._id.valueOf()
+                      ).count * product.price,
+                  };
+                });
               },
+              //parameters of upper function
+              args: ["$productDetail", "$basket.products"],
+              //language of coding
+              lang: "js",
             },
           },
         },
       },
-      { $unwind: "$productDetail.basketDetail" },
-      { $project: { productDetail: 1 ,courseDetail : 1} },
+      {
+        $project : {
+          basket : 0
+        }
+      }
     ]);
-    return userDetail;
+    return userDetail
   },
 };
 module.exports = {
