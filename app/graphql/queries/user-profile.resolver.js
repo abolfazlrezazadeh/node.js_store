@@ -116,17 +116,14 @@ const getUserBasket = {
             $function: {
               body: function (productDetail, products) {
                 return productDetail.map(function (product) {
+                  const count = products.find((item) =>item.productId.valueOf() == product._id.valueOf()).count;
+                  const totalPrice = count * product.price;
                   return {
                     ...product,
-                    basketCount: products.find(
-                      (item) =>
-                        item.productId.valueOf() == product._id.valueOf()
-                    ).count,
-                    totalPrice:
-                      products.find(
-                        (item) =>
-                          item.productId.valueOf() == product._id.valueOf()
-                      ).count * product.price,
+                    basketCount: count,
+                    totalPrice: totalPrice,
+                    discount : `${product.disCount}%`,
+                    finalPrice : totalPrice - ((product.disCount / 100) * totalPrice),
                   };
                 });
               },
