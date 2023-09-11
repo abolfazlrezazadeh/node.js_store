@@ -1,6 +1,5 @@
 const { GraphQLString, GraphQLInt } = require("graphql");
 const { responseType } = require("../typeDefs/public.type");
-const { productModel } = require("../../model/product");
 const { StatusCodes: httpStatus } = require("http-status-codes");
 const {
   vrefiyAccessTokenInGraphQL,
@@ -70,15 +69,30 @@ const addCourseToBasket = {
     if (!mongoose.isValidObjectId(courseId))
       throw createHttpError.BadRequest("courseId is not correct");
     await checkExistCourse(courseId);
+    const userCourse = await userModel.findOne({
+      _id: user._id,
+      courses: courseId,
+    });
+    if (userCourse)
+      throw createHttpError.BadRequest(
+        "this course is already in your course list"
+      );
     const course = await findCourseInBasket(user._id, courseId);
     //add count
     if (course) {
-      throw createHttpError.BadRequest("this course is already added to your basket")
+      throw createHttpError.BadRequest(
+        "this course is already added to your basket"
+      );
     } else {
       // add to basket
       await userModel.updateOne(
         { _id: user._id },
-        { $push: { "basket.courses": { courseId, count: 1 } } }
+        {
+          $push: {
+            "basket.courses": { courseId, count: 1 },
+            courses: courseId,
+          },
+        }
       );
     }
     return {

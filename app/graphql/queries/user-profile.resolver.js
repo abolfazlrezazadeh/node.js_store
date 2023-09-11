@@ -1,6 +1,6 @@
 const { GraphQLList, GraphQLString } = require("graphql");
 const { blogType } = require("../typeDefs/blog.type");
-const { calculateDiscount } = require("../../utils/function");
+const { calculateDiscount, getBasketOfUser } = require("../../utils/function");
 const { blogModel } = require("../../model/blog");
 const {
   vrefiyAccessTokenInGraphQL,
@@ -93,105 +93,7 @@ const getUserBasket = {
     // authenticate
     const { req } = context;
     const user = await vrefiyAccessTokenInGraphQL(req);
-    const userDetail = await userModel.aggregate([
-      { $match: { _id: user._id } },
-      { $project: { basket: 1 } },
-      {
-        $lookup: {
-          from: "products",
-          localField: "basket.products.productId",
-          foreignField: "_id",
-          as: "productDetail",
-        },
-      },
-      {
-        $lookup: {
-          from: "courses",
-          localField: "basket.courses.courseId",
-          foreignField: "_id",
-          as: "courseDetail",
-        },
-      },
-      {
-        $addFields: {
-          "productDetail": {
-            $function: {
-              body: function (productDetail, products) {
-                return productDetail.map(function (product) {
-                  const count = products.find(
-                    (item) => item.productId.valueOf() == product._id.valueOf()
-                  ).count;
-                  const totalPrice = count * product.price;
-                  return {
-                    ...product,
-                    basketCount: count,
-                    totalPrice: totalPrice,
-                    discount: `${product.disCount}%`,
-                    finalPrice:
-                      totalPrice - (product.disCount / 100) * totalPrice,
-                  };
-                });
-              },
-              //parameters of upper function
-              args: ["$productDetail", "$basket.products"],
-              //language of coding
-              lang: "js",
-            },
-          },
-          "courseDetail": {
-            $function: {
-              body: function (courseDetail) {
-                return courseDetail.map(function (course) {
-                  return {
-                    ...course,
-                    discount: `${course.disCount}%`,
-                    price : course.price,
-                    finalPrice:
-                      course.price - (course.disCount / 100) * course.price,
-                  };
-                });
-              },
-              //parameters of upper function
-              args: ["$courseDetail"],
-              //language of coding
-              lang: "js",
-            },
-          },
-          "paymentDetail": {
-            $function: {
-              body: function (courseDetail,productDetail,products) {
-                const courseAmount =  courseDetail.reduce(function (total, course) {  
-                  return (total + course.price - (course.disCount / 100) * course.price);
-                }, 0)
-                const productAmount = productDetail.reduce(function(total , product){
-                  const count = products.find((item) => item.productId.valueOf() == product._id.valueOf()).count;
-                  const totalPrice = count * product.price;
-                  return total + (totalPrice - (product.disCount / 100) * totalPrice);
-                }, 0)
-                const courseIds = courseDetail.map(course => course._id.valueOf())
-                const productIds = productDetail.map(product => product._id.valueOf())
-                return {
-                  courseAmount,
-                  productAmount,
-                  paymentAmount : productAmount + courseAmount,
-                  courseIds,
-                  productIds,
-                }
-              },
-              //parameters of upper function
-              args: ["$courseDetail","$productDetail" , "$basket.products"],
-              //language of coding
-              lang: "js",
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          basket: 0,
-        },
-      },
-    ]);
+    const userDetail = await getBasketOfUser(user._id);
     return userDetail;
   },
 };

@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, lowercase: true, unique: true },
     password: { type: String },
     courses: { type: [mongoose.Types.ObjectId], default: [], ref: "course" },
+    products: { type: [mongoose.Types.ObjectId], default: [], ref: "product" },
     basket : {type : basketSchema, default : []},
     otp: {
       type: Object,
