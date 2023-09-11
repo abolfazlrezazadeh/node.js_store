@@ -11,6 +11,7 @@ const { courseType } = require("../typeDefs/course.type");
 const { courseModel } = require("../../model/course");
 const { anyType } = require("../typeDefs/public.type");
 const { userModel } = require("../../model/users");
+const product = require("../../model/product");
 
 const getUserBookmarkedBlogs = {
   type: new GraphQLList(blogType),
@@ -152,6 +153,33 @@ const getUserBasket = {
               },
               //parameters of upper function
               args: ["$courseDetail"],
+              //language of coding
+              lang: "js",
+            },
+          },
+          "paymentDetail": {
+            $function: {
+              body: function (courseDetail,productDetail,products) {
+                const courseAmount =  courseDetail.reduce(function (total, course) {  
+                  return (total + course.price - (course.disCount / 100) * course.price);
+                }, 0)
+                const productAmount = productDetail.reduce(function(total , product){
+                  const count = products.find((item) => item.productId.valueOf() == product._id.valueOf()).count;
+                  const totalPrice = count * product.price;
+                  return total + (totalPrice - (product.disCount / 100) * totalPrice);
+                }, 0)
+                const courseIds = courseDetail.map(course => course._id.valueOf())
+                const productIds = productDetail.map(product => product._id.valueOf())
+                return {
+                  courseAmount,
+                  productAmount,
+                  paymentAmount : productAmount + courseAmount,
+                  courseIds,
+                  productIds,
+                }
+              },
+              //parameters of upper function
+              args: ["$courseDetail","$productDetail" , "$basket.products"],
               //language of coding
               lang: "js",
             },
