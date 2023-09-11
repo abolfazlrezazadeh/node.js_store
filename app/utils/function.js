@@ -164,7 +164,7 @@ function gettalTimeOfCourses(chapters = []) {
   for (const chapter of chapters) {
     if (Array.isArray(chapter?.episodes)) {
       for (const episode of chapter.episodes) {
-        if (episode?.time)time = episode.time.split(":"); //00:00:00
+        if (episode?.time) time = episode.time.split(":"); //00:00:00
         else time = "00:00:00".split(":");
         if (time.length == 3) {
           seconds += Number(time[0]) * 3600; // convert hour to sdeconds

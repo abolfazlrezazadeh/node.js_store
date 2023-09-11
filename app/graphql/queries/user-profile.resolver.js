@@ -1,5 +1,6 @@
 const { GraphQLList, GraphQLString } = require("graphql");
 const { blogType } = require("../typeDefs/blog.type");
+const { calculateDiscount } = require("../../utils/function");
 const { blogModel } = require("../../model/blog");
 const {
   vrefiyAccessTokenInGraphQL,
@@ -112,18 +113,21 @@ const getUserBasket = {
       },
       {
         $addFields: {
-          productDetail: {
+          "productDetail": {
             $function: {
               body: function (productDetail, products) {
                 return productDetail.map(function (product) {
-                  const count = products.find((item) =>item.productId.valueOf() == product._id.valueOf()).count;
+                  const count = products.find(
+                    (item) => item.productId.valueOf() == product._id.valueOf()
+                  ).count;
                   const totalPrice = count * product.price;
                   return {
                     ...product,
                     basketCount: count,
                     totalPrice: totalPrice,
-                    discount : `${product.disCount}%`,
-                    finalPrice : totalPrice - ((product.disCount / 100) * totalPrice),
+                    discount: `${product.disCount}%`,
+                    finalPrice:
+                      totalPrice - (product.disCount / 100) * totalPrice,
                   };
                 });
               },
@@ -133,15 +137,34 @@ const getUserBasket = {
               lang: "js",
             },
           },
+          "courseDetail": {
+            $function: {
+              body: function (courseDetail) {
+                return courseDetail.map(function (course) {
+                  return {
+                    ...course,
+                    discount: `${course.disCount}%`,
+                    price : course.price,
+                    finalPrice:
+                      course.price - (course.disCount / 100) * course.price,
+                  };
+                });
+              },
+              //parameters of upper function
+              args: ["$courseDetail"],
+              //language of coding
+              lang: "js",
+            },
+          },
         },
       },
       {
-        $project : {
-          basket : 0
-        }
-      }
+        $project: {
+          basket: 0,
+        },
+      },
     ]);
-    return userDetail
+    return userDetail;
   },
 };
 module.exports = {
