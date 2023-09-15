@@ -1,10 +1,10 @@
 const {
   paymentController,
-} = require("../../http/controller/api/payment.controller");
-const { vrefiyAccessToken } = require("../http/middleware/verifyAccesssToken");
+} = require("../../http/controller/api/payment.controller"); 
+const { vrefiyAccessToken } = require("../../http/middleware/verifyAccesssToken");
 
 const router = require("express").Router();
-router.post("/payment", vrefiyAccessToken, paymentController.paymentGateWay);
+router.post("/", paymentController.paymentGateWay);
 router.post("/verify", () => {});
 
 //------shaparak- bank mellat - pasargad - saman------------
