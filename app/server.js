@@ -6,6 +6,7 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const bodyParser = require("body-parser");
 const path = require("path");
+const expressEjsLayout = require('express-ejs-layouts')
 const cors = require("cors");
 module.exports = class Application {
   #app = express();
@@ -13,6 +14,7 @@ module.exports = class Application {
     this.configDatabase(DB_URL);
     this.redis_init();
     this.configApplication();
+    this.initTemplateEngine();
     this.createServer(PORT);
     this.createRoutse();
     this.errorHandler();
@@ -78,6 +80,16 @@ module.exports = class Application {
   }
   redis_init() {
     require("./utils/redis_init");
+  }
+  initTemplateEngine(){
+    this.#app.use(expressEjsLayout)
+    this.#app.set('view engine', 'ejs')
+    this.#app.set('views', path.join(__dirname, '..' , 'resource/views'))
+    // code css in template Engine
+    this.#app.set('layout extractStyles', true)
+    // code javaScripts in template Engine
+    this.#app.set('layout extractScripts', true)
+    this.#app.set('layout', './layouts/master')
   }
   configDatabase(DB_URL) {
     const mongoose = require("mongoose");
