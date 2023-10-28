@@ -7,7 +7,8 @@ class namespacecontroller extends controller {
   async addNamespace(req, res, next) {
     try {
       const { title, endpoints } = req.body;
-      const namespace = conversationModel.create({ title, endpoints });
+      await this.findNamespacesWithEndpoint(endpoints)
+      const namespace = await conversationModel.create({ title, endpoints });
       return res.status(httpStatus.OK).json({
         statusCode : httpStatus.OK,
         data : {
@@ -30,6 +31,10 @@ class namespacecontroller extends controller {
     } catch (error) {
       next(error);
     }
+  }
+  async findNamespacesWithEndpoint(endpoint){
+    const endpoints = await conversationModel.findOne({endpoints : endpoint});
+    if(endpoints) throw createError.BadRequest('this name is alreade taken')
   }
 }
 
