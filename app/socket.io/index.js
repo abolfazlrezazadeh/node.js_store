@@ -1,7 +1,7 @@
-const namespaceSocketHandler = require("./namespace.socket")
+const namespaceSocketHandler = require("./namespace.socket");
 
-module.exports ={
-    socketHandler : (io)=>{
-        new namespaceSocketHandler(io).initConnection()
-    }
-}
+module.exports = {
+  socketHandler: (io) => {
+    new namespaceSocketHandler(io).initConnection();
+  },
+};
