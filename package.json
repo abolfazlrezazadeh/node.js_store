@@ -43,6 +43,7 @@
     "save": "2.9.0",
     "sharp": "0.31.3",
     "sharp-multer": "0.2.5",
+    "socket.io": "^4.7.2",
     "swagger-jsdoc": "6.2.5",
     "swagger-ui-express": "4.5.0"
   },

@@ -4,10 +4,11 @@ const express = require("express");
 const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
-const bodyParser = require("body-parser");
 const path = require("path");
-const expressEjsLayout = require('express-ejs-layouts')
+const expressEjsLayout = require("express-ejs-layouts");
 const cors = require("cors");
+const { initialSocket } = require("./utils/socket_Init");
+const { socketHandler } = require("./socket.io");
 module.exports = class Application {
   #app = express();
   constructor(PORT, DB_URL) {
@@ -26,7 +27,13 @@ module.exports = class Application {
     this.#app.use(morgan("dev"));
     // this.#app.use(bodyParser.urlencoded({ parameterLimit: 100000, limit: '50mb', extended: false }));
     this.#app.use(express.json());
-    this.#app.use(express.urlencoded({ parameterLimit: 100000, limit: '50mb', extended: false }));
+    this.#app.use(
+      express.urlencoded({
+        parameterLimit: 100000,
+        limit: "50mb",
+        extended: false,
+      })
+    );
     this.#app.use(express.static(path.join(__dirname, "..", "public")));
     this.#app.use(
       "/api-doc",
@@ -74,6 +81,8 @@ module.exports = class Application {
   createServer(PORT) {
     const http = require("http");
     const server = http.createServer(this.#app);
+    const io = initialSocket(server);
+    socketHandler(io);
     server.listen(PORT, () => {
       console.log(`http://localhost:${PORT}`);
     });
@@ -81,15 +90,15 @@ module.exports = class Application {
   redis_init() {
     require("./utils/redis_init");
   }
-  initTemplateEngine(){
-    this.#app.use(expressEjsLayout)
-    this.#app.set('view engine', 'ejs')
-    this.#app.set('views', path.join(__dirname, '..' , 'resource/views'))
+  initTemplateEngine() {
+    this.#app.use(expressEjsLayout);
+    this.#app.set("view engine", "ejs");
+    this.#app.set("views", path.join(__dirname, "..", "resource/views"));
     // code css in template Engine
-    this.#app.set('layout extractStyles', true)
+    this.#app.set("layout extractStyles", true);
     // code javaScripts in template Engine
-    this.#app.set('layout extractScripts', true)
-    this.#app.set('layout', './layouts/master')
+    this.#app.set("layout extractScripts", true);
+    this.#app.set("layout", "./layouts/master");
   }
   configDatabase(DB_URL) {
     const mongoose = require("mongoose");

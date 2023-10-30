@@ -17,7 +17,7 @@ class roomcontroller extends controller {
         { endpoints: namespace },
         { $push: { rooms: roomDetailes } }
       );
-      if(!room.matchedCount) throw createError.InternalServerError('please try again')
+      if(!room.modifiedCount) throw createError.InternalServerError('please try again')
       return res.status(httpStatus.OK).json({
         statusCode: httpStatus.OK,
         data: {
