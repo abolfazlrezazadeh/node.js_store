@@ -15,6 +15,7 @@ function initNamespaceConnection(endpoints) {
           `
         <li class="contact">
           <div class="wrap">
+              <img src="${room.image}"/>
               <div class="meta">
                   <p class="name">${room.name}</p>
                   <p class="preview">${room.description}</p>

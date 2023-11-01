@@ -10,7 +10,7 @@ class blogController extends controller {
     try {
       const blogDateBody = await createBlogSchema.validateAsync(req.body);
       const { title, text, shortText, category, tags } = blogDateBody;
-      req.body.image = path.join(
+      req.body.image = path.join("/",
         blogDateBody.fileUploadPath,
         blogDateBody.fileName
       );
@@ -47,7 +47,7 @@ class blogController extends controller {
       const { id } = req.params;
       await this.findBlog({ _id: id });
       if (req?.body?.fileUploadPath && req?.body?.fileName) {
-        req.body.image = path.join(req.body.fileUploadPath, req.body.fileName);
+        req.body.image = path.join("/",req.body.fileUploadPath, req.body.fileName);
         req.body.image = req.body.image.replace(/\\/g, "/");
       }
       const image = req.body.image;

@@ -31,7 +31,7 @@ module.exports = class Application {
       express.urlencoded({
         parameterLimit: 100000,
         limit: "50mb",
-        extended: false,
+        extended: true,
       })
     );
     this.#app.use(express.static(path.join(__dirname, "..", "public")));

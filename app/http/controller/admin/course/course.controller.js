@@ -64,7 +64,7 @@ class courseController extends controller {
     try {
       await createCourseSchema.validateAsync(req.body);
       const { fileUploadPath, fileName } = req.body;
-      req.body.image = path.join(fileUploadPath, fileName).replace(/\\/g, "/");
+      req.body.image = path.join("/",fileUploadPath, fileName).replace(/\\/g, "/");
       const { title, bio, description, tags, category, price, disCount, type } =
         req.body;
       if (Number(price) > 0 && type === "free")
@@ -135,7 +135,7 @@ class courseController extends controller {
       ];
       deleteInvalidPropertyInObject(data, blackListFields);
       if (req.file) {
-        data.image = path.join(fileUploadPath, fileName).replace(/\\/g, "/");
+        data.image = path.join("/",fileUploadPath, fileName).replace(/\\/g, "/");
         deleteFileInPublic(course.image);
       }
       const updateCourseResult = await courseModel.updateOne(

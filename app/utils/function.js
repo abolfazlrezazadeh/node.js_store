@@ -105,7 +105,7 @@ function quantificationOfType(body) {
 function listOfImagesFromRequest(files, fileUploadPath, productBody /*req*/) {
   if (files?.length > 0) {
     return files
-      .map((file) => path.join(fileUploadPath, productBody.fileName))
+      .map((file) => path.join("/",fileUploadPath, productBody.fileName))
       .map((item) => item.replace(/\\/g, "/"));
     // req.body.image = aks;
     // return aks;

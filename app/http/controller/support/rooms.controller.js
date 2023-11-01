@@ -10,7 +10,7 @@ class roomcontroller extends controller {
         req.body;
       await this.findConversationWithEndpoint(namespace);
       await this.findRoomWithName(name);
-      const image = path.join(fileUploadPath, fileName).replace(/\\/g, "/");
+      const image = path.join("/",fileUploadPath, fileName).replace(/\\/g, "/");
 
       const roomDetailes = { name, description, image };
       const room = await conversationModel.updateOne(
