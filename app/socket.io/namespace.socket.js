@@ -18,12 +18,17 @@ module.exports = class namespaceSocketHandler {
   }
   async createNamespaceConnection() {
     const namespaces = await conversationModel
-      .find({}, { title: 1, endpoints: 1 ,rooms : 1})
+      .find({}, { title: 1, endpoints: 1, rooms: 1 })
       .sort({ _id: -1 });
     for (const namespace of namespaces) {
-      this.#io.of(`/${namespace.endpoints}`).on("connection", (socket) => {
-        socket.emit("roomList", namespace.rooms);
-      });
+      this.#io
+        .of(`/${namespace.endpoints}`)
+        .on("connection", async (socket) => {
+          const conversation = await conversationModel
+            .findOne({ endpoints: namespace.endpoints }, { rooms: 1 })
+            .sort({ _id: -1 });
+          socket.emit("roomList", conversation.rooms);
+        });
     }
   }
 };
