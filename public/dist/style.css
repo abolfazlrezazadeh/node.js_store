@@ -489,7 +489,7 @@
     }
   
     #frame .content .message-input .wrap button {
-      /* float: right; */
+      float: right;
       border: none;
       width: 60px;
       padding: 12px 0;
