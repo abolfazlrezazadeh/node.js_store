@@ -24,17 +24,27 @@ module.exports = class namespaceSocketHandler {
       this.#io.of(`/${namespace.endpoints}`)
         .on("connection", async (socket) => {
           const conversation = await conversationModel.findOne({ endpoints: namespace.endpoints }, { rooms: 1 }).sort({ _id: -1 });
-          socket.on("joinRoom", (roomName) => {
+          socket.on("joinRoom", async (roomName) => {
             const lastRoom = Array.from(socket.rooms)[1]
             if(lastRoom){
               socket.leave(lastRoom)
+              await this.getCountOfOnlineUsers(namespace.endpoints , roomName)
             }
             socket.join(roomName);
+            await this.getCountOfOnlineUsers(namespace.endpoints , roomName)
             const roomInfo = conversation.rooms.find(item => item.name == roomName)
             socket.emit("roomInfo", roomInfo)
+                // when disconnected leave the room
+            socket.on('disconnect',async ()=>{
+            await this.getCountOfOnlineUsers(namespace.endpoints , roomName)
+          })
           });
           socket.emit("roomList", conversation.rooms);
         });
     }
+  }
+  async getCountOfOnlineUsers(endpoint, roomName){
+    const onlineUsers = await this.#io.of(`/${endpoint}`).in(roomName).allSockets();
+    this.#io.of(`/${endpoint}`).in(roomName).emit("countOfOnlineUsers", Array.from(onlineUsers).length)
   }
 };

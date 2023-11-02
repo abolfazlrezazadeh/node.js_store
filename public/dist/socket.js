@@ -12,6 +12,7 @@ function initNamespaceConnection(endpoints) {
       const roomElementor = document.querySelector("#contacts ul");
       roomElementor.innerHTML = "";
       for (const room of rooms) {
+        getRoomInfo(room.name);
         const html = stringToHtml(
           `
         <li class="contact" roomName="${room.name}">
@@ -41,6 +42,9 @@ function getRoomInfo(roomName) {
   namespaceSocket.emit("joinRoom", roomName);
   namespaceSocket.on('roomInfo', roomInfo => {
     document.querySelector("#roomName h3").innerText = roomInfo.name
+  })
+  namespaceSocket.on("countOfOnlineUsers", count => {
+    document.getElementById("onlineCount").innerText = count
   })
 }
 socket.on("connect", () => {
