@@ -21,12 +21,18 @@ module.exports = class namespaceSocketHandler {
       .find({}, { title: 1, endpoints: 1, rooms: 1 })
       .sort({ _id: -1 });
     for (const namespace of namespaces) {
-      this.#io
-        .of(`/${namespace.endpoints}`)
+      this.#io.of(`/${namespace.endpoints}`)
         .on("connection", async (socket) => {
-          const conversation = await conversationModel
-            .findOne({ endpoints: namespace.endpoints }, { rooms: 1 })
-            .sort({ _id: -1 });
+          const conversation = await conversationModel.findOne({ endpoints: namespace.endpoints }, { rooms: 1 }).sort({ _id: -1 });
+          socket.on("joinRoom", (roomName) => {
+            const lastRoom = Array.from(socket.rooms)[1]
+            if(lastRoom){
+              socket.leave(lastRoom)
+            }
+            socket.join(roomName);
+            const roomInfo = conversation.rooms.find(item => item.name == roomName)
+            socket.emit("roomInfo", roomInfo)
+          });
           socket.emit("roomList", conversation.rooms);
         });
     }
