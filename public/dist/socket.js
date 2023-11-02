@@ -6,6 +6,7 @@ function stringToHtml(string) {
   return doc.body.firstChild;
 }
 function initNamespaceConnection(endpoints) {
+  if(namespaceSocket) namespaceSocket.close();
   namespaceSocket = io(`http://localhost:3050/${endpoints}`);
   namespaceSocket.on("connect", () => {
     namespaceSocket.on("roomList", (rooms) => {
