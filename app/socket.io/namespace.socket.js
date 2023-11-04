@@ -34,6 +34,7 @@ module.exports = class namespaceSocketHandler {
             await this.getCountOfOnlineUsers(namespace.endpoints , roomName)
             const roomInfo = conversation.rooms.find(item => item.name == roomName)
             socket.emit("roomInfo", roomInfo)
+            this.getNewMessage(socket)
                 // when disconnected leave the room
             socket.on('disconnect',async ()=>{
             await this.getCountOfOnlineUsers(namespace.endpoints , roomName)
@@ -46,5 +47,10 @@ module.exports = class namespaceSocketHandler {
   async getCountOfOnlineUsers(endpoint, roomName){
     const onlineUsers = await this.#io.of(`/${endpoint}`).in(roomName).allSockets();
     this.#io.of(`/${endpoint}`).in(roomName).emit("countOfOnlineUsers", Array.from(onlineUsers).length)
+  }
+  async getNewMessage(socket){
+    socket.on("newMessage",(data)=>{
+      console.log(data);
+    })
   }
 };

@@ -6,7 +6,7 @@ function stringToHtml(string) {
   return doc.body.firstChild;
 }
 function initNamespaceConnection(endpoints) {
-  if(namespaceSocket) namespaceSocket.close();
+  if (namespaceSocket) namespaceSocket.close();
   namespaceSocket = io(`http://localhost:3050/${endpoints}`);
   namespaceSocket.on("connect", () => {
     namespaceSocket.on("roomList", (rooms) => {
@@ -41,12 +41,36 @@ function initNamespaceConnection(endpoints) {
 }
 function getRoomInfo(roomName) {
   namespaceSocket.emit("joinRoom", roomName);
-  namespaceSocket.on('roomInfo', roomInfo => {
-    document.querySelector("#roomName h3").innerText = roomInfo.name
-  })
-  namespaceSocket.on("countOfOnlineUsers", count => {
-    document.getElementById("onlineCount").innerText = count
-  })
+  namespaceSocket.on("roomInfo", (roomInfo) => {
+    document.querySelector("#roomName h3").innerText = roomInfo.name;
+  });
+  namespaceSocket.on("countOfOnlineUsers", (count) => {
+    document.getElementById("onlineCount").innerText = count;
+  });
+}
+function sendMessage() {
+  const message = document.querySelector(
+    ".message-input input#messageInput"
+  ).value;
+  if (message.trim() == "") {
+    return alert("input message can not be empty");
+  }
+  namespaceSocket.emit("newMessage", { message });
+  namespaceSocket.on("confirmMessage", (data) => {
+    console.log(data);
+  });
+  const li = stringToHtml(`
+    <li class="sent">
+        <img src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+            alt="" />
+        <p>${message}</p>
+     </li>
+  `);
+  document.querySelector(".messages ul").appendChild(li);
+  //empty message input
+  document.querySelector(".message-input input#messageInput").value = "";
+  const messageElement = document.querySelector("div.messages");
+  messageElement.scrollTo(0, messageElement.scrollHeight);
 }
 socket.on("connect", () => {
   socket.on("namespaceList", (namespacesList) => {
@@ -71,5 +95,13 @@ socket.on("connect", () => {
         initNamespaceConnection(endpoint);
       });
     }
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.code == "Enter") {
+      sendMessage();
+    }
+  });
+  document.querySelector("button.submit").addEventListener("click", () => {
+    sendMessage();
   });
 });
