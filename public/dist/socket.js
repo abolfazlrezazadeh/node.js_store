@@ -33,14 +33,16 @@ function initNamespaceConnection(endpoints) {
       for (const room of roomNodes) {
         room.addEventListener("click", () => {
           const roomName = room.getAttribute("roomName");
-          getRoomInfo(roomName);
+          getRoomInfo(endpoints, roomName);
         });
       }
     });
   });
 }
-function getRoomInfo(roomName) {
+function getRoomInfo(endpoints, roomName) {
   namespaceSocket.emit("joinRoom", roomName);
+  document.querySelector("#roomName h3").setAttribute("roomname", roomName);
+  document.querySelector("#roomName h3").setAttribute("endpoint", endpoints);
   namespaceSocket.on("roomInfo", (roomInfo) => {
     document.querySelector("#roomName h3").innerText = roomInfo.name;
   });
@@ -49,15 +51,18 @@ function getRoomInfo(roomName) {
   });
 }
 function sendMessage() {
+  const roomName = document.querySelector("#roomName h3").getAttribute("roomName");
+  const endpoint = document.querySelector("#roomName h3").getAttribute("endpoint");
   const message = document.querySelector(
     ".message-input input#messageInput"
   ).value;
   if (message.trim() == "") {
     return alert("input message can not be empty");
   }
-  namespaceSocket.emit("newMessage", { message });
+  console.log(message , roomName, endpoint);
+  namespaceSocket.emit("newMessage", { message , roomName, endpoint});
   namespaceSocket.on("confirmMessage", (data) => {
-    console.log(data);
+    // console.log(data);
   });
   const li = stringToHtml(`
     <li class="sent">
@@ -100,6 +105,7 @@ socket.on("connect", () => {
     if (e.code == "Enter") {
       sendMessage();
     }
+    return 
   });
   document.querySelector("button.submit").addEventListener("click", () => {
     sendMessage();
