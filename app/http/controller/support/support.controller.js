@@ -8,6 +8,13 @@ class supportcontroller extends controller {
       next(error);
     }
   }
+  loginForm(req, res, next) {
+    try {
+      return res.render("login.ejs");
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = {

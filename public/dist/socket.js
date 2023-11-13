@@ -12,8 +12,9 @@ function initNamespaceConnection(endpoints) {
     namespaceSocket.on("roomList", (rooms) => {
       const roomElementor = document.querySelector("#contacts ul");
       roomElementor.innerHTML = "";
+      roomElementor.removeEventListener("click", getRoomInfo);
       for (const room of rooms) {
-        getRoomInfo(room.name);
+        getRoomInfo(endpoints,room.name);
         const html = stringToHtml(
           `
         <li class="contact" roomName="${room.name}">
@@ -103,7 +104,7 @@ socket.on("connect", () => {
   });
   window.addEventListener("keydown", (e) => {
     if (e.code == "Enter") {
-      sendMessage();
+      e.preventDefault();
     }
     return 
   });
