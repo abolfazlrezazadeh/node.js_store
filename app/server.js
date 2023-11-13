@@ -12,6 +12,7 @@ const { socketHandler } = require("./socket.io");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const { COOKIE_PARSER_SECRET_KEY } = require("./utils/constants");
+const { clientHelper } = require("./utils/client");
 module.exports = class Application {
   #app = express();
   constructor(PORT, DB_URL) {
@@ -103,6 +104,11 @@ module.exports = class Application {
     // code javaScripts in template Engine
     this.#app.set("layout extractScripts", true);
     this.#app.set("layout", "./layouts/master");
+    this.#app.use((req, res, next) => {
+      // locals is variables can used in ejs files
+      this.#app.locals = clientHelper(req, res);
+      next();
+    });
   }
   configDatabase(DB_URL) {
     const mongoose = require("mongoose");
