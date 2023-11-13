@@ -1,16 +1,16 @@
-const { default: mongoose,   } = require("mongoose");
+const { default: mongoose } = require("mongoose");
 const productSchema = new mongoose.Schema({
-  productId : { type : mongoose.Types.ObjectId , ref : "product"},
-  count : {type : Number , default : 1}
-})
+  productId: { type: mongoose.Types.ObjectId, ref: "product" },
+  count: { type: Number, default: 1 },
+});
 const courseSchema = new mongoose.Schema({
-  courseId : { type : mongoose.Types.ObjectId , ref : "course"},
-  count : {type : Number , default : 1}
-})
+  courseId: { type: mongoose.Types.ObjectId, ref: "course" },
+  count: { type: Number, default: 1 },
+});
 const basketSchema = new mongoose.Schema({
-  products : {type : [productSchema] , default : []},
-  courses : {type : [courseSchema] , default : []}
-})
+  products: { type: [productSchema], default: [] },
+  courses: { type: [courseSchema], default: [] },
+});
 const userSchema = new mongoose.Schema(
   {
     first_name: { type: String },
@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String },
     courses: { type: [mongoose.Types.ObjectId], default: [], ref: "course" },
     products: { type: [mongoose.Types.ObjectId], default: [], ref: "product" },
-    basket : {type : basketSchema, default : []},
+    basket: { type: basketSchema, default: [] },
+    token: { type: String, default: "" },
     otp: {
       type: Object,
       default: {

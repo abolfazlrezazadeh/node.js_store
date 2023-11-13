@@ -19,7 +19,13 @@ class supportcontroller extends controller {
           error: "phon number is not correct",
         });
       const token = await signAccessToken(user._id);
-      return res.json(token);
+      await userModel.updateOne({phone : mobile},{$set : {token}})
+      res.cookie("authorization", token, {
+        signed: true,
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 1 /* 1 day*/),
+      });
+      return res.redirect("/support");
     } catch (error) {
       next(error);
     }

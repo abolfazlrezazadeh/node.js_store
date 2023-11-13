@@ -18,9 +18,9 @@ module.exports = class Application {
     this.configDatabase(DB_URL);
     this.redis_init();
     this.configApplication();
+    this.initClientSession();
     this.initTemplateEngine();
     this.createServer(PORT);
-    this.initClientSession();
     this.createRoutse();
     this.errorHandler();
   }
@@ -132,8 +132,8 @@ module.exports = class Application {
     this.#app.use(
       session({
         secret: true,
-        saveUninitialized: true,
         resave: true,
+        saveUninitialized: true,
         cookie: {
           secure: true,
         },
