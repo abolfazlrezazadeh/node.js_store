@@ -9,6 +9,9 @@ const expressEjsLayout = require("express-ejs-layouts");
 const cors = require("cors");
 const { initialSocket } = require("./utils/socket_Init");
 const { socketHandler } = require("./socket.io");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const { COOKIE_PARSER_SECRET_KEY } = require("./utils/constants");
 module.exports = class Application {
   #app = express();
   constructor(PORT, DB_URL) {
@@ -17,6 +20,7 @@ module.exports = class Application {
     this.configApplication();
     this.initTemplateEngine();
     this.createServer(PORT);
+    this.initClientSession();
     this.createRoutse();
     this.errorHandler();
   }
@@ -122,6 +126,19 @@ module.exports = class Application {
       console.log("disconnected");
       process.exit(0);
     });
+  }
+  initClientSession() {
+    this.#app.use(cookieParser(COOKIE_PARSER_SECRET_KEY));
+    this.#app.use(
+      session({
+        secret: true,
+        saveUninitialized: true,
+        resave: true,
+        cookie: {
+          secure: true,
+        },
+      })
+    );
   }
   createRoutse() {
     this.#app.use(allRoutes);

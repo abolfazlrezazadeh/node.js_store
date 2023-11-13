@@ -5,7 +5,8 @@ const { roomAdminRoute } = require('./room.router');
 const router = require('express').Router()
 router.use('/namespace', namespaceAdminRoute)
 router.use('/room', roomAdminRoute)
-router.get('/login', supportController.loginForm)
+router.post('/login', supportController.postLoginForm)
+router.get('/login', supportController.getLoginForm)
 router.get('/', supportController.renderFile)
 // router.use("/namespace", namespaceAdminRoute);
 module.exports = {
