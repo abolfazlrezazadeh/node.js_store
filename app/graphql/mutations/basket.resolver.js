@@ -208,7 +208,7 @@ async function findProductInBasket(userId, productId) {
     { "basket.products.$": 1 }
   );
   const userDetail = await copyObject(findResult);
-  return userDetail?.basket?.products?.[0];
+  return userDetail?.basket?.products?.[0] || null;
 }
 
 async function findCourseInBasket(userId, courseId) {
@@ -217,7 +217,7 @@ async function findCourseInBasket(userId, courseId) {
     { "basket.courses.$": 1 }
   );
   const userDetail = await copyObject(findResult);
-  return userDetail?.basket?.courses?.[0];
+  return userDetail?.basket?.courses?.[0] || null;
 }
 
 module.exports = {

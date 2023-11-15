@@ -211,7 +211,7 @@ async function getBasketOfUser(userId){
         "productDetail": {
           $function: {
             body: function (productDetail, products) {
-              return productDetail.map(function (product) {
+              return productDetail.map(async function (product) {
                 const count = products.find(
                   (item) => item.productId.valueOf() == product._id.valueOf()
                 ).count;
@@ -257,7 +257,7 @@ async function getBasketOfUser(userId){
               const courseAmount =  courseDetail.reduce(function (total, course) {  
                 return (total + course.price - (course.disCount / 100) * course.price);
               }, 0)
-              const productAmount = productDetail.reduce(function(total , product){
+              const productAmount = productDetail.reduce(async function(total , product){
                 const count = products.find((item) => item.productId.valueOf() == product._id.valueOf()).count;
                 const totalPrice = count * product.price;
                 return total + (totalPrice - (product.disCount / 100) * totalPrice);
