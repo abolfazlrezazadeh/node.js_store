@@ -15,13 +15,13 @@ const userSchema = new mongoose.Schema(
   {
     first_name: { type: String },
     last_name: { type: String },
-    username: { type: String, lowercase: true, unique: true },
+    username: { type: String, lowercase: true, unique: true ,default : ""},
     phone: { type: String, required: true },
-    email: { type: String, lowercase: true, unique: true },
+    email: { type: String, lowercase: true, unique: true ,default : ""},
     password: { type: String },
     courses: { type: [mongoose.Types.ObjectId], default: [], ref: "course" },
     products: { type: [mongoose.Types.ObjectId], default: [], ref: "product" },
-    basket: { type: basketSchema, default: [] },
+    basket: { type: basketSchema, default: {} },
     token: { type: String, default: "" },
     otp: {
       type: Object,

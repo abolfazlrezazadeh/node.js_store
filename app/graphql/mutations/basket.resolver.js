@@ -169,6 +169,8 @@ const removeCourseFromBasket = {
     await checkExistCourse(courseId);
     const course = await findCourseInBasket(user._id, courseId);
     let message;
+    // delete course from course list
+    await userModel.updateOne({_id:user._id},{$pull : {courses : courseId}})
     if (!course)
       throw createHttpError.NotFound("can not find course in your basket");
     //add count
