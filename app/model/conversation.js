@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
   dateTime: { type: String },
 });
 const roomSchema = new mongoose.Schema({
-  name: { type: String },
+  name: { type: String , required : true, unique : true},
   description: { type: String },
   image: { type: String },
   messages: { type: [messageSchema], default: [] },

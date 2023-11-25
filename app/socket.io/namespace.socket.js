@@ -36,10 +36,13 @@ module.exports = class namespaceSocketHandler {
               (item) => item.name == roomName
             );
             socket.emit("roomInfo", roomInfo);
-            await this.getNewMessage(socket);
+            this.getNewMessage(socket);
             // when disconnected leave the room
             socket.on("disconnect", async () => {
               await this.getCountOfOnlineUsers(namespace.endpoints, roomName);
+              // socket.removeAllListeners("newMessage");
+              // socket.removeAllListeners("disconnect");
+              // this.#io.removeAllListeners("connection");
             });
           });
           socket.emit("roomList", conversation.rooms);
@@ -56,22 +59,27 @@ module.exports = class namespaceSocketHandler {
       .in(roomName)
       .emit("countOfOnlineUsers", Array.from(onlineUsers).length);
   }
-  async getNewMessage(socket) {
-    socket.on("newMessage", async (data) => {
-      console.log(data);
-      const { message, roomName, endpoint } = data;
-      await conversationModel.updateOne(
-        { endpoints: endpoint, "rooms.name": roomName },
-        {
-          $push: {
-            "rooms.$.messages": {
-              sender: "648f1e054ddaa8639cf43d31",
-              message,
-              dateTime: moment().format("jYYYY/jM/jD - HH:MM:SS"),
+  getNewMessage(socket) {
+    try {
+      // socket.off(["newMessage"])
+      socket.on("newMessage", async (data) => {
+        console.log(data);
+        const { message, roomName, endpoint, sender } = data;
+        await conversationModel.updateOne(
+          { endpoints: endpoint, "rooms.name": roomName },
+          {
+            $push: {
+              "rooms.$.messages": {
+                sender,
+                message,
+                dateTime: moment().format("jYYYY/jM/jD - HH:MM:SS"),
+              },
             },
-          },
-        }
-      );
-    });
+          }
+        );
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 };

@@ -14,7 +14,7 @@ function initNamespaceConnection(endpoints) {
       roomElementor.innerHTML = "";
       roomElementor.removeEventListener("click", getRoomInfo);
       for (const room of rooms) {
-        getRoomInfo(endpoints,room.name);
+        getRoomInfo(endpoints, room.name);
         const html = stringToHtml(
           `
         <li class="contact" roomName="${room.name}">
@@ -52,19 +52,28 @@ function getRoomInfo(endpoints, roomName) {
   });
 }
 function sendMessage() {
-  const roomName = document.querySelector("#roomName h3").getAttribute("roomName");
-  const endpoint = document.querySelector("#roomName h3").getAttribute("endpoint");
+  const roomName = document
+    .querySelector("#roomName h3")
+    .getAttribute("roomName");
+  const endpoint = document
+    .querySelector("#roomName h3")
+    .getAttribute("endpoint");
   const message = document.querySelector(
     ".message-input input#messageInput"
   ).value;
   if (message.trim() == "") {
     return alert("input message can not be empty");
   }
-  console.log(message , roomName, endpoint);
-  namespaceSocket.emit("newMessage", { message , roomName, endpoint});
-  namespaceSocket.on("confirmMessage", (data) => {
-    // console.log(data);
+  const authorization = document.getElementById("userId").value;
+  namespaceSocket.emit("newMessage", {
+    message,
+    roomName,
+    endpoint,
+    sender: authorization,
   });
+  // namespaceSocket.on("confirmMessage", (data) => {
+  //   // console.log(data);
+  // });
   const li = stringToHtml(`
     <li class="sent">
         <img src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
@@ -103,12 +112,14 @@ socket.on("connect", () => {
     }
   });
   window.addEventListener("keydown", (e) => {
-    if (e.code == "Enter") {
-      e.preventDefault();
+    if (e.code == "Enter" && e.target.id === "messageInput") {
+      e.preventDefault(); // Prevent form submission
+      sendMessage();
     }
-    return 
   });
-  document.querySelector("button.submit").addEventListener("click", () => {
+
+  document.querySelector("button.submit").addEventListener("click", (e) => {
+    e.preventDefault(); // Prevent form submission
     sendMessage();
   });
 });
