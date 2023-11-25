@@ -76,7 +76,7 @@ module.exports = class namespaceSocketHandler {
             },
           }
         );
-        this.#io.emit("confirmMessage", data);
+        await this.#io.of(`/${endpoint}`).in(roomName).emit("confirmMessage", data);
       });
     } catch (error) {
       console.log(error);

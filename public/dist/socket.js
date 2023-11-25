@@ -5,6 +5,8 @@ function stringToHtml(string) {
   const doc = parser.parseFromString(string, "text/html");
   return doc.body.firstChild;
 }
+
+
 function initNamespaceConnection(endpoints) {
   if (namespaceSocket) namespaceSocket.close();
   namespaceSocket = io(`http://localhost:3050/${endpoints}`);
@@ -40,6 +42,8 @@ function initNamespaceConnection(endpoints) {
     });
   });
 }
+
+
 function getRoomInfo(endpoints, roomName) {
   document.querySelector("#roomName h3").setAttribute("roomname", roomName);
   document.querySelector("#roomName h3").setAttribute("endpoint", endpoints);
@@ -64,6 +68,8 @@ function getRoomInfo(endpoints, roomName) {
     document.getElementById("onlineCount").innerText = count;
   });
 }
+
+
 function sendMessage() {
   const roomName = document
     .querySelector("#roomName h3")
@@ -87,8 +93,8 @@ function sendMessage() {
     endpoint,
     sender: userId,
   });
-  socket.off("confirmMessage")
-  socket.on("confirmMessage",data => {
+  namespaceSocket.off("confirmMessage")
+  namespaceSocket.on("confirmMessage",data => {
     const li = stringToHtml(`
       <li class="${userId == data.sender ? "sent" : "replies"}">
           <img src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
@@ -103,6 +109,8 @@ function sendMessage() {
     messageElement.scrollTo(0, messageElement.scrollHeight);
   })
 }
+
+
 socket.on("connect", () => {
   socket.on("namespaceList", (namespacesList) => {
     const namespaceElement = document.getElementById("namespaces");
