@@ -36,11 +36,11 @@ module.exports = class namespaceSocketHandler {
               (item) => item.name == roomName
             );
             socket.emit("roomInfo", roomInfo);
+            socket.removeAllListeners("newMessage");
             this.getNewMessage(socket);
             // when disconnected leave the room
             socket.on("disconnect", async () => {
               await this.getCountOfOnlineUsers(namespace.endpoints, roomName);
-              // socket.removeAllListeners("newMessage");
               // socket.removeAllListeners("disconnect");
               // this.#io.removeAllListeners("connection");
             });
@@ -61,7 +61,6 @@ module.exports = class namespaceSocketHandler {
   }
   getNewMessage(socket) {
     try {
-      // socket.off(["newMessage"])
       socket.on("newMessage", async (data) => {
         console.log(data);
         const { message, roomName, endpoint, sender } = data;
@@ -77,6 +76,7 @@ module.exports = class namespaceSocketHandler {
             },
           }
         );
+        this.#io.emit("confirmMessage", data);
       });
     } catch (error) {
       console.log(error);
