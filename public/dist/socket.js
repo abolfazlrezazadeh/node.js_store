@@ -41,11 +41,24 @@ function initNamespaceConnection(endpoints) {
   });
 }
 function getRoomInfo(endpoints, roomName) {
-  namespaceSocket.emit("joinRoom", roomName);
   document.querySelector("#roomName h3").setAttribute("roomname", roomName);
   document.querySelector("#roomName h3").setAttribute("endpoint", endpoints);
+  namespaceSocket.emit("joinRoom", roomName);
+  namespaceSocket.off("roomInfo");
   namespaceSocket.on("roomInfo", (roomInfo) => {
+    document.querySelector(".messages ul").innerHTML = "";
     document.querySelector("#roomName h3").innerText = roomInfo.name;
+    const messages = roomInfo.messages;
+    const userId = document.getElementById("userId").value;
+    for (const message of messages) {
+      const li = stringToHtml(`
+      <li class="${userId == message.sender ? "sent" : "replies"}">
+      <img src="https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="" />
+      <p>${message.message}</p>
+    </li>
+      `);
+      document.querySelector(".messages ul").appendChild(li);
+    }
   });
   namespaceSocket.on("countOfOnlineUsers", (count) => {
     document.getElementById("onlineCount").innerText = count;
