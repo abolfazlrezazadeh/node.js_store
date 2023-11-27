@@ -1,5 +1,7 @@
 const { conversationModel } = require("../model/conversation");
 const moment = require("moment-jalaali");
+const path = require("path");
+const fs = require("fs");
 module.exports = class namespaceSocketHandler {
   #io;
   constructor(io) {
@@ -38,6 +40,7 @@ module.exports = class namespaceSocketHandler {
             socket.emit("roomInfo", roomInfo);
             socket.removeAllListeners("newMessage");
             this.getNewMessage(socket);
+            this.uploadFile(socket)
             // when disconnected leave the room
             socket.on("disconnect", async () => {
               await this.getCountOfOnlineUsers(namespace.endpoints, roomName);
@@ -76,10 +79,25 @@ module.exports = class namespaceSocketHandler {
             },
           }
         );
-        await this.#io.of(`/${endpoint}`).in(roomName).emit("confirmMessage", data);
+        await this.#io
+          .of(`/${endpoint}`)
+          .in(roomName)
+          .emit("confirmMessage", data);
       });
     } catch (error) {
       console.log(error);
     }
+  }
+  uploadFile(socket) {
+    socket.on("upload", ({ file, fileName }, callback) => {
+      const ext = path.extname(fileName);
+      fs.writeFile(
+        "public/uploads/sockets/" + String(Date.now() + ext),
+        file,
+        (err) => {
+          callback({ message: err ? "failure" : "success" });
+        }
+      );
+    });
   }
 };
